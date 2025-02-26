@@ -4,6 +4,7 @@ import Hero from "@/components/main/home/hero";
 import Featuredcard from "@/components/main/home/featuredcard";
 import img1 from "@/assets/featuredimg1.png";
 import { Button } from "@/components/ui/button";
+import Downarrowicon from "@/assets/icons/downarrow-icon";
 const Home = () => {
   const featureddata = [
     {
@@ -61,6 +62,39 @@ const Home = () => {
       badgeText: "Swap",
       isFavorited: false,
     },
+    {
+      id: 2,
+      image: img1,
+      condition: "Used",
+      name: "Leather Bridle",
+      price: "$89.99",
+      location: "New York, USA",
+      time: "1 hour ago",
+      badgeText: "Swap or Sell",
+      isFavorited: false,
+    },
+    {
+      id: 3,
+      image: img1,
+      condition: "Like New",
+      name: "Horse Riding Boots",
+      price: "$120.00",
+      location: "New York, USA",
+      time: "2 hours ago",
+      badgeText: "For Trade",
+      isFavorited: true,
+    },
+    {
+      id: 4,
+      image: img1,
+      condition: "New",
+      name: "Equestrian Helmet",
+      price: "$150.00",
+      location: "New York, USA",
+      time: "3 hours ago",
+      badgeText: "For Sale",
+      isFavorited: false,
+    },
   ];
 
   return (
@@ -80,6 +114,11 @@ const Home = () => {
           {featureddata.map((item) => (
             <Featuredcard key={item.id} {...item} />
           ))}
+        </div>
+        <div className="container mx-auto flex justify-center items-center">
+          <div className="mx-auto mt-8 border  rounded-full p-2">
+            <Downarrowicon />
+          </div>
         </div>
       </div>
       <Advantage />

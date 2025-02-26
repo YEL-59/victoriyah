@@ -8,7 +8,7 @@ const Navbar = () => {
 
   const navitems = [
     { title: "Home", url: "/" },
-    { title: "Browse", url: "#" },
+    { title: "Browse", url: "/browse" },
     { title: "My Trades", url: "#" },
     { title: "Messages", url: "#" },
     { title: "Sell", url: "#" },
@@ -24,7 +24,7 @@ const Navbar = () => {
 
         <ul className="hidden md:flex gap-6 text-black font-medium text-[18px]">
           {navitems.map((item, index) => (
-            <li key={index} className="hover:text-[#FFD700] transition">
+            <li key={index} className="hover:text-black transition">
               <Link to={item.url}>{item.title}</Link>
             </li>
           ))}

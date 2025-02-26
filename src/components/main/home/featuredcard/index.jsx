@@ -28,7 +28,7 @@ const FeaturedCard = ({
         </Button>
       </CardHeader>
 
-      <div className="flex justify-between items-center px-4">
+      <div className="flex justify-between items-center px-4 -mt-10">
         <CardContent>
           <p className="text-[20px] font-semibold leading-[132%] tracking-[-0.4px] text-foreground">
             {name}
@@ -41,7 +41,7 @@ const FeaturedCard = ({
         </CardContent>
       </div>
 
-      <div className="flex justify-between items-center px-4">
+      <div className="flex justify-between items-center px-4 -mt-4">
         <CardContent className="flex gap-2 items-center">
           <Locationicon />
           <p className="text-[16px] font-normal text-secondary-foreground">
@@ -55,9 +55,9 @@ const FeaturedCard = ({
         </CardContent>
       </div>
 
-      <div className="flex justify-between items-center px-4">
+      <div className="flex justify-between items-center px-4 -mt-2">
         <CardFooter>
-          <Badge className="bg-primary text-foreground py-2 px-5 rounded-full text-md">
+          <Badge className="bg-primary text-foreground py-1 px-5 rounded-full text-md">
             {badgeText}
           </Badge>
         </CardFooter>
