@@ -9,21 +9,6 @@ import img1 from "@/assets/featuredimg1.png";
 import { Button } from "@/components/ui/button";
 import Downarrowicon from "@/assets/icons/downarrow-icon";
 const Home = () => {
-  return (
-    <div>
-      <Hero />
-      <Advantage />
-      <HowItWorks />
-      <div className="relative overflow-hidden">
-        <StartTrading />
-        <img
-          src={ellipse}
-          alt="ellipse"
-          className="absolute bottom-[-5%] z-[2]"
-        />
-      </div>
-    </div>
-  );
   const featureddata = [
     {
       id: 1,
@@ -140,6 +125,15 @@ const Home = () => {
         </div>
       </div>
       <Advantage />
+      <HowItWorks />
+      <div className="relative overflow-hidden">
+        <StartTrading />
+        <img
+          src={ellipse}
+          alt="ellipse"
+          className="absolute bottom-[-5%] z-[2]"
+        />
+      </div>
     </>
   );
 };
