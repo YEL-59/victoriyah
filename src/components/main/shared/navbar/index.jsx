@@ -8,13 +8,11 @@ const Navbar = () => {
 
   const navitems = [
     { title: "Home", url: "/" },
-    { title: "About Beast Mode", url: "/beastmodestore" },
-    { title: "Horses", url: "/" },
-    { title: "Offerings & Partnerships", url: "/" },
-    { title: "Races", url: "/" },
-    { title: "Win Photos", url: "/" },
-    { title: "Store", url: "/" },
-    { title: "Contact", url: "/contact" },
+    { title: "Browse", url: "#" },
+    { title: "My Trades", url: "#" },
+    { title: "Messages", url: "#" },
+    { title: "Sell", url: "#" },
+    { title: "Sign In", url: "#" },
   ];
 
   return (
@@ -24,7 +22,7 @@ const Navbar = () => {
           <img src={logo} alt="Logo" className="h-12" />
         </Link>
 
-        <ul className="hidden md:flex gap-6 text-[#FFF5EB] font-normal text-[16px]">
+        <ul className="hidden md:flex gap-6 text-black font-medium text-[18px]">
           {navitems.map((item, index) => (
             <li key={index} className="hover:text-[#FFD700] transition">
               <Link to={item.url}>{item.title}</Link>
