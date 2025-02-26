@@ -2,7 +2,7 @@ import logo from "@/assets/Logo.png";
 
 const Footer = () => {
   return (
-    <div className="mt-8 bg-[#080D1E] pt-9 relative">
+    <div className=" bg-[#080D1E] pt-16 relative">
       {/* Pseudo-elements for the shadow */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
         <div className="absolute top-0 left-0 w-32 h-32 rounded-[465px] opacity-60 bg-gradient-radial from-[#96E437] to-[#537E1E] filter blur-[100px]"></div>
