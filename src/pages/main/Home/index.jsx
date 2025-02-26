@@ -1,7 +1,16 @@
+import Advantage from "@/components/main/home/advantage";
+import Hero from "@/components/main/home/hero";
+
 import Featuredcard from "@/components/main/home/featuredcard";
 import img1 from "@/assets/featuredimg1.png";
 import { Button } from "@/components/ui/button";
 const Home = () => {
+  return (
+    <div>
+      <Hero />
+      <Advantage />
+    </div>
+  );
   const featureddata = [
     {
       id: 1,
