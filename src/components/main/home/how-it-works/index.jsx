@@ -19,12 +19,12 @@ function HowItWorks() {
                         <div className='cursor-pointer p-3 border bg-[#B5F169] border-[#FFF] rounded-[10px]'><img src={rightArrow} alt="icon" /></div>
                     </div>
                 </div>
-                <div className='flex justify-between gap-20'>
+                <div className='flex justify-between gap-20 w-full'>
                     <div className='bg-gradient-to-t from-[#ACE267] via-[#ACE267] to-[rgba(255,255,255,0.01)] blur-0 h-[595px] aspect-[624/595] w-full rotate-180 rounded-[24px] relative'>
                         <img src={cardImage} alt="how it works" className='rounded-[24px] absolute top-[10%] left-[10%] w-[80%] h-[80%] z-10 rotate-180' />
                     </div>
-                    <div className='w-full '>
-                        <div className='flex flex-col h-full justify-center items-center gap-24 relative'>
+                    <div className='w-full'>
+                        <div className='flex flex-col w-full h-full justify-center items-center gap-24 relative'>
                             <div className='flex gap-6'>
                                 <div className='bg-[#B5F169] text-foreground flex items-center justify-center py-4 px-5 rounded-full h-fit'><p className='text-[28px font-bold leading-[130%] tracking-[-0.8px]]'>1</p></div>
                                 <div>
@@ -46,7 +46,7 @@ function HowItWorks() {
                                     <p>We gather feedback and make continuous improvements to ensure sustained success.</p>
                                 </div>
                             </div>
-                            <div className='absolute z-[-1] left-[6%]'><img src={dotLine} alt="line" /></div>
+                            <div className='absolute z-[-1] left-[6%] top-[10%] mb-2'><img src={dotLine} alt="line" /></div>
                         </div>
                     </div>
                 </div>
