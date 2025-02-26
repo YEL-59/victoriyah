@@ -5,12 +5,6 @@ import Featuredcard from "@/components/main/home/featuredcard";
 import img1 from "@/assets/featuredimg1.png";
 import { Button } from "@/components/ui/button";
 const Home = () => {
-  return (
-    <div>
-      <Hero />
-      <Advantage />
-    </div>
-  );
   const featureddata = [
     {
       id: 1,
@@ -71,7 +65,9 @@ const Home = () => {
 
   return (
     <>
-      <div>
+      <Hero />
+
+      <div className="pt-20 pb-20">
         <div className="container mx-auto flex justify-between items-center py-6 ">
           <h1 className="text-3xl font-semibold text-foreground">
             Featured Items
@@ -86,6 +82,7 @@ const Home = () => {
           ))}
         </div>
       </div>
+      <Advantage />
     </>
   );
 };
