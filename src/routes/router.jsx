@@ -1,6 +1,7 @@
 import Mainlayout from "@/layout/mainlayout";
 import Browse from "@/pages/main/browse";
 import Home from "@/pages/main/Home";
+import Productdetails from "@/pages/main/productdetails.js";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
@@ -12,6 +13,10 @@ export const router = createBrowserRouter([
       {
         path: "browse",
         element: <Browse />,
+      },
+      {
+        path: "Productdetails",
+        element: <Productdetails />,
       },
     ],
   },
