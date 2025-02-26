@@ -2,6 +2,15 @@ import Arrowlefticon from "@/assets/icons/arrowleft-icon";
 import img1 from "../../../assets/antic.png";
 import FeaturedCard from "@/components/main/home/featuredcard";
 import img2 from "@/assets/featuredimg1.png";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 const Browse = () => {
   const categories = [
     {
@@ -91,8 +100,28 @@ const Browse = () => {
     <>
       <div className="bg-background py-20">
         <div className="container mx-auto flex justify-between items-center py-6 ">
-          <div className="flex items-center gap-5"></div>
-          <div className="bg-white p-4 rounded-xl flex gap-5 items-center"></div>
+          <div className="flex items-center gap-5">
+            {" "}
+            <Input
+              type="text"
+              placeholder="Category Search..."
+              className="rounded-full bg-white w-[350px] h-[40px] px-5"
+            />
+          </div>
+          <div className=" flex gap-5 items-center">
+            <p className="border-black border-r-2 px-3">36 results</p>
+            <p>sort By: </p>
+            <Select className="w-[180px] bg-white rounded-full">
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Theme" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">Light</SelectItem>
+                <SelectItem value="dark">Dark</SelectItem>
+                <SelectItem value="system">System</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <div className="container mx-auto grid grid-cols-12 gap-6">
           <div className="bg-white p-6 rounded-xl col-span-3">
