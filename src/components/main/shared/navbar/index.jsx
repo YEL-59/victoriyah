@@ -47,7 +47,7 @@ const Navbar = () => {
           isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         } overflow-hidden`}
       >
-        <ul className="flex flex-col gap-4 p-4 text-white bg-green-500 text-lg">
+        <ul className="flex flex-col gap-4 p-4 text-white bg-green-500 h-screen text-lg">
           {navitems.map((item, index) => (
             <li key={index} className="hover:text-[#FFD700] transition">
               <Link
