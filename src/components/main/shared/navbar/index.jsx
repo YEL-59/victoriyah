@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { Menu, X } from "lucide-react";
-import logo from "../../../../assets/Logo.png";
+import logo from "@/assets/Logo.png";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu visibility
 
   const navitems = [
     { title: "Home", url: "/" },
@@ -35,30 +35,44 @@ const Navbar = () => {
         {/* Mobile Menu Toggle Button */}
         <button
           className="md:hidden text-black focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen(!isOpen)} // Toggle isOpen state
         >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+          {!isOpen && <Menu size={28} />}{" "}
+          {/* Show Menu or X icon based on isOpen */}
         </button>
       </div>
 
       {/* Mobile Menu */}
       <div
-        className={`absolute top-[90px] left-0 w-full bg-navbg shadow-md transition-all duration-300 ease-in-out md:hidden ${
-          isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        } overflow-hidden`}
+        className={`fixed top-0 left-0 w-full h-full bg-navbg shadow-md transition-all duration-300 ease-in-out md:hidden z-[20] ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <ul className="flex flex-col gap-4 p-4 text-white bg-green-500 h-screen text-lg">
-          {navitems.map((item, index) => (
-            <li key={index} className="hover:text-[#FFD700] transition">
-              <Link
-                to={item.url}
-                onClick={() => setIsOpen(false)} // Close menu on click
-              >
-                {item.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-col gap-4 p-4 text-#315215 bg-[#b5f169] h-full text-lg">
+          <div className="flex items-center justify-between">
+            <Link to="/dashboard">
+              <img src={logo} alt="Logo" className="h-12" />
+            </Link>
+            <button
+              className="md:hidden text-black focus:outline-none"
+              onClick={() => setIsOpen(false)} // Close menu on click
+            >
+              <X size={28} />
+            </button>
+          </div>
+          <ul>
+            {navitems.map((item, index) => (
+              <li key={index} className="hover:text-[#315215] transition py-4 px-6 text-scale-110">
+                <Link
+                  to={item.url}
+                  onClick={() => setIsOpen(false)} // Close menu on click
+                >
+                  {item.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </nav>
   );
