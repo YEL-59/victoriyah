@@ -8,7 +8,7 @@ import Locationicon from "@/assets/icons/location-icon";
 
 const Footer = () => {
   return (
-    <div className=" bg-[#080D1E] pt-16 pb-8 relative overflow-hidden">
+    <div className=" bg-[#080D1E] pt-16 pb-8 px-4 relative overflow-hidden">
       {/* Pseudo-elements for the shadow */}
       <div className="absolute top-0 left-0 z-[4]">
         <img src={footerUpper} />
