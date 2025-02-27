@@ -40,9 +40,9 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex items-start justify-between min-h-screen bg-gray-100 px-32 py-28">
+    <div className="flex items-start justify-between flex-col sm:flex-row min-h-screen bg-gray-100 px-8 sm:px-16 lg:px-24 xl:px-32 py-28">
       {/* Left Section */}
-      <div className="max-w-[760px] w-full">
+      <div className="max-w-[760px] w-full mx-auto">
         <h1 className="auth-title mb-6">
           Welcome Back! Trade & Connect with Your Community.
         </h1>
@@ -60,7 +60,7 @@ const SignIn = () => {
       </div>
 
       {/* Right Section (Signup Form) */}
-      <Card className="max-w-[692px] w-full px-20 py-[90px] shadow-none bg-primary border-none rounded-3xl">
+      <Card className="max-w-[692px] w-full px-12 sm:px-16 lg:px-20 py-[90px] shadow-none bg-primary border-none rounded-3xl">
         <CardContent>
           <h2 className="font-semibold text-foreground text-[32px] mb-8">
             Welcome Back
@@ -101,7 +101,7 @@ const SignIn = () => {
                   </FormItem>
                 )}
               />
-              <div className="flex gap-4 items-center justify-between">
+              <div className="flex gap-0 sm:gap-4 mb-10 sm:mb-0 items-center flex-col sm:flex-row justify-between">
                 <FormField
                   control={form.control}
                   name="terms"
