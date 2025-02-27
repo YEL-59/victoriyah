@@ -16,6 +16,7 @@ export default {
         nunito: ["Nunito", "serif"],
       },
       colors: {
+        'dashboard-background': "var(--dashboard-background)",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

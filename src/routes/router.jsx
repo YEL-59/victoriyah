@@ -1,6 +1,13 @@
+import DashboardLayout from "@/layout/dashlayout";
 import Mainlayout from "@/layout/mainlayout";
 import SignIn from "@/pages/auth/SignIn";
 import SignUp from "@/pages/auth/SignUp";
+import ExchangeRequest from "@/pages/dashboard/exchange-request";
+import Favourite from "@/pages/dashboard/Favourite";
+import Messages from "@/pages/dashboard/Messages";
+import MyPostItems from "@/pages/dashboard/my-post-items";
+import Notification from "@/pages/dashboard/Notification";
+import Setting from "@/pages/dashboard/Setting";
 import Browse from "@/pages/main/browse";
 import Home from "@/pages/main/Home";
 import Payment from "@/pages/main/payment";
@@ -36,6 +43,36 @@ export const router = createBrowserRouter([
         element: <PaymentDetails />,
       },
     ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout/>,
+    children: [
+      {
+        index: true,
+        element: <MyPostItems/>
+      },
+      {
+        path: 'exchange-request',
+        element: <ExchangeRequest/>
+      },
+      {
+        path: 'favourite',
+        element: <Favourite/>
+      },
+      {
+        path: 'messages',
+        element: <Messages/>
+      },
+      {
+        path: 'notification',
+        element: <Notification/>
+      },
+      {
+        path: 'setting',
+        element: <Setting/>
+      },
+    ]
   },
   {
     path: "/sign-up",
