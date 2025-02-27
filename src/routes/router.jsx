@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
     path: "/",
     element: <Mainlayout />,
     children: [
-      { path: "", element: <Home /> },
+      { index: true, element: <Home /> },
       {
         path: "browse",
         element: <Browse />,
@@ -46,33 +46,33 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout/>,
+    element: <DashboardLayout />,
     children: [
       {
         index: true,
-        element: <MyPostItems/>
+        element: <MyPostItems />,
       },
       {
-        path: 'exchange-request',
-        element: <ExchangeRequest/>
+        path: "exchange-request",
+        element: <ExchangeRequest />,
       },
       {
-        path: 'favourite',
-        element: <Favourite/>
+        path: "favourite",
+        element: <Favourite />,
       },
       {
-        path: 'messages',
-        element: <Messages/>
+        path: "messages",
+        element: <Messages />,
       },
       {
-        path: 'notification',
-        element: <Notification/>
+        path: "notification",
+        element: <Notification />,
       },
       {
-        path: 'setting',
-        element: <Setting/>
+        path: "setting",
+        element: <Setting />,
       },
-    ]
+    ],
   },
   {
     path: "/sign-up",
