@@ -2,6 +2,9 @@ import productImage from '@/assets/product-image.png';
 import profile from '@/assets/profile.png';
 import phone from '@/assets/icons/phone.svg';
 import mail from '@/assets/icons/mail.svg';
+import facebook from '@/assets/icons/facebook-icon.svg';
+import twitch from '@/assets/icons/twitch-icon.svg';
+import copy from '@/assets/icons/copy-icon.svg';
 import {
   Carousel,
   CarouselContent,
@@ -10,9 +13,115 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Button } from '@/components/ui/button';
+import FeaturedCard from '@/components/main/home/featuredcard';
+import img1 from "@/assets/featuredimg1.png";
+import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
+import Exchange from '@/components/main/exchange';
+import { useState } from 'react';
 
 
 const Productdetails = () => {
+    const featureddata = [
+      {
+        id: 1,
+        image: img1,
+        condition: "New",
+        name: "Premium Saddle",
+        price: "$399.99",
+        location: "New York, USA",
+        time: "5 minutes ago",
+        badgeText: "For Sale",
+        isFavorited: true,
+      },
+      {
+        id: 2,
+        image: img1,
+        condition: "Used",
+        name: "Leather Bridle",
+        price: "$89.99",
+        location: "New York, USA",
+        time: "1 hour ago",
+        badgeText: "Swap or Sell",
+        isFavorited: false,
+      },
+      {
+        id: 3,
+        image: img1,
+        condition: "Like New",
+        name: "Horse Riding Boots",
+        price: "$120.00",
+        location: "New York, USA",
+        time: "2 hours ago",
+        badgeText: "For Trade",
+        isFavorited: true,
+      },
+      {
+        id: 4,
+        image: img1,
+        condition: "New",
+        name: "Equestrian Helmet",
+        price: "$150.00",
+        location: "New York, USA",
+        time: "3 hours ago",
+        badgeText: "For Sale",
+        isFavorited: false,
+      },
+      {
+        id: 5,
+        image: img1,
+        condition: "Used",
+        name: "Western Saddle Pad",
+        price: "$75.50",
+        location: "New York, USA",
+        time: "4 hours ago",
+        badgeText: "Swap",
+        isFavorited: false,
+      },
+      {
+        id: 2,
+        image: img1,
+        condition: "Used",
+        name: "Leather Bridle",
+        price: "$89.99",
+        location: "New York, USA",
+        time: "1 hour ago",
+        badgeText: "Swap or Sell",
+        isFavorited: false,
+      },
+      {
+        id: 3,
+        image: img1,
+        condition: "Like New",
+        name: "Horse Riding Boots",
+        price: "$120.00",
+        location: "New York, USA",
+        time: "2 hours ago",
+        badgeText: "For Trade",
+        isFavorited: true,
+      },
+      {
+        id: 4,
+        image: img1,
+        condition: "New",
+        name: "Equestrian Helmet",
+        price: "$150.00",
+        location: "New York, USA",
+        time: "3 hours ago",
+        badgeText: "For Sale",
+        isFavorited: false,
+      },
+    ]
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const handleNavigate = () =>{
+    setIsOpenModal(true)
+  }
+
+  const handleCloseModal = () =>{
+    setIsOpenModal(false);
+    console.log('close modal')
+  }
   return (
     <>
       <div className="container mx-auto bg-background py-20">
@@ -73,12 +182,53 @@ const Productdetails = () => {
                 </div>
                 <div className='w-full flex flex-col gap-4'>
                   <Button className='bg-[#96E437] text-foreground px-8 py-2 rounded-[24px]'>Send message</Button>
-                  <Button className='bg-[#FFF] text-foreground px-8 py-2 rounded-[24px]'>Exchange</Button>
+                  <Button onClick={handleNavigate} className='bg-[#FFF] text-foreground px-8 py-2 rounded-[24px]'>Exchange</Button>
+                  
                 </div>
               </div>
             </div>
           </div>
+          <div className='flex items-start justify-between w-full my-4'>
+            <div className='flex flex-col gap-4 text-[#2F2F2F]'>
+              <h2 className="text-3xl leading-[132%] font-semibold tracking-[-0.48px]">Description</h2>
+              <div className='flex flex-col gap-1 text-[#2F2F2F]'>
+                <p className='text-lg  leading-[132%] tracking-[-0.36px]'>Damaged Repairable Qashqai</p>
+                <ul className='text-base  leading-[132%] tracking-[-0.36px] list-disc pl-8'>
+                  <li>Front-end damage affecting the front bumper and driver’s alloy.</li>
+                  <li>Requires a front bumper and one headlight; the wing can be repaired.</li>
+                  <li>No structural/jigging work needed.</li>
+                  <li>Still runs and can be driven away, though recovery is recommended.</li>
+                  <li>Comes with 10 months MOT and service history.</li>
+                  <li>V5C green slip provided; you will need to apply for the logbook (free).</li>
+                  <li>Serious inquiries only – no time wasters or canvassers.</li>
+                  <li>Easy repair, based in Tipton.</li>
+                </ul>
+                <p className='text-lg font-semibold leading-[132%] tracking-[-0.36px] mt-3'>Ad ID: 1492896143</p>
+              </div>
+            </div>
+            <div className='bg-[#FFF] rounded-[24px] border border-[#E8E8E8] max-w-[50%]'>
+              <div className='flex items-center justify-between gap-8  p-8'>
+                <h2 className="text-3xl leading-[132%] font-semibold tracking-[-0.48px]">Share:</h2>
+                <div className='flex items-center'>
+                  <div className='p-[10px] rounded-[99px] border bg-[#96E437]'><img src={facebook} alt="icon" /></div>
+                  <div className='p-[10px] rounded-[99px] border bg-[#96E437]'><img src={twitch} alt="icon" /></div>
+                  <div className='p-[10px] rounded-[99px] border bg-[#96E437]'><img src={copy} alt="icon" /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='mt-8 mb-4 w-full'>
+            <h1 className='text-[32px] leading-[164%] tracking-[-0.32px] font-semibold mb-6'>You may also like...</h1>
+            <div className='grid grid-cols-4 gap-3'>
+                {
+                  featureddata.map((item)=>(
+                  <FeaturedCard key={item.id} {...item}/>
+                ))}
+            </div>
+          </div>
         </div>
+        {/* exchange modal open */}
+        <Exchange isOpen={isOpenModal} onClose={handleCloseModal}/>
       </div>
     </>
   );
