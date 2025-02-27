@@ -59,7 +59,7 @@ const FeaturedCard = ({
           </CardContent>
         </div>
 
-        <div className="flex justify-between items-center mt-2 ">
+        <div className="flex justify-between items-center mt-5 ">
           <CardFooter>
             <Badge className="bg-primary text-foreground  px-5 rounded-full text-md">
               {badgeText}

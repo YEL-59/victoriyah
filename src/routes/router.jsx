@@ -3,7 +3,10 @@ import SignIn from "@/pages/auth/SignIn";
 import SignUp from "@/pages/auth/SignUp";
 import Browse from "@/pages/main/browse";
 import Home from "@/pages/main/Home";
-import Productdetails from "@/pages/main/productdetails.js";
+import Payment from "@/pages/main/payment";
+import PaymentDetails from "@/pages/main/paymentDetails";
+import Productdetails from "@/pages/main/productdetails/index.jsx";
+import Sell from "@/pages/main/sell";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
@@ -20,14 +23,26 @@ export const router = createBrowserRouter([
         path: "Productdetails",
         element: <Productdetails />,
       },
+      {
+        path: "sell",
+        element: <Sell />,
+      },
+      {
+        path: "payment",
+        element: <Payment />,
+      },
+      {
+        path: "paymentdetails",
+        element: <PaymentDetails />,
+      },
     ],
   },
   {
     path: "/sign-up",
-    element: <SignUp />
+    element: <SignUp />,
   },
   {
     path: "/sign-in",
-    element: <SignIn />
+    element: <SignIn />,
   },
 ]);
