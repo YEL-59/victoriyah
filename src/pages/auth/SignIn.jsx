@@ -14,35 +14,23 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import singupImg from "../../assets/signup.png";
+import singupImg from "../../assets/signin.png";
 import { Link } from "react-router";
 
-const formSchema = z
-  .object({
-    name: z.string().min(1, "Full Name is required"),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string(),
-    terms: z
-      .boolean()
-      .refine(
-        (val) => val === true,
-        "You must agree to the Terms & Conditions"
-      ),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+const formSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  terms: z
+    .boolean()
+    .refine((val) => val === true, "You must agree to the Terms & Conditions"),
+});
 
-const SignUp = () => {
+const SignIn = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
-      confirmPassword: "",
       terms: false,
     },
   });
@@ -56,12 +44,11 @@ const SignUp = () => {
       {/* Left Section */}
       <div className="max-w-[760px] w-full">
         <h1 className="auth-title mb-6">
-          Join the Trading Community – Start Swapping Today!
+          Welcome Back! Trade & Connect with Your Community.
         </h1>
         <p className="auth-desc">
-          Connect with a community of traders and swap items effortlessly. Post
-          what you have, find what you need, and make fair trades—no money
-          involved. Start trading today!
+          Glad to have you back! Browse new listings, connect with traders, and
+          swap items easily. Log in to continue your trading journey!
         </p>
         <div className="mt-16 rounded-[32px] overflow-hidden">
           <img
@@ -76,23 +63,10 @@ const SignUp = () => {
       <Card className="max-w-[692px] w-full px-20 py-[90px] shadow-none bg-primary border-none rounded-3xl">
         <CardContent>
           <h2 className="font-semibold text-foreground text-[32px] mb-8">
-            Signup now
+            Welcome Back
           </h2>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Full Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter your name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="email"
@@ -127,50 +101,42 @@ const SignUp = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter your password again"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="terms"
-                render={({ field }) => (
-                  <FormItem className="flex items-center space-x-2 !my-8">
-                    <FormControl className="mt-2">
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel>I agree to the Terms & Conditions</FormLabel>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex gap-4 items-center justify-between">
+                <FormField
+                  control={form.control}
+                  name="terms"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 !my-8">
+                      <FormControl className="mt-2">
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormLabel>I agree to the Terms & Conditions</FormLabel>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Link
+                  to="#"
+                  className="hover:underline text-lg text-foreground"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               <Button
                 type="submit"
                 className="w-full bg-foreground hover:bg-foreground text-background py-2.5 px-4 text-lg font-semibold capitalize h-12 rounded-full !mt-0"
               >
-                Signup
+                Sign In
               </Button>
             </form>
           </Form>
           <p className="text-foreground text-lg text-center mt-8 font-normal">
-            Already have an account?{" "}
-            <a href="/sign-in" className="underline">
+            Don’t have account?
+            <a href="/sign-up" className="underline">
               Sign In
             </a>
           </p>
@@ -180,4 +146,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

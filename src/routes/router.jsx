@@ -1,5 +1,6 @@
 import Mainlayout from "@/layout/mainlayout";
-import SignupPage from "@/pages/auth/SignUp";
+import SignIn from "@/pages/auth/SignIn";
+import SignUp from "@/pages/auth/SignUp";
 import Browse from "@/pages/main/browse";
 import Home from "@/pages/main/Home";
 import Productdetails from "@/pages/main/productdetails.js";
@@ -22,7 +23,11 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/signup",
-    element: <SignupPage />
-  }
+    path: "/sign-up",
+    element: <SignUp />
+  },
+  {
+    path: "/sign-in",
+    element: <SignIn />
+  },
 ]);
