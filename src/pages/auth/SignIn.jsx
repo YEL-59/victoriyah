@@ -137,7 +137,7 @@ const SignIn = () => {
           <p className="text-foreground text-lg text-center mt-8 font-normal">
             Don’t have account?
             <a href="/sign-up" className="underline">
-              Sign In
+              Sign Up
             </a>
           </p>
         </CardContent>
