@@ -1,5 +1,18 @@
 import Arrowlefticon from "@/assets/icons/arrowleft-icon";
 import img1 from "../../../assets/antic.png";
+import img3 from "../../../assets/art.png";
+import img4 from "../../../assets/baby.png";
+import img5 from "../../../assets/book.png";
+import img6 from "../../../assets/car.png";
+import img7 from "../../../assets/phone.png";
+import img8 from "../../../assets/computer.png";
+import img9 from "../../../assets/jewelry.png";
+import img10 from "../../../assets/movie.png";
+import img11 from "../../../assets/music.png";
+import img12 from "../../../assets/sprot.png";
+import img13 from "../../../assets/toy.png";
+import img14 from "../../../assets/stuff.png";
+
 import FeaturedCard from "@/components/main/home/featuredcard";
 import img2 from "@/assets/featuredimg1.png";
 import { Input } from "@/components/ui/input";
@@ -20,23 +33,73 @@ const Browse = () => {
     },
     {
       id: 2,
-      name: "Electronics",
-      image: img1,
+      name: "Art",
+      image: img3,
     },
     {
       id: 3,
-      name: "Furniture",
-      image: img1,
+      name: "Baby",
+      image: img4,
     },
     {
       id: 4,
-      name: "Clothing",
-      image: img1,
+      name: "Books",
+      image: img5,
     },
     {
       id: 5,
-      name: "Toys",
-      image: img1,
+      name: "Cameras",
+      image: img5,
+    },
+    {
+      id: 1,
+      name: "Cars, Vehicles & Parts",
+      image: img6,
+    },
+    {
+      id: 2,
+      name: "Cell Phone",
+      image: img7,
+    },
+    {
+      id: 3,
+      name: "Computers & Networking",
+      image: img8,
+    },
+    {
+      id: 4,
+      name: "Jewelry & Watches",
+      image: img9,
+    },
+    {
+      id: 5,
+      name: "Movies & TV Shows",
+      image: img10,
+    },
+    {
+      id: 5,
+      name: "Music & Instruments",
+      image: img11,
+    },
+    {
+      id: 5,
+      name: "Sporting Goods",
+      image: img12,
+    },
+    {
+      id: 5,
+      name: "Toys & Hobbies",
+      image: img13,
+    },
+    {
+      id: 5,
+      name: "Video Games & Consoles",
+      image: img13,
+    },
+    {
+      id: 5,
+      name: "Other Stuff",
+      image: img14,
     },
   ];
   const featureddata = [
@@ -112,7 +175,7 @@ const Browse = () => {
             <p className="border-black border-r-2 px-3">36 results</p>
             <p>sort By: </p>
             <Select className="w-[180px] bg-white rounded-full">
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[180px] bg-white rounded-full">
                 <SelectValue placeholder="Theme" />
               </SelectTrigger>
               <SelectContent>
@@ -124,7 +187,7 @@ const Browse = () => {
           </div>
         </div>
         <div className="container mx-auto grid grid-cols-12 gap-6">
-          <div className="bg-white p-6 rounded-xl col-span-3">
+          <div className="bg-white p-6 rounded-xl col-span-3 h-[58rem]">
             <h1 className="text-foreground text-xl font-semibold mb-4">
               Categories
             </h1>
@@ -132,13 +195,13 @@ const Browse = () => {
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  className="flex justify-between items-center gap-5 border-b border-foreground/25 p-2 cursor-pointer hover:bg-gray-100 transition"
+                  className="flex justify-between items-center gap-5 border-b border-foreground/25 p-3 cursor-pointer hover:bg-gray-100 transition"
                 >
                   <div className="flex gap-2 items-center">
                     <img
                       src={category.image}
                       alt={category.name}
-                      className="w-8 h-8"
+                      className="w-6 h-6"
                     />
                     <h3 className="text-foreground text-[18px] font-normal leading-[164%]">
                       {category.name}
