@@ -117,7 +117,7 @@ const Sell = () => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="py-2 bg-white">
+                        <SelectTrigger className="py-6 bg-white">
                           <SelectValue placeholder="Select a verified email to display" />
                         </SelectTrigger>
                       </FormControl>
@@ -152,7 +152,7 @@ const Sell = () => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="py-2 bg-white">
+                        <SelectTrigger className="py-6 bg-white">
                           <SelectValue placeholder="Select a verified email to display" />
                         </SelectTrigger>
                       </FormControl>
@@ -187,7 +187,7 @@ const Sell = () => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="py-2 bg-white">
+                        <SelectTrigger className="py-6 bg-white">
                           <SelectValue placeholder="Select a verified email to display" />
                         </SelectTrigger>
                       </FormControl>
@@ -242,7 +242,7 @@ const Sell = () => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="py-2 bg-white">
+                        <SelectTrigger className="py-6 bg-white">
                           <SelectValue placeholder="Select a verified email to display" />
                         </SelectTrigger>
                       </FormControl>

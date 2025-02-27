@@ -24,10 +24,10 @@ const FeaturedCard = ({
   return (
     <Link to={"/Productdetails"} className="mx-auto">
       {" "}
-      <Card className="max-w-lg">
-        <CardHeader>
+      <Card className="max-w-lg ">
+        <CardHeader className="p-2">
           <img src={image} alt={name} className="w-full h-auto rounded-t-lg" />
-          <Button className="bg-white text-[#457B10] border border-primary rounded-md w-[150px] font-thin relative -top-[25px] mx-auto">
+          <Button className="bg-white text-[#457B10] border border-primary rounded-md w-[150px] font-normal relative -top-[25px] mx-auto">
             Condition: {condition}
           </Button>
         </CardHeader>
@@ -61,7 +61,7 @@ const FeaturedCard = ({
 
         <div className="flex justify-between items-center mt-5 ">
           <CardFooter>
-            <Badge className="bg-primary text-foreground  px-5 rounded-full text-sm sm:text-md">
+            <Badge className="bg-primary text-foreground  px-5 rounded-full text-sm font-[600px] sm:text-md">
               {badgeText}
             </Badge>
           </CardFooter>
