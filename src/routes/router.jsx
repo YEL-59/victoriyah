@@ -26,22 +26,22 @@ export const router = createBrowserRouter([
         path: "browse",
         element: <Browse />,
       },
-      {
-        path: "Productdetails",
-        element: <Productdetails />,
-      },
-      {
-        path: "sell",
-        element: <Sell />,
-      },
-      {
-        path: "payment",
-        element: <Payment />,
-      },
-      {
-        path: "paymentdetails",
-        element: <PaymentDetails />,
-      },
+      // {
+      //   path: "Productdetails",
+      //   element: <Productdetails />,
+      // },
+      // {
+      //   path: "sell",
+      //   element: <Sell />,
+      // },
+      // {
+      //   path: "payment",
+      //   element: <Payment />,
+      // },
+      // {
+      //   path: "paymentdetails",
+      //   element: <PaymentDetails />,
+      // },
     ],
   },
   {
@@ -74,6 +74,36 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  // {
+  //   path: "/dashboard",
+  //   element: <DashboardLayout/>,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <MyPostItems/>
+  //     },
+  //     {
+  //       path: 'exchange-request',
+  //       element: <ExchangeRequest/>
+  //     },
+  //     {
+  //       path: 'favourite',
+  //       element: <Favourite/>
+  //     },
+  //     {
+  //       path: 'messages',
+  //       element: <Messages/>
+  //     },
+  //     {
+  //       path: 'notification',
+  //       element: <Notification/>
+  //     },
+  //     {
+  //       path: 'setting',
+  //       element: <Setting/>
+  //     },
+  //   ]
+  // },
   {
     path: "/sign-up",
     element: <SignUp />,

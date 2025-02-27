@@ -11,8 +11,8 @@ const Navbar = () => {
     { title: "Browse", url: "/browse" },
     { title: "My Trades", url: "#" },
     { title: "Messages", url: "#" },
-    { title: "Sell", url: "/sell" },
-    { title: "Sign In", url: "#" },
+    { title: "Sell", url: "/#" },
+    { title: "Sign In", url: "/sign-in" },
   ];
 
   return (
