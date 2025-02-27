@@ -103,13 +103,12 @@ const Home = () => {
   return (
     <>
       <Hero />
-
-      <div className="pt-20 pb-20">
+      <div className="pt-20 pb-20 px-4">
         <div className="container mx-auto flex justify-between items-center py-6 ">
-          <h1 className="text-3xl font-semibold text-foreground">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-foreground">
             Featured Items
           </h1>
-          <p className="bg-transparent border-b-2  text-foreground py-2 px-6  text-lg font-normal">
+          <p className="bg-transparent border-b-2  text-foreground py-2 px-4 sm:px-6 text-sm sm:text-base lg:text-lg font-normal">
             Browse all items
           </p>
         </div>
@@ -126,12 +125,12 @@ const Home = () => {
       </div>
       <Advantage />
       <HowItWorks />
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden shrink-0">
         <StartTrading />
         <img
           src={ellipse}
           alt="ellipse"
-          className="absolute bottom-[-5%] z-[2]"
+          className="absolute bottom-[-5%] z-[2] shrink-0 w-full"
         />
       </div>
     </>

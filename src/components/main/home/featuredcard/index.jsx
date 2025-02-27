@@ -22,7 +22,7 @@ const FeaturedCard = ({
   isFavorited = false,
 }) => {
   return (
-    <Link to={"/Productdetails"}>
+    <Link to={"/Productdetails"} className="mx-auto">
       {" "}
       <Card className="max-w-lg">
         <CardHeader>
@@ -34,12 +34,12 @@ const FeaturedCard = ({
 
         <div className="flex justify-between items-center px-4 ">
           <CardContent>
-            <p className="text-[20px] font-semibold leading-[132%] tracking-[-0.4px] text-foreground">
+            <p className="text-base sm:text-[20px] font-semibold leading-[132%] tracking-[-0.4px] text-foreground">
               {name}
             </p>
           </CardContent>
           <CardContent>
-            <p className="text-[20px] font-semibold leading-[132%] tracking-[-0.4px] text-foreground">
+            <p className="text-base sm:text-[20px] font-semibold leading-[132%] tracking-[-0.4px] text-foreground">
               {price}
             </p>
           </CardContent>
@@ -48,12 +48,12 @@ const FeaturedCard = ({
         <div className="flex justify-between items-center mt-2 px-4">
           <CardContent className="flex gap-2 items-center">
             <Locationicon />
-            <p className="text-[16px] font-normal text-secondary-foreground">
+            <p className="text-sm sm:text-base font-normal text-secondary-foreground">
               {location}
             </p>
           </CardContent>
           <CardContent>
-            <p className="text-[16px] font-normal text-secondary-foreground">
+            <p className="text-sm sm:text-base font-normal text-secondary-foreground">
               {time}
             </p>
           </CardContent>
@@ -61,7 +61,7 @@ const FeaturedCard = ({
 
         <div className="flex justify-between items-center mt-2 ">
           <CardFooter>
-            <Badge className="bg-primary text-foreground  px-5 rounded-full text-md">
+            <Badge className="bg-primary text-foreground  px-5 rounded-full text-sm sm:text-md">
               {badgeText}
             </Badge>
           </CardFooter>
