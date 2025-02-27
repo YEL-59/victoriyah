@@ -1,13 +1,16 @@
 import logo from "@/assets/Logo.png";
+import facebook from '@/assets/icons/facebook-icon.svg';
+import linkedin from '@/assets/icons/linkedin-icon.svg';
+import youtube from '@/assets/icons/youtube-icon.svg';
+import footerUpper from '@/assets/icons/footer-upper.svg';
+import footerLower from '@/assets/icons/footer-lower.svg';
 
 const Footer = () => {
   return (
-    <div className=" bg-[#080D1E] pt-16 relative">
+    <div className=" bg-[#080D1E] pt-16 pb-8 relative overflow-hidden">
       {/* Pseudo-elements for the shadow */}
-      <div className="absolute top-0 left-0 w-full h-full z-0">
-        <div className="absolute top-0 left-0 w-32 h-32 rounded-[465px] opacity-60 bg-gradient-radial from-[#96E437] to-[#537E1E] filter blur-[100px]"></div>
-        <div className="absolute bottom-0 right-0 w-32 h-32 rounded-[465px] opacity-60 bg-gradient-radial from-[#96E437] to-[#537E1E] filter blur-[100px]"></div>
-      </div>
+      <div className="absolute top-0 left-0 z-[4]"><img src={footerUpper} /></div>
+      <div className="absolute bottom-0 right-0 z-[4] rotate-180"><img src={footerLower} /></div>
 
       <div className="mx-auto container relative z-10">
         <div className="flex flex-col justify-between sm:px-[18px] md:flex-row md:px-10">
@@ -20,13 +23,13 @@ const Footer = () => {
             </p>
             <div className="mt-[18px] flex gap-4">
               {[
-                { src: "facebook.svg", alt: "Facebook", href: "#" },
-                { src: "linkdin.svg", alt: "LinkedIn", href: "/" },
-                { src: "instagram1.svg", alt: "Instagram", href: "/" },
+                { src: facebook, alt: "Facebook", href: "/" },
+                { src: linkedin, alt: "LinkedIn", href: "/" },
+                { src: youtube, alt: "Youtube", href: "/" },
               ].map((icon, index) => (
                 <a
                   key={index}
-                  className="hover:scale-110"
+                  className="group p-3 rounded-[38px] bg-[#B5F169] flex items-center justify-center"
                   target="_blank"
                   href={icon.href}
                   rel="noopener noreferrer"
@@ -34,10 +37,8 @@ const Footer = () => {
                   <img
                     alt={`${icon.alt} icon`}
                     loading="lazy"
-                    width="36"
-                    height="36"
-                    className="color-transparent"
-                    src={`https://www.englishyaari.com/img/${icon.src}`}
+                    className="color-transparent group-hover:scale-110"
+                    src={`${icon.src}`}
                   />
                 </a>
               ))}
