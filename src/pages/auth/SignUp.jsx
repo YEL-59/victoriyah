@@ -72,7 +72,7 @@ const SignupPage = () => {
       </div>
 
       {/* Right Section (Signup Form) */}
-      <Card className="max-w-[692px] w-full px-20 py-[90px] shadow-none bg-primary border-none">
+      <Card className="max-w-[692px] w-full px-20 py-[90px] shadow-none bg-primary border-none rounded-3xl">
         <CardContent>
           <h2 className="font-semibold text-foreground text-[32px] mb-8">
             Signup now
