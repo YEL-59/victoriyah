@@ -52,9 +52,9 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex items-start justify-between min-h-screen bg-gray-100 px-32 py-28">
+    <div className="flex items-start flex-col lg:flex-row gap-8 justify-between min-h-screen bg-gray-100 px-8 sm:px-16 lg:px-24 xl:px-32 py-28">
       {/* Left Section */}
-      <div className="max-w-[760px] w-full">
+      <div className="max-w-[760px] w-full mx-auto">
         <h1 className="auth-title mb-6">
           Join the Trading Community – Start Swapping Today!
         </h1>
@@ -73,7 +73,7 @@ const SignUp = () => {
       </div>
 
       {/* Right Section (Signup Form) */}
-      <Card className="max-w-[692px] w-full px-20 py-[90px] shadow-none bg-primary border-none rounded-3xl">
+      <Card className="max-w-[692px] w-full px-12 sm:px-16 lg:px-20 py-[90px] shadow-none bg-primary border-none rounded-3xl mx-auto">
         <CardContent>
           <h2 className="font-semibold text-foreground text-[32px] mb-8">
             Signup now
