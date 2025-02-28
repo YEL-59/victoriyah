@@ -19,6 +19,12 @@ import { sellSchema } from "@/schemas/sell.schema";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "react-router";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+
+import addImage from "@/assets/icons/add-image.svg";
+
+import addButton from "@/assets/icons/add-button.svg";
 const Sell = () => {
   const form = useForm({
     resolver: zodResolver(sellSchema),
@@ -30,7 +36,16 @@ const Sell = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
+  const [images, setImages] = useState([null, null, null, null]);
 
+  const handleImageUpload = (e, index) => {
+    const file = e.target.files[0];
+    if (file) {
+      const newImages = [...images];
+      newImages[index] = URL.createObjectURL(file);
+      setImages(newImages);
+    }
+  };
   return (
     <>
       <div className="max-w-5xl mx-auto py-20">
@@ -69,13 +84,14 @@ const Sell = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Item Name *
+                    Description *
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Type your message here."
                       id="message"
                       {...field}
+                      rows={5}
                       className="w-full   bg-white"
                     />
                   </FormControl>
@@ -89,7 +105,7 @@ const Sell = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Item Name *
+                    Price *
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -144,7 +160,7 @@ const Sell = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Category *
+                    Condition *
                   </FormLabel>
                   <FormControl>
                     <Select
@@ -179,7 +195,7 @@ const Sell = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Category *
+                    Phone *
                   </FormLabel>
                   <FormControl>
                     <Select
@@ -228,13 +244,63 @@ const Sell = () => {
                 </FormItem>
               )}
             />
+
+            <div className="flex flex-col gap-6">
+              <div className="basis-1/2 flex flex-col gap-3">
+                <Label
+                  htmlFor="product-image"
+                  className="text-lg leading-[164%]"
+                >
+                  Product Images *
+                </Label>
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-4">
+                    {images.map((image, index) => (
+                      <label
+                        key={index}
+                        className="w-32 h-32 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center rounded-md cursor-pointer hover:border-gray-500 transition relative"
+                      >
+                        {image ? (
+                          <img
+                            src={image}
+                            alt="Uploaded"
+                            className="w-full h-full object-cover rounded-md"
+                          />
+                        ) : (
+                          <div className="flex flex-col items-center gap-3 text-gray-400">
+                            <img src={addImage} alt="" />
+                            <span className="text-sm">Add Image</span>
+                          </div>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleImageUpload(e, index)}
+                        />
+                      </label>
+                    ))}
+                  </div>
+                  <p className="text-xs leading-[164%]">
+                    Upload up to 5 images (Max 5MB each)
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <img src={addButton} alt="" />
+                    <p className="text-lg text-[#5AA20E] leading-[164%]">
+                      Add a Youtube or video link
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <FormField
               control={form.control}
               name="text"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Category *
+                    Trade Preferences *
                   </FormLabel>
                   <FormControl>
                     <Select

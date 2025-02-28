@@ -11,7 +11,7 @@ const Navbar = () => {
     { title: "Browse", url: "/browse" },
     { title: "My Trades", url: "#" },
     { title: "Messages", url: "#" },
-    { title: "Sell", url: "/#" },
+    { title: "Sell", url: "/sell" },
     { title: "Sign In", url: "/sign-in" },
   ];
 
@@ -62,7 +62,10 @@ const Navbar = () => {
           </div>
           <ul>
             {navitems.map((item, index) => (
-              <li key={index} className="hover:text-[#315215] transition py-4 px-6 text-scale-110">
+              <li
+                key={index}
+                className="hover:text-[#315215] transition py-4 px-6 text-scale-110"
+              >
                 <Link
                   to={item.url}
                   onClick={() => setIsOpen(false)} // Close menu on click
