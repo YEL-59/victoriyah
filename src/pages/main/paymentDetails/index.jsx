@@ -35,10 +35,10 @@ const PaymentDetails = () => {
     <>
       <div className="max-w-5xl mx-auto py-20">
         <h1 className="text-[24px] font-semibold leading-[132%] tracking-[-0.48px] text-foreground">
-          Post New Item
+          Payment Details
         </h1>
         <p className="text-lg text-gray-600 mt-5 mb-5">
-          Fill in the details about your item
+          Fill in the details about your payment
         </p>
 
         <Form {...form}>
@@ -49,12 +49,12 @@ const PaymentDetails = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Item Name *
+                    Payment Method
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder="Enter your name"
+                      placeholder="Credit/Debit Card"
                       {...field}
                       className="w-full   bg-white"
                     />
@@ -68,12 +68,9 @@ const PaymentDetails = () => {
               name="text"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Item Name *
-                  </FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Type your message here."
+                      placeholder="Paypal"
                       id="message"
                       {...field}
                       className="w-full   bg-white"
