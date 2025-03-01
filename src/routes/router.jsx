@@ -1,7 +1,12 @@
 import DashboardLayout from "@/layout/dashlayout";
 import Mainlayout from "@/layout/mainlayout";
+import Createnewpassword from "@/pages/auth/createnewpassword";
+import Resetpassword from "@/pages/auth/resetpassword";
+import Resetpasswordcode from "@/pages/auth/resetpasswordcode";
 import SignIn from "@/pages/auth/SignIn";
 import SignUp from "@/pages/auth/SignUp";
+import Verification from "@/pages/auth/Verification";
+import Verificationsuccess from "@/pages/auth/verificationsuccess";
 import ExchangeRequest from "@/pages/dashboard/exchange-request";
 import Favourite from "@/pages/dashboard/Favourite";
 import Messages from "@/pages/dashboard/Messages";
@@ -81,5 +86,25 @@ export const router = createBrowserRouter([
   {
     path: "/sign-in",
     element: <SignIn />,
+  },
+  {
+    path: "/verification",
+    element: <Verification />,
+  },
+  {
+    path: "/verificationsuccess",
+    element: <Verificationsuccess />,
+  },
+  {
+    path: "/resetpassword",
+    element: <Resetpassword />,
+  },
+  {
+    path: "resetpasswordcode",
+    element: <Resetpasswordcode />,
+  },
+  {
+    path: "/createnewpassword",
+    element: <Createnewpassword />,
   },
 ]);
