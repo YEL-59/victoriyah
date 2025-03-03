@@ -1,6 +1,8 @@
 import DashboardLayout from "@/layout/dashlayout";
 import Mainlayout from "@/layout/mainlayout";
 import Createnewpassword from "@/pages/auth/createnewpassword";
+import PasswordSetSuccessful from "@/pages/auth/passwordSetSuccessful";
+
 import Resetpassword from "@/pages/auth/resetpassword";
 import Resetpasswordcode from "@/pages/auth/resetpasswordcode";
 import SignIn from "@/pages/auth/SignIn";
@@ -102,6 +104,10 @@ export const router = createBrowserRouter([
   {
     path: "resetpasswordcode",
     element: <Resetpasswordcode />,
+  },
+  {
+    path: "/passwordsetsuccessful",
+    element: <PasswordSetSuccessful />,
   },
   {
     path: "/createnewpassword",

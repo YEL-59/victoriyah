@@ -37,7 +37,7 @@ const Resetpassword = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
       <div className="flex-1">
-        <div className="w-full max-w-md mx-auto flex-1  p-8  rounded-lg">
+        <div className="w-full max-w-md mx-auto flex-1  p-20  rounded-lg">
           <div className="text-start mb-6">
             <h1 className="text-4xl font-bold">Reset password</h1>
           </div>

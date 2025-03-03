@@ -9,7 +9,7 @@ import successIcon from "@/assets/icons/success-icon.svg";
 import { Button } from "./ui/button";
 import { Link } from "react-router";
 
-function SuccessModal({ isOpen, onClose }) {
+const PaymentSuccessModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
   return (
     <div>
@@ -22,23 +22,34 @@ function SuccessModal({ isOpen, onClose }) {
               className="h-20 sm:h-24 w-20 sm:w-24 mx-auto"
             />
             <DialogTitle className="text-center text-3xl leading-[132%] font-semibold tracking-[-0.48px]">
-              Exchange request submitted Successful!
+              Payment Successful!
             </DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-5 text-center">
             <p className="text-lg leading-[164%] text-[#757575]">
-              The listing owner has been notified.
+              Thank you! Your subscription is now active.
             </p>
-            <Link to="/">
-              <Button className="w-full bg-[#96E437] text-foreground px-8 py-4 rounded-[24px] text-lg leading-[164%]">
-                Go to Home
-              </Button>
-            </Link>
+            <p className="text-lg leading-[164%] text-[#757575]">
+              Receipt sent to:{" "}
+              <span className="text-[#96E437]">user@example.com</span>
+            </p>
+            <div className="flex justify-center gap-5">
+              <Link to="/">
+                <Button className="w-full bg-[#96E437] text-foreground px-8 py-4 rounded-[24px] text-lg leading-[164%]">
+                  Download Receipt
+                </Button>
+              </Link>
+              <Link to="/">
+                <Button className="w-full bg-[#96E437] text-foreground px-8 py-4 rounded-[24px] text-lg leading-[164%]">
+                  Go to Home
+                </Button>
+              </Link>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
     </div>
   );
-}
+};
 
-export default SuccessModal;
+export default PaymentSuccessModal;

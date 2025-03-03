@@ -4,15 +4,13 @@ import singupImg from "../../assets/signin.png";
 
 import { Link } from "react-router";
 
-const Verificationsuccess = () => {
+const PasswordSetSuccessful = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
       <div className="flex-1">
-        <div className="w-full  mx-auto flex-1 p-20  rounded-lg">
+        <div className="w-full  mx-auto flex-1  p-8  rounded-lg">
           <div className="text-start mb-6">
-            <h1 className="text-4xl font-bold">
-              Complete Verification successfully
-            </h1>
+            <h1 className="text-4xl font-bold">Password set successfully</h1>
             <p className="text-sm text-gray-600 !max-w-lg">
               You can now use your new password to log in to your account
             </p>
@@ -50,4 +48,4 @@ const Verificationsuccess = () => {
   );
 };
 
-export default Verificationsuccess;
+export default PasswordSetSuccessful;

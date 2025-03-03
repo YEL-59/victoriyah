@@ -19,6 +19,8 @@ import { sellSchema } from "@/schemas/sell.schema";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "react-router";
+import { useState } from "react";
+import PaymentSuccessModal from "@/components/payment-success-Modal";
 const PaymentDetails = () => {
   const form = useForm({
     resolver: zodResolver(sellSchema),
@@ -30,7 +32,16 @@ const PaymentDetails = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
+  const handleNavigate = () => {
+    setIsOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
+    console.log("close modal");
+  };
   return (
     <>
       <div className="max-w-5xl mx-auto py-20">
@@ -211,40 +222,49 @@ const PaymentDetails = () => {
 
             <div className="flex justify-between gap-5 border-b-2 pb-5">
               {" "}
-              <div className="w-full">
+              <div className="flex-1 w-full">
                 <p className="text-lg text-gray-600">Payment Method</p>
-                <p className="text-lg text-gray-600">Paypal</p>
               </div>
-              <div className="w-full">
-                <p className="text-lg text-gray-600">Card Number</p>
-                <p className="text-lg text-gray-600">12345687</p>
+              <div className="flex-1 w-full">
+                <p className="text-lg text-gray-600 text-right">Card Number</p>
+              </div>
+            </div>
+            <div className="flex justify-between gap-5 border-b-2 pb-5">
+              {" "}
+              <div className="flex-1 w-full">
+                <p className="text-lg text-gray-600">Billing Cycle</p>
+              </div>
+              <div className="flex-1 w-full">
+                <p className="text-lg text-gray-600 text-right">Monthly</p>
+              </div>
+            </div>
+            <div className="flex justify-between gap-5 border-b-2 pb-5">
+              {" "}
+              <div className="flex-1 w-full">
+                <p className="text-lg text-gray-600">Total Cost</p>
+              </div>
+              <div className="flex-1 w-full">
+                <p className="text-lg text-gray-600 text-right">$24.99</p>
               </div>
             </div>
 
             <div className="flex justify-between">
               <div className="w-full">
-                <button
-                  type="submit"
-                  className="bg-primary text-foreground px-4 py-2 w-full rounded-full hover:bg-transparent hover:border"
-                >
-                  Cancel
-                </button>
-              </div>
-
-              <div className="w-full">
                 <Link>
                   {" "}
                   <button
+                    onClick={handleNavigate}
                     type="reset"
                     className="bg-primary text-foreground rounded-full px-4 py-2 ml-4 w-full hover:bg-transparent hover:border"
                   >
-                    Post Item
+                    Confirm & Pay
                   </button>
                 </Link>
               </div>
             </div>
           </form>
         </Form>
+        <PaymentSuccessModal isOpen={isOpenModal} onClose={handleCloseModal} />
       </div>
     </>
   );
