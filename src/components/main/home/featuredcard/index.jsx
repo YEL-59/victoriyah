@@ -10,6 +10,7 @@ import Hearticon from "@/assets/icons/heart-icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import { useLocation } from "react-router";
 
 const FeaturedCard = ({
   image,
@@ -21,6 +22,7 @@ const FeaturedCard = ({
   badgeText = "Swap or Sell",
   isFavorited = false,
 }) => {
+  const pathname = useLocation();
   return (
     <Link to={"/Productdetails"} className="mx-auto">
       {" "}
@@ -71,6 +73,21 @@ const FeaturedCard = ({
             />
           </CardFooter>
         </div>
+
+        {pathname === "/dashboard" && (
+          <div className="flex justify-between items-center mt-5 ">
+            <CardFooter>
+              <Badge className="bg-primary text-foreground  px-5 rounded-full text-sm font-[600px] sm:text-md">
+                {badgeText}
+              </Badge>
+            </CardFooter>
+            <CardFooter>
+              <Hearticon
+                className={isFavorited ? "text-red-500" : "text-gray-400"}
+              />
+            </CardFooter>
+          </div>
+        )}
       </Card>
     </Link>
   );
