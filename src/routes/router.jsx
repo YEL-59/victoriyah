@@ -15,6 +15,8 @@ import Messages from "@/pages/dashboard/Messages";
 import MyPostItems from "@/pages/dashboard/my-post-items";
 import Notification from "@/pages/dashboard/Notification";
 import Setting from "@/pages/dashboard/Setting";
+import General from "@/pages/dashboard/Setting/General";
+import Privacy from "@/pages/dashboard/Setting/Privacy";
 import Browse from "@/pages/main/browse";
 import Home from "@/pages/main/Home";
 import Payment from "@/pages/main/payment";
@@ -78,6 +80,20 @@ export const router = createBrowserRouter([
       {
         path: "setting",
         element: <Setting />,
+        children: [
+          {
+            index: true, // This makes "general" the default route
+            element: <General />,
+          },
+          {
+            path: "general",
+            element: <General />,
+          },
+          {
+            path: "privacy",
+            element: <Privacy />,
+          },
+        ],
       },
     ],
   },

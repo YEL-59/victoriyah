@@ -8,7 +8,7 @@ function DashboardLayout() {
         <Sidebar/>
         <div className='flex flex-col'>
             <Navbar/>
-            <div className='p-8'>
+            <div className='h-full'>
                 <Outlet/>
             </div>
         </div>
