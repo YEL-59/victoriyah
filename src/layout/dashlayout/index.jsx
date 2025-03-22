@@ -1,19 +1,27 @@
-import Navbar from '@/components/dashboard/shared/navbar.jsx';
-import Sidebar from '@/components/dashboard/shared/sidebar.jsx';
-import { Outlet } from 'react-router';
+import Navbar from "@/components/dashboard/shared/navbar.jsx";
+import Sidebar from "@/components/dashboard/shared/sidebar.jsx";
+import { useState } from "react";
+import { Outlet, useLocation } from "react-router";
 
 function DashboardLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+
   return (
-    <div className='grid grid-cols-[20%_80%] h-screen bg-[dashboard-background]'>
-        <Sidebar/>
-        <div className='flex flex-col'>
-            <Navbar/>
-            <div className='h-full'>
-                <Outlet/>
-            </div>
+    <div className="flex items-start h-screen overflow-hidden bg-[dashboard-background]">
+      <Sidebar sidebarOpen={sidebarOpen} />
+      <div className="flex flex-col w-full h-screen overflow-y-auto">
+        <Navbar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen}/>
+        <div
+          className={`h-full ${
+            location.pathname.includes("/dashboard/setting") || location.pathname.includes("/dashboard/messages") ? "p-0" : "p-8"
+          }`}
+        >
+          <Outlet />
         </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default DashboardLayout
+export default DashboardLayout;

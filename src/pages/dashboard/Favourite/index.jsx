@@ -1,6 +1,5 @@
 import radio from "../../../assets/radio.png";
 import game from "../../../assets/game.png";
-import camera2 from "../../../assets/camera2.png";
 import player from "../../../assets/player.png";
 import img1 from "@/assets/featuredimg1.png";
 import Favouritecard from "@/components/dashboard/favourite/favouritecard";
@@ -52,6 +51,7 @@ function Favourite() {
       isFavorited: false,
     },
   ];
+  
   return (
     <div>
       <h3 className="text-3xl leading-[132%] font-semibold tracking-[-0.48px] text-[#315215]">

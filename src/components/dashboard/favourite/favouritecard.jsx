@@ -24,8 +24,8 @@ const Favouritecard = ({
   return (
     <Link to={"/Productdetails"}>
       {" "}
-      <Card className="max-w-full flex ">
-        <CardHeader className="p-2">
+      <Card className="max-w-full flex items-stretch flex-col md:flex-row">
+        <CardHeader className="p-2 flex-shrink-0 max-w-[245px]">
           <img src={image} alt={name} className="w-full h-auto rounded-t-lg" />
         </CardHeader>
         <div className="flex flex-col w-full gap-5 ">

@@ -68,13 +68,13 @@ const Privacy = () => {
           name="newPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[#315215] text-lg leading-[164%]">
+              <FormLabel className="text-[#315215] text-base md:text-lg leading-[164%]">
               New Password
               </FormLabel>
               <FormControl>
                 <Input
                    type="password" placeholder="Enter new password" {...field}
-                  className="bg-white rounded-lg py-[13px] px-[16px] border border-[#E8E8E8] text-lg"
+                  className="bg-white rounded-lg py-[13px] px-[16px] border border-[#E8E8E8] text-base md:text-lg"
                 />
               </FormControl>
               <FormMessage />

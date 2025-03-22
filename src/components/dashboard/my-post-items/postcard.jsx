@@ -36,7 +36,7 @@ const Postcard = ({
 
   return (
     <>
-      <Card className="max-w-lg mx-auto">
+      <Card className="max-w-lg mx-auto pb-2">
         <CardHeader className="p-2">
           <img src={image} alt={name} className="w-full h-auto rounded-t-lg" />
           <Button className="bg-white text-[#457B10] border border-primary rounded-md w-[150px] font-normal relative -top-[25px] mx-auto">
@@ -44,7 +44,7 @@ const Postcard = ({
           </Button>
         </CardHeader>
 
-        <div className="flex justify-between items-center px-4">
+        <div className="flex justify-between flex-wrap gap-2 items-center px-4">
           <CardContent>
             <Link to="/item-details">
               {" "}
@@ -60,7 +60,7 @@ const Postcard = ({
           </CardContent>
         </div>
 
-        <div className="flex justify-between items-center mt-2 px-4">
+        <div className="flex justify-between flex-wrap gap-2 items-center mt-2 px-4">
           <CardContent className="flex gap-2 items-center">
             <Locationicon />
             <p className="text-sm sm:text-base font-normal text-secondary-foreground">

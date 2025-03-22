@@ -1,6 +1,5 @@
 import radio from "../../../assets/radio.png";
 import game from "../../../assets/game.png";
-import camera2 from "../../../assets/camera2.png";
 import player from "../../../assets/player.png";
 import img1 from "@/assets/featuredimg1.png";
 import Postcard from "@/components/dashboard/my-post-items/postcard";
@@ -146,7 +145,7 @@ function MyPostItems() {
         My Post Items
       </h3>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
         {MyPostItems.map((item) => {
           return <Postcard key={item.id} {...item} />;
         })}
