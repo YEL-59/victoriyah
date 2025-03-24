@@ -82,7 +82,7 @@ export const router = createBrowserRouter([
         element: <Setting />,
         children: [
           {
-            index: true, // This makes "general" the default route
+            index: true,
             element: <General />,
           },
           {

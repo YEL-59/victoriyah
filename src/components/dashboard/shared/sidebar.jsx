@@ -12,7 +12,7 @@ function Sidebar({ sidebarOpen }) {
     {
       label: "manage post items",
       icon: managePost,
-      path: "/dashboard/",
+      path: "/dashboard",
     },
     {
       label: "Exchange Request",
