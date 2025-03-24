@@ -23,7 +23,25 @@ function Exchange({ isOpen, onClose }) {
     const [images, setImages] = useState([null, null, null, null]);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
-    
+    const handleImageUpload = (e, index) => {
+        const file = e.target.files[0];
+        if (file) {
+            const newImages = [...images];
+            newImages[index] = URL.createObjectURL(file);
+            setImages(newImages);
+        }
+    };
+
+    const onSubmit = data => {
+        console.log(data);
+        setIsSuccessModalOpen(true);
+        reset();
+    };
+
+    const handleCloseModal = () => {
+        setIsSuccessModalOpen(false);
+    };
+
     if (!isOpen) return null;
 
     return (
@@ -38,7 +56,7 @@ function Exchange({ isOpen, onClose }) {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-col">
                         {/* Form fields here */}
-                        <div className="grid grid-cols-2 gap-4 py-4 text-[#2F2F2F]">
+                        <div className="grid lg:grid-cols-2 gap-4 py-4 text-[#2F2F2F]">
                             {/* Item Name */}
                             <div className="flex flex-col justify-between gap-6">
                                 <div className="w-full flex flex-col gap-3">
@@ -62,7 +80,7 @@ function Exchange({ isOpen, onClose }) {
                                     />
                                 </div>
                                 {/* Category and Condition */}
-                                <div className="flex gap-4">
+                                <div className="flex flex-col sm:flex-row gap-4">
                                     <div className="w-full flex flex-col gap-3">
                                         <Label htmlFor="category" className="text-lg leading-[164%]">Category *</Label>
                                         <Controller
@@ -112,7 +130,7 @@ function Exchange({ isOpen, onClose }) {
                                 <div className="basis-1/2 flex flex-col gap-3">
                                     <Label htmlFor="product-image" className='text-lg leading-[164%]'>Product Images *</Label>
                                     <div className="flex flex-col gap-4">
-                                        <div className="flex items-center gap-4">
+                                        <div className="flex items-center flex-wrap gap-4">
                                             {images.map((image, index) => (
                                                 <label
                                                     key={index}
@@ -147,7 +165,7 @@ function Exchange({ isOpen, onClose }) {
                                     </div>
                                 </div>
                                 {/* Location and Phone */}
-                                <div className="flex gap-4">
+                                <div className="flex flex-col sm:flex-row gap-4">
                                     <div className="w-full flex flex-col gap-3">
                                         <Label htmlFor="location" className='text-lg leading-[164%]'>Location *</Label>
                                         <Input
@@ -168,9 +186,9 @@ function Exchange({ isOpen, onClose }) {
                                     </div>
                                 </div>
                                 {/* Tags */}
-                                <div className="w-full flex flex-col gap-3">
+                                <div className="w-full flex flex-col  gap-3">
                                     <Label htmlFor="tags" className='text-lg leading-[164%]'>Tag (Optional)</Label>
-                                    <div className="flex gap-4">
+                                    <div className="flex flex-col gap-4">
                                         <Input
                                             id="tags"
                                             placeholder="Add tags separated by commas"

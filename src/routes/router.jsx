@@ -1,6 +1,6 @@
 import ExchangeProductDetails from "@/components/dashboard/shared/exchange-product-details";
 import UpdateDetails from "@/components/dashboard/shared/update-details";
-import DashboardLayout from "@/layout/dashlayout";
+import DashboardLayout from "@/layout/dashlayout/DashboardLayout";
 import Mainlayout from "@/layout/mainlayout";
 import Createnewpassword from "@/pages/auth/createnewpassword";
 import PasswordSetSuccessful from "@/pages/auth/passwordSetSuccessful";

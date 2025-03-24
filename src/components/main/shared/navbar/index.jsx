@@ -19,7 +19,7 @@ const Navbar = () => {
     <nav className="bg-primary py-4 h-[90px] flex items-center">
       <div className="container mx-auto flex justify-between items-center px-4 md:px-8">
         {/* Logo */}
-        <Link to="/dashboard">
+        <Link to="/">
           <img src={logo} alt="Logo" className="h-12" />
         </Link>
 

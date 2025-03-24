@@ -48,8 +48,8 @@ const Sell = () => {
   };
   return (
     <>
-      <div className="max-w-5xl mx-auto py-20">
-        <h1 className="text-[24px] font-semibold leading-[132%] tracking-[-0.48px] text-foreground">
+      <div className="max-w-5xl mx-auto px-4 py-12 sm:py-16 lg:py-20">
+        <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-semibold leading-[132%] tracking-[-0.48px] text-foreground">
           Post New Item
         </h1>
         <p className="text-lg text-gray-600 mt-5 mb-5">
@@ -63,7 +63,7 @@ const Sell = () => {
               name="text"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[18px] font-normal leading-[164%]">
+                  <FormLabel className="text-base lg:text-[18px] font-normal leading-[164%]">
                     Item Name *
                   </FormLabel>
                   <FormControl>
@@ -254,7 +254,7 @@ const Sell = () => {
                   Product Images *
                 </Label>
                 <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center flex-wrap gap-4">
                     {images.map((image, index) => (
                       <label
                         key={index}
@@ -329,7 +329,7 @@ const Sell = () => {
                 </FormItem>
               )}
             />
-            <div className="flex justify-between">
+            <div className="flex flex-col sm:flex-row gap-4 justify-between">
               <div className="w-full">
                 <button
                   type="submit"
@@ -344,7 +344,7 @@ const Sell = () => {
                   {" "}
                   <button
                     type="reset"
-                    className="bg-primary text-foreground rounded-full px-4 py-2 ml-4 w-full hover:bg-transparent hover:border"
+                    className="bg-primary text-foreground rounded-full px-4 py-2  w-full hover:bg-transparent hover:border"
                   >
                     Post Item
                   </button>
