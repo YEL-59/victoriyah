@@ -3,6 +3,10 @@ import game from "../../../assets/game.png";
 import player from "../../../assets/player.png";
 import img1 from "@/assets/featuredimg1.png";
 import Postcard from "@/components/dashboard/my-post-items/postcard";
+import { useState } from "react";
+import { Link } from "react-router";
+import ExchangeProductDetails from "@/components/dashboard/shared/exchange-product-details";
+import UpdateDetails from "@/components/dashboard/shared/update-details";
 
 function MyPostItems() {
   const MyPostItems = [
@@ -139,19 +143,65 @@ function MyPostItems() {
       isFavorited: false,
     },
   ];
-  return (
-    <div>
-      <h3 className="text-3xl leading-[132%] font-semibold tracking-[-0.48px] text-[#315215]">
-        My Post Items
-      </h3>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
-        {MyPostItems.map((item) => {
-          return <Postcard key={item.id} {...item} />;
-        })}
-      </div>
-    </div>
-  );
-}
-
-export default MyPostItems;
+  
+    const [isExchangeModalOpen, setIsExchangeModalOpen] = useState(false);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+  
+    const handleCardClick = (item) => {
+      setSelectedItem(item);
+      setIsExchangeModalOpen(true);
+    };
+  
+    const handleEditClick = (item) => {
+      setSelectedItem(item);
+      setIsUpdateModalOpen(true);
+      console.log('edit button click');
+    };
+  
+    const handleCloseExchangeModal = () => {
+      setIsExchangeModalOpen(false);
+      setSelectedItem(null);
+    };
+  
+    const handleCloseUpdateModal = () => {
+      setIsUpdateModalOpen(false);
+      setSelectedItem(null);
+    };
+  
+    return (
+      <>
+        <div>
+          <h3 className="text-3xl leading-[132%] font-semibold tracking-[-0.48px] text-[#315215]">
+            My Post Items
+          </h3>
+  
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+            {MyPostItems.map((item) => (
+              <Postcard
+                key={item.id}
+                {...item}
+                onCardClick={() => handleCardClick(item)}
+                onEditClick={() => handleEditClick(item)}
+              />
+            ))}
+          </div>
+        </div>
+  
+        {/* Exchange modal */}
+        <ExchangeProductDetails
+          isOpen={isExchangeModalOpen}
+          onClose={handleCloseExchangeModal}
+          item={selectedItem}
+        />
+  
+        {/* UpdateDetails modal */}
+        {/* <UpdateDetails
+          isOpen={isUpdateModalOpen}
+          onClose={handleCloseUpdateModal}
+        /> */}
+      </>
+    );
+  }
+  
+  export default MyPostItems;

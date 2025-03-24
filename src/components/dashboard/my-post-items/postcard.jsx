@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -7,13 +6,14 @@ import {
 } from "@/components/ui/card";
 import Locationicon from "@/assets/icons/location-icon";
 import Hearticon from "@/assets/icons/heart-icon";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { useLocation } from "react-router";
 import Deleteicon from "@/assets/icons/delete-icon";
 import Editicon from "@/assets/icons/edit-icon";
-import EditModal from "@/components/editModal";
+import UpdateDetails from "../shared/update-details";
+import { useState } from "react";
+import ProductDelete from "../shared/product-delete";
 
 const Postcard = ({
   image,
@@ -24,19 +24,29 @@ const Postcard = ({
   time = "Just now",
   badgeText = "Swap or Sell",
   isFavorited = false,
+  onCardClick,
+  onEditClick,
 }) => {
   const { pathname } = useLocation();
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
 
-  const handleOpenModal = (e) => {
-    e.preventDefault();
-    setIsOpenModal(true);
-  };
-  const handleCloseModal = () => setIsOpenModal(false);
+  const handleOpen = () => {
+    setIsOpen(true);
+    console.log('click edit icon')
+  }
+  const handleClose = () => {
+    setIsOpen(false);
+    setIsDelete(false)
+  }
+  const handleOpenDeleteModal = () =>{
+    setIsDelete(true)
+    console.log('click delete icon')
+  }
 
   return (
     <>
-      <Card className="max-w-lg mx-auto pb-2">
+      <Card className="max-w-lg mx-auto pb-2" onClick={onCardClick}>
         <CardHeader className="p-2">
           <img src={image} alt={name} className="w-full h-auto rounded-t-lg" />
           <Button className="bg-white text-[#457B10] border border-primary rounded-md w-[150px] font-normal relative -top-[25px] mx-auto">
@@ -81,18 +91,36 @@ const Postcard = ({
                 className={isFavorited ? "text-red-500" : "text-gray-400"}
               />
             </CardFooter>
-            <CardFooter className="flex gap-2">
-              <Deleteicon className="text-gray-400 cursor-pointer" />
-              <Editicon
-                className="text-gray-400 cursor-pointer"
-                onClick={handleOpenModal}
-              />
+            <CardFooter className="flex gap-2" onClick={(e) => stop.propagation(e)}>
+              <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenDeleteModal();
+              }}>
+              <Deleteicon  
+              className="text-gray-400 cursor-pointer" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpen();
+                }}
+              >
+                <Editicon
+                  className="text-gray-400 cursor-pointer"
+                />
+              </button>
+
             </CardFooter>
           </div>
         )}
       </Card>
-
-      <EditModal isOpen={isOpenModal} onClose={handleCloseModal} />
+      {
+        isOpen && <UpdateDetails isOpen={isOpen} onClose={handleClose} />
+      }
+      {
+        isDelete && <ProductDelete isOpen={isDelete} onClose={handleClose} />
+      }
     </>
   );
 };

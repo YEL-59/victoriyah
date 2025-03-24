@@ -1,3 +1,5 @@
+import ExchangeProductDetails from "@/components/dashboard/shared/exchange-product-details";
+import UpdateDetails from "@/components/dashboard/shared/update-details";
 import DashboardLayout from "@/layout/dashlayout";
 import Mainlayout from "@/layout/mainlayout";
 import Createnewpassword from "@/pages/auth/createnewpassword";
@@ -60,6 +62,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <MyPostItems />,
+      },
+      {
+        path: "exchange-product-details",
+        element: <ExchangeProductDetails/>
+      },
+      {
+        path: "exchange-product-update-details",
+        element: <UpdateDetails/>
       },
       {
         path: "exchange-request",

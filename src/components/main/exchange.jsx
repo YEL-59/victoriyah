@@ -23,25 +23,7 @@ function Exchange({ isOpen, onClose }) {
     const [images, setImages] = useState([null, null, null, null]);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
-    const handleImageUpload = (e, index) => {
-        const file = e.target.files[0];
-        if (file) {
-            const newImages = [...images];
-            newImages[index] = URL.createObjectURL(file);
-            setImages(newImages);
-        }
-    };
-
-    const onSubmit = data => {
-        console.log(data);
-        setIsSuccessModalOpen(true);
-        reset();
-    };
-
-    const handleCloseModal = () => {
-        setIsSuccessModalOpen(false);
-    };
-
+    
     if (!isOpen) return null;
 
     return (
