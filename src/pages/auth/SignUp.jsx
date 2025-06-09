@@ -11,43 +11,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import * as z from "zod";
 import singupImg from "../../assets/signup.png";
 import { Link } from "react-router";
-
-const formSchema = z
-  .object({
-    name: z.string().min(1, "Full Name is required"),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string(),
-    terms: z
-      .boolean()
-      .refine(
-        (val) => val === true,
-        "You must agree to the Terms & Conditions"
-      ),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+import { useSignUp } from "@/hook/auth.hook";
 
 const SignUp = () => {
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      terms: false,
-    },
-  });
-
+  const { form, mutate, isPending } = useSignUp();
   const onSubmit = (data) => {
+    mutate(data);
     console.log(data);
   };
 
@@ -129,7 +102,7 @@ const SignUp = () => {
               />
               <FormField
                 control={form.control}
-                name="confirmPassword"
+                name="password_confirmation"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
@@ -146,7 +119,7 @@ const SignUp = () => {
               />
               <FormField
                 control={form.control}
-                name="terms"
+                name="terms_and_conditions"
                 render={({ field }) => (
                   <FormItem className="flex items-center space-x-2 !my-8">
                     <FormControl className="mt-2">

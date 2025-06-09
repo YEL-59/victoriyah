@@ -8,9 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+
 import singupImg from "../../assets/signin.png";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import {
@@ -18,26 +16,13 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-
-const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  terms: z
-    .boolean()
-    .refine((val) => val === true, "You must agree to the Terms & Conditions"),
-});
+import { useMatchOtp } from "@/hook/auth.hook";
 
 const Verification = () => {
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      terms: false,
-    },
-  });
+  const { form, matchOtp } = useMatchOtp();
 
   const onSubmit = (data) => {
+    matchOtp(data);
     console.log(data);
   };
 
@@ -53,44 +38,45 @@ const Verification = () => {
           </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Verification Code</FormLabel>
-                    <FormControl>
-                      <InputOTP
-                        maxLength={4}
-                        pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                        {...field}
-                      >
-                        <InputOTPGroup className="flex gap-4 justify-center">
-                          <InputOTPSlot
-                            index={0}
+              <div className="flex gap-4 justify-center">
+                {[0, 1, 2, 3].map((i) => (
+                  <FormField
+                    key={i}
+                    control={form.control}
+                    name={`otp${i}`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <input
+                            {...field}
+                            maxLength={1}
                             className="w-12 h-12 text-center text-lg border rounded-md"
+                            onChange={(e) => {
+                              // Only allow alphanumeric characters
+                              const val = e.target.value.replace(
+                                /[^a-zA-Z0-9]/g,
+                                ""
+                              );
+                              field.onChange(val);
+                              // Auto-focus next input
+                              if (val && i < 3) {
+                                const next = document.querySelector(
+                                  `input[name=otp${i + 1}]`
+                                );
+                                if (next) next.focus();
+                              }
+                            }}
                           />
-                          <InputOTPSlot
-                            index={1}
-                            className="w-12 h-12 text-center text-lg border rounded-md"
-                          />
-                          <InputOTPSlot
-                            index={2}
-                            className="w-12 h-12 text-center text-lg border rounded-md"
-                          />
-                          <InputOTPSlot
-                            index={3}
-                            className="w-12 h-12 text-center text-lg border rounded-md"
-                          />
-                        </InputOTPGroup>
-                      </InputOTP>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ))}
+              </div>
+
               <p className="text-start text-sm text-gray-500 mt-4">
-                We&apos;ve sent a 6-digit verification code to your email. Check
+                We&apos;ve sent a 4-digit verification code to your email. Check
                 your spam folder in case you didn&apos;t receive the code.
               </p>
 

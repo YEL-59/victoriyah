@@ -3,8 +3,22 @@ import { Button } from "@/components/ui/button";
 import singupImg from "../../assets/signin.png";
 
 import { Link } from "react-router";
+import { useLocation } from "react-router";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const Verificationsuccess = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const email = location.state?.email;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate("/createnewpassword", { state: { email } });
+    }, 2000); // Wait 2 seconds before navigating
+
+    return () => clearTimeout(timer);
+  }, [navigate, email]);
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
       <div className="flex-1">

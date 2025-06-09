@@ -16,26 +16,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import singupImg from "../../assets/signin.png";
 import { Link } from "react-router";
-
-const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  terms: z
-    .boolean()
-    .refine((val) => val === true, "You must agree to the Terms & Conditions"),
-});
+import { useSignIn } from "@/hook/auth.hook";
 
 const SignIn = () => {
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      terms: false,
-    },
-  });
-
+  const { form, mutate } = useSignIn();
   const onSubmit = (data) => {
+    mutate(data);
     console.log(data);
   };
 
@@ -101,34 +87,16 @@ const SignIn = () => {
                   </FormItem>
                 )}
               />
-              <div className="flex gap-0 sm:gap-4 mb-10 sm:mb-0 items-center flex-col sm:flex-row justify-between">
-                <FormField
-                  control={form.control}
-                  name="terms"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center space-x-2 !my-8">
-                      <FormControl className="mt-2">
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel>I agree to the Terms & Conditions</FormLabel>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <Link
+                to="/resetpassword"
+                className="hover:underline text-xs text-foreground"
+              >
+                Forgot password?
+              </Link>
 
-                <Link
-                  to="#"
-                  className="hover:underline text-lg text-foreground"
-                >
-                  Forgot password?
-                </Link>
-              </div>
               <Button
                 type="submit"
-                className="w-full bg-foreground hover:bg-foreground text-background py-2.5 px-4 text-lg font-semibold capitalize h-12 rounded-full !mt-0"
+                className="w-full mt-10 bg-foreground hover:bg-foreground text-background py-2.5 px-4 text-lg font-semibold capitalize h-12 rounded-full "
               >
                 Sign In
               </Button>

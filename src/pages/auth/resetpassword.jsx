@@ -9,28 +9,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import * as z from "zod";
 import singupImg from "../../assets/signin.png";
-
-const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  terms: z
-    .boolean()
-    .refine((val) => val === true, "You must agree to the Terms & Conditions"),
-});
+import { useSendOtp } from "@/hook/auth.hook";
 
 const Resetpassword = () => {
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-    },
-  });
+  const { form, mutate } = useSendOtp();
 
   const onSubmit = (data) => {
+    mutate(data);
     console.log(data);
   };
 
