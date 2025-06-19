@@ -15,7 +15,7 @@ const FeaturedCard = ({
   image,
   condition = "New",
   name = "Item Name",
-  price = "$0.00",
+  // price = "$0.00",
   location = "Unknown",
   time = "Just now",
   badgeText = "Swap or Sell",
@@ -38,11 +38,11 @@ const FeaturedCard = ({
               {name}
             </p>
           </CardContent>
-          <CardContent>
+          {/* <CardContent>
             <p className="text-base sm:text-[20px] font-semibold leading-[132%] tracking-[-0.4px] text-foreground">
               {price}
             </p>
-          </CardContent>
+          </CardContent> */}
         </div>
 
         <div className="flex justify-between items-center mt-2 px-4">

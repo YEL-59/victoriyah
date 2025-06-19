@@ -128,7 +128,9 @@ const SignUp = () => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel>I agree to the Terms & Conditions</FormLabel>
+                    <FormLabel className="text-[12px]!important">
+                      I agree to the Terms & Conditions
+                    </FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}

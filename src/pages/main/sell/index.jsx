@@ -25,6 +25,7 @@ import { useState } from "react";
 import addImage from "@/assets/icons/add-image.svg";
 
 import addButton from "@/assets/icons/add-button.svg";
+import { useEffect } from "react";
 const Sell = () => {
   const form = useForm({
     resolver: zodResolver(sellSchema),
@@ -46,6 +47,33 @@ const Sell = () => {
       setImages(newImages);
     }
   };
+
+  //add youtube link
+
+  const [showInput, setShowInput] = useState(false);
+  const [link, setLink] = useState("");
+  const [links, setLinks] = useState([]);
+
+  const handleAddLink = () => {
+    if (link.trim() !== "") {
+      setLinks((prev) => [...prev, link]);
+      setLink("");
+      setShowInput(false);
+    }
+  };
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const storedLinks = localStorage.getItem("youtubeLinks");
+    if (storedLinks) {
+      setLinks(JSON.parse(storedLinks));
+    }
+  }, []);
+
+  // Save to localStorage whenever links change
+  useEffect(() => {
+    localStorage.setItem("youtubeLinks", JSON.stringify(links));
+  }, [links]);
   return (
     <>
       <div className="max-w-5xl mx-auto px-4 py-12 sm:py-16 lg:py-20">
@@ -69,7 +97,7 @@ const Sell = () => {
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder="Enter your name"
+                      placeholder="Enter your Item name"
                       {...field}
                       className="w-full   bg-white"
                     />
@@ -110,7 +138,7 @@ const Sell = () => {
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder="Enter your name"
+                      placeholder="Enter your price"
                       {...field}
                       className="w-full   bg-white"
                     />
@@ -134,7 +162,7 @@ const Sell = () => {
                     >
                       <FormControl>
                         <SelectTrigger className="py-6 bg-white">
-                          <SelectValue placeholder="Select a verified email to display" />
+                          <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -169,7 +197,7 @@ const Sell = () => {
                     >
                       <FormControl>
                         <SelectTrigger className="py-6 bg-white">
-                          <SelectValue placeholder="Select a verified email to display" />
+                          <SelectValue placeholder="Select condition" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -189,6 +217,7 @@ const Sell = () => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="text"
@@ -198,27 +227,12 @@ const Sell = () => {
                     Phone *
                   </FormLabel>
                   <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="py-6 bg-white">
-                          <SelectValue placeholder="Select a verified email to display" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">
-                          m@example.com
-                        </SelectItem>
-                        <SelectItem value="m@google.com">
-                          m@google.com
-                        </SelectItem>
-                        <SelectItem value="m@support.com">
-                          m@support.com
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Input
+                      type="text"
+                      placeholder="Enter phone number"
+                      {...field}
+                      className="w-full  bg-white"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -235,7 +249,7 @@ const Sell = () => {
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder="Enter your name"
+                      placeholder="Enter your city (e.g., San Francisco, CA)"
                       {...field}
                       className="w-full  bg-white"
                     />
@@ -284,11 +298,51 @@ const Sell = () => {
                   <p className="text-xs leading-[164%]">
                     Upload up to 5 images (Max 5MB each)
                   </p>
-                  <div className="flex items-center gap-3">
-                    <img src={addButton} alt="" />
-                    <p className="text-lg text-[#5AA20E] leading-[164%]">
-                      Add a Youtube or video link
-                    </p>
+
+                  <div className="space-y-4">
+                    <div
+                      className="flex items-center gap-3"
+                      onClick={() => setShowInput(true)}
+                    >
+                      <img src={addButton} alt="" />
+                      <p className="text-lg text-[#5AA20E] leading-[164%]">
+                        Add a Youtube or video link
+                      </p>
+                    </div>
+
+                    {/* Input Field */}
+                    {showInput && (
+                      <div className="flex gap-2 items-center">
+                        <input
+                          type="text"
+                          value={link}
+                          onChange={(e) => setLink(e.target.value)}
+                          placeholder="Paste your video link here..."
+                          className="border border-gray-300 rounded px-3 py-1 w-[350px]"
+                        />
+                        <button
+                          onClick={handleAddLink}
+                          className="bg-[#5AA20E] text-white px-4 py-1 rounded"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Display List of Links */}
+                    <ul className="list-disc pl-5 space-y-1">
+                      {links.map((item, index) => (
+                        <li key={index} className="text-gray-700 underline">
+                          <a
+                            href={item}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {item}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -309,7 +363,7 @@ const Sell = () => {
                     >
                       <FormControl>
                         <SelectTrigger className="py-6 bg-white">
-                          <SelectValue placeholder="Select a verified email to display" />
+                          <SelectValue placeholder="Select Trade Preferences" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -333,7 +387,7 @@ const Sell = () => {
               <div className="w-full">
                 <button
                   type="submit"
-                  className="bg-primary text-foreground px-4 py-2 w-full rounded-full hover:bg-transparent hover:border"
+                  className="hover:bg-primary text-foreground px-4 py-2 w-full rounded-full bg-transparent border"
                 >
                   Cancel
                 </button>
@@ -344,7 +398,7 @@ const Sell = () => {
                   {" "}
                   <button
                     type="reset"
-                    className="bg-primary text-foreground rounded-full px-4 py-2  w-full hover:bg-transparent hover:border"
+                    className="hover:bg-primary text-foreground rounded-full px-4 py-2  w-full bg-transparent border"
                   >
                     Post Item
                   </button>

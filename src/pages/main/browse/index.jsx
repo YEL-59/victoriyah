@@ -19,6 +19,7 @@ import radio from "../../../assets/radio.png";
 import game from "../../../assets/game.png";
 import camera2 from "../../../assets/camera2.png";
 import player from "../../../assets/player.png";
+import { FiSearch } from "react-icons/fi";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -185,11 +186,15 @@ const Browse = () => {
   return (
     <div className="bg-background py-20">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center py-6 gap-4 md:gap-0">
-        <Input
-          type="text"
-          placeholder="Category Search..."
-          className="rounded-full bg-white w-[350px] h-[40px] px-5"
-        />
+        <div className="relative w-[350px] h-[40px]">
+          <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Category Search..."
+            className="pl-10 pr-4 rounded-full bg-white w-full h-full"
+          />
+        </div>
+
         <div className="flex flex-col-reverse sm:flex-row gap-5 items-center">
           <p
             className="border-foreground sm:border-r-2 px-3 text-[16px] font-normal leading-normal

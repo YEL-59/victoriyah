@@ -14,10 +14,7 @@ export const signUpSchema = z
 
     terms_and_conditions: z
       .boolean()
-      .refine(
-        (val) => val === true,
-        "You must agree to the Terms & Conditions"
-      ),
+      .refine((val) => val === true, "agree to the Terms & Conditions"),
   })
   .refine((data) => data.password === data.password_confirmation, {
     path: ["password_confirmation"],
@@ -67,7 +64,7 @@ export const matchOtpSchema = z.object({
 export const resetPasswordSchema = z
   .object({
     email: z.string().email(),
-    password: z.string().min(6),
+    password: z.string().min(8),
     password_confirmation: z.string().min(8),
   })
   .refine((data) => data.password === data.password_confirmation, {

@@ -17,21 +17,24 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { sellSchema } from "@/schemas/sell.schema";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Link } from "react-router";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import PaymentSuccessModal from "@/components/payment-success-Modal";
+import { FaCreditCard, FaPaypal, FaLock } from "react-icons/fa";
+
 const PaymentDetails = () => {
   const form = useForm({
     resolver: zodResolver(sellSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      text: "",
     },
   });
   const onSubmit = (data) => {
     console.log(data);
   };
+
+  const [paymentMethod, setPaymentMethod] = useState("card");
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleNavigate = () => {
@@ -42,6 +45,7 @@ const PaymentDetails = () => {
     setIsOpenModal(false);
     console.log("close modal");
   };
+
   return (
     <>
       <div className="max-w-5xl mx-auto py-20">
@@ -54,216 +58,168 @@ const PaymentDetails = () => {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Payment Method
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Credit/Debit Card"
-                      {...field}
-                      className="w-full   bg-white"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Paypal"
-                      id="message"
-                      {...field}
-                      className="w-full   bg-white"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Card Number
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="12345687"
-                      {...field}
-                      className="w-full   bg-white"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-between gap-5">
-              <div className="w-full">
-                {" "}
-                <FormField
-                  control={form.control}
-                  name="text"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[18px] font-normal leading-[164%]">
-                        Expiry Date
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="12345687"
-                          {...field}
-                          className="w-full   bg-white"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-full">
-                {" "}
-                <FormField
-                  control={form.control}
-                  name="text"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[18px] font-normal leading-[164%]">
-                        cvv
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="12345687"
-                          {...field}
-                          className="w-full   bg-white"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <div className="space-y-2">
+              <FormLabel className="text-[18px] font-normal leading-[164%]">
+                Payment Method
+              </FormLabel>
+              <div className="flex flex-col gap-2">
+                <label className="flex items-center gap-2 px-4 py-2 border rounded-md cursor-pointer">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    checked={paymentMethod === "card"}
+                    onChange={() => setPaymentMethod("card")}
+                    className="appearance-none w-4 h-4 border-2 border-[#5AA20E] rounded-full checked:bg-[#5AA20E] checked:border-[#5AA20E]"
+                  />
+                  <FaCreditCard className="text-lg" /> Credit/Debit Card
+                </label>
+                <label className="flex items-center gap-2 px-4 py-2 border rounded-md cursor-pointer">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    checked={paymentMethod === "paypal"}
+                    onChange={() => setPaymentMethod("paypal")}
+                    className="appearance-none w-4 h-4 border-2 border-[#5AA20E] rounded-full checked:bg-[#5AA20E] checked:border-[#5AA20E]"
+                  />
+                  <FaPaypal className="text-lg" /> PayPal
+                </label>
               </div>
             </div>
 
-            <FormField
-              control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Name on Card
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Enter your name"
-                      {...field}
-                      className="w-full  bg-white"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-[18px] font-normal leading-[164%]">
-                    Category *
-                  </FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+            {paymentMethod === "card" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="text"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Card Number</FormLabel>
                       <FormControl>
-                        <SelectTrigger className="py-2 bg-white">
-                          <SelectValue placeholder="Select a verified email to display" />
-                        </SelectTrigger>
+                        <Input
+                          placeholder="1234 5678 9012 3456"
+                          {...field}
+                          className="bg-white"
+                        />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="m@example.com">
-                          m@example.com
-                        </SelectItem>
-                        <SelectItem value="m@google.com">
-                          m@google.com
-                        </SelectItem>
-                        <SelectItem value="m@support.com">
-                          m@support.com
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex gap-4">
+                  <FormField
+                    control={form.control}
+                    name="text"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Expiry Date</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="MM/YY"
+                            {...field}
+                            className="bg-white"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="text"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>CVV</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="123"
+                            {...field}
+                            className="bg-white"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <FormField
+                  control={form.control}
+                  name="text"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name on Card</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="John Doe"
+                          {...field}
+                          className="bg-white"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="save-card" />
+                  <label htmlFor="save-card" className="text-sm leading-tight">
+                    Save card for future payments
+                  </label>
+                </div>
+              </>
+            )}
 
             <h1 className="text-[24px] font-semibold leading-[132%] tracking-[-0.48px] mt-5 mb-5 text-foreground">
               Review & Confirm
             </h1>
 
             <div className="flex justify-between gap-5 border-b-2 pb-5">
-              {" "}
               <div className="flex-1 w-full">
-                <p className="text-lg text-gray-600">Payment Method</p>
+                <p className="text-lg text-gray-600">Selected Plan</p>
               </div>
-              <div className="flex-1 w-full">
-                <p className="text-lg text-gray-600 text-right">Card Number</p>
-              </div>
-            </div>
-            <div className="flex justify-between gap-5 border-b-2 pb-5">
-              {" "}
-              <div className="flex-1 w-full">
-                <p className="text-lg text-gray-600">Billing Cycle</p>
-              </div>
-              <div className="flex-1 w-full">
-                <p className="text-lg text-gray-600 text-right">Monthly</p>
-              </div>
-            </div>
-            <div className="flex justify-between gap-5 border-b-2 pb-5">
-              {" "}
-              <div className="flex-1 w-full">
-                <p className="text-lg text-gray-600">Total Cost</p>
-              </div>
-              <div className="flex-1 w-full">
-                <p className="text-lg text-gray-600 text-right">$24.99</p>
+              <div className="flex-1 w-full text-right">
+                <p className="text-lg text-gray-600">Standard Plan</p>
               </div>
             </div>
 
-            <div className="flex justify-between">
-              <div className="w-full">
-                <Link>
-                  {" "}
-                  <button
-                    onClick={handleNavigate}
-                    type="reset"
-                    className="bg-primary text-foreground rounded-full px-4 py-2 ml-4 w-full hover:bg-transparent hover:border"
-                  >
-                    Confirm & Pay
-                  </button>
-                </Link>
+            <div className="flex justify-between gap-5 border-b-2 pb-5">
+              <div className="flex-1 w-full">
+                <p className="text-lg text-gray-600">Billing Cycle</p>
+              </div>
+              <div className="flex-1 w-full text-right">
+                <p className="text-lg text-gray-600">Monthly</p>
               </div>
             </div>
+
+            <div className="flex justify-between gap-5 border-b-2 pb-5">
+              <div className="flex-1 w-full">
+                <p className="text-lg text-gray-600">Total Cost</p>
+              </div>
+              <div className="flex-1 w-full text-right">
+                <p className="text-lg font-semibold text-black">$24.99</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Input placeholder="Promo Code" />
+              <Button variant="outline">Apply</Button>
+            </div>
+
+            <div className="flex items-start space-x-2 pt-4">
+              <Checkbox id="terms" />
+              <label htmlFor="terms" className="text-sm leading-tight">
+                I agree to the Terms & Conditions and Privacy Policy
+              </label>
+            </div>
+
+            <Button
+              onClick={handleNavigate}
+              type="submit"
+              className="w-full mt-4 bg-[#B6F16A] hover:bg-[#4e9214] text-black"
+            >
+              <FaLock className="mr-2" /> Confirm & Pay
+            </Button>
           </form>
         </Form>
+
         <PaymentSuccessModal isOpen={isOpenModal} onClose={handleCloseModal} />
       </div>
     </>
