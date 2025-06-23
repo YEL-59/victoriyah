@@ -2,6 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import avatar from "../../../assets/person.png";
 import avatar2 from "../../../assets/person2.png";
 import { Image, Paperclip } from "lucide-react";
+import {
+  useGetCollection,
+  useGetMessages,
+  useSendMessage,
+} from "@/hook/message.hook";
+import formatDateSmart from "@/lib/formatDateSmart";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useNavigate, useSearchParams } from "react-router";
 
 const users = [
   { name: "Mary Freund", img: avatar, id: 1 },
@@ -13,37 +21,69 @@ const users = [
 function Messages() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(users[0]);
-  const [messages, setMessages] = useState({});
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const userId = searchParams.get("userId");
+
+  // API Call
+  const {
+    data: getUserMessages,
+    isLoading: getUserMessagesLoading,
+    refetch: userDataRefetch,
+  } = useGetMessages(userId);
+  const { collectionData, isLoading: collectionLoading } = useGetCollection();
+  const { mutate: sendMessage } = useSendMessage();
+
+  console.log("collectionData", messages);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages[selectedUser.id]]);
+  // Set Default Message User
+  useEffect(() => {
+    if (collectionData?.data.length > 0 && userId === null) {
+      setSelectedUser(collectionData.data[0]);
+      navigate(
+        `/dashboard/messages?userId=${collectionData.data[0]?.sender?.id}`
+      );
+      setSelectedUser(collectionData.data[0]);
+    } else if (userId !== null) {
+      const user = collectionData?.data?.find(
+        (user) => user?.sender?.id === parseInt(userId)
+      );
+      // console.log("user", user);
 
-  const sendMessage = () => {
+      if (user) {
+        setSelectedUser(user);
+      }
+    }
+  }, [collectionData]);
+  // Sync API data
+  useEffect(() => {
+    if (getUserMessages?.data) {
+      setMessages(getUserMessages?.data?.slice().reverse());
+    }
+  }, [getUserMessages, selectedUser]);
+
+  const handleSendMessage = () => {
+    const newMessage = {
+      receiver_id: userId,
+      message: input,
+    };
     if (input.trim() !== "") {
-      setMessages((prev) => ({
-        ...prev,
-        [selectedUser.id]: [
-          ...(prev[selectedUser.id] || []),
-          { text: input, sender: "You", type: "text" },
-        ],
-      }));
+      sendMessage(newMessage, {
+        onSuccess: (res) => {
+          // You can update message with server ID or timestamp if needed
+        },
+        onError: (err) => {
+          console.error("Send failed", err);
+        },
+      });
       setInput("");
-      setTimeout(() => {
-        setMessages((prev) => ({
-          ...prev,
-          [selectedUser.id]: [
-            ...(prev[selectedUser.id] || []),
-            {
-              text: "Thanks for your message!",
-              sender: selectedUser.name,
-              type: "text",
-            },
-          ],
-        }));
-      }, 1000);
+      userDataRefetch();
     }
   };
 
@@ -68,50 +108,86 @@ function Messages() {
           placeholder="Search"
           className="w-full py-4 px-6 mb-4 bg-white rounded-[32px] outline-none border border-[#E8E8E8]"
         />
-        <div className="mt-6 md:mt-8 lg:mt-10 space-y-5 md:space-y-7">
-          {users.map((user) => (
-            <div
-              key={user.id}
-              className={`flex items-center gap-5 p-2 rounded cursor-pointer ${
-                selectedUser.id === user.id
-                  ? "bg-gray-200"
-                  : "hover:bg-gray-100"
-              }`}
-              onClick={() => setSelectedUser(user)}
-            >
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full">
-                <img src={user.img} alt="image" />
+        {collectionLoading ? (
+          <div className="mt-6 md:mt-8 lg:mt-10 space-y-5 md:space-y-7">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="flex items-center space-x-4 mb-4">
+                <Skeleton className="h-16 w-16 rounded-full" />
+                <div className="space-y-5 flex-1">
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
               </div>
-              <div className="space-y-2">
-                <p className="font-semibold text-base md:text-lg text-[#2f2f2f]">
-                  {user.name}
-                </p>
-                <p className="text-base md:text-lg text-[#757575]">
-                  Hello, How are you...
-                </p>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-6 md:mt-8 lg:mt-10 space-y-5 md:space-y-7">
+            {collectionData?.data.map((user) => (
+              <div
+                key={user.id}
+                className={`flex items-center gap-5 p-2 rounded cursor-pointer ${
+                  selectedUser?.sender?.id === user?.sender.id
+                    ? "bg-gray-200"
+                    : "hover:bg-gray-100"
+                }`}
+                onClick={() => {
+                  setSelectedUser(user);
+                  navigate(`/dashboard/messages?userId=${user?.sender.id}`);
+                  setSelectedUser(user);
+                }}
+              >
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden">
+                  <img src={user?.sender?.avatar} alt="image" />
+                </div>
+                <div className="space-y-2 flex-1">
+                  <div className="flex items-center justify-between w-full">
+                    {" "}
+                    <p className="font-semibold text-base md:text-lg text-[#2f2f2f]">
+                      {user?.sender?.name}
+                    </p>
+                    <p className="text-xs md:text-xs text-[#757575]">
+                      {formatDateSmart(user?.created_at) || "No messages yet"}
+                    </p>
+                  </div>
+                  <p className="text-base md:text-lg text-[#757575]">
+                    {user?.text || "No messages yet"}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Chat Window */}
       <div className="flex-1 flex flex-col">
         <div className="p-4 border-b flex items-center justify-between">
-          <div className="flex items-center gap-5">
-            <div className="w-12 md:w-16 h-16 md:h-16 rounded-full">
-              <img src={selectedUser.img} alt="image" />
+          {collectionLoading ? (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-4 mb-4">
+                <Skeleton className="h-16 w-16 rounded-full" />
+                <div className="space-y-5 flex-1">
+                  <Skeleton className="h-4 w-[230px]" />
+                  <Skeleton className="h-4 w-[100px]" />
+                </div>
+              </div>
             </div>
+          ) : (
+            <div className="flex items-center gap-5">
+              <div className="w-12 md:w-16 h-16 md:h-16 rounded-full overflow-hidden">
+                <img src={selectedUser?.sender?.avatar} alt="image" />
+              </div>
 
-            <div>
-              <h2 className="text-lg md:text-xl lg:text-2xl font-semibold leading-[132%] text-[#315215] mb-2">
-                {selectedUser.name}
-              </h2>
-              <p className="text-base md:text-lg text-[#757575]">
-                Hello, How are you?
-              </p>
+              <div>
+                <h2 className="text-lg md:text-xl lg:text-2xl font-semibold leading-[132%] text-[#315215] mb-2">
+                  {selectedUser?.sender?.name || "Select a user"}
+                </h2>
+                <p className="text-base md:text-lg text-[#757575]">
+                  {selectedUser?.text || "No messages yet"}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
 
           <button
             className="md:hidden p-3 bg-gray-700 text-white rounded-full"
@@ -153,21 +229,23 @@ function Messages() {
           </button>
         </div>
         <div className="flex-1 p-4 overflow-y-auto">
-          {(messages[selectedUser.id] || []).map((msg, index) => (
+          {messages?.map((msg, index) => (
             <div
               key={index}
               className={`flex ${
-                msg.sender === "You" ? "justify-end" : "items-start space-x-3"
+                msg.receiver_id === parseInt(userId)
+                  ? "justify-end"
+                  : "items-start space-x-3"
               } mb-4`}
             >
-              {msg.sender !== "You" && (
-                <div className="w-10 h-10 bg-gray-300 rounded-full">
-                  <img src={selectedUser.img} alt="" />
+              {msg.receiver_id !== parseInt(userId) && (
+                <div className="w-10 h-10 bg-gray-300 rounded-full overflow-hidden">
+                  <img src={selectedUser?.sender?.avatar} alt="" />
                 </div>
               )}
               <div
                 className={`px-6 py-2.5 shadow max-w-sm ${
-                  msg.sender === "You"
+                  msg.receiver_id === parseInt(userId)
                     ? "bg-[#314215] text-white rounded-tr-none rounded-tl-lg rounded-br-lg rounded-bl-lg"
                     : "bg-white rounded-tl-none rounded-tr-lg rounded-br-lg rounded-bl-lg"
                 }`}
@@ -190,11 +268,11 @@ function Messages() {
             className="flex-1 py-4 px-6 border rounded-[32px]"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
           />
           <button
             className="p-4 bg-[#314215] text-white rounded-full"
-            onClick={sendMessage}
+            onClick={handleSendMessage}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
