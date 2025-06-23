@@ -2,6 +2,7 @@ import { axiosPrivate } from "@/lib/axios.config";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 // Get Users List
 export const useGetCollection = () => {
@@ -51,9 +52,6 @@ export const useSendMessage = () => {
         payload
       );
 
-      if (!data?.success) {
-        throw new Error(data?.message || "Failed to send message");
-      }
 
       return data;
     },
@@ -64,6 +62,8 @@ export const useSendMessage = () => {
       // Example: navigate(`/messages/${data.data.id}`);
     },
     onError: (error) => {
+      console.log(error);
+
       const message = error?.response?.data?.message || error.message;
       toast.error(message || "Failed to send message");
     },

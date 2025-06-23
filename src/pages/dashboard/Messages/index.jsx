@@ -10,6 +10,7 @@ import {
 import formatDateSmart from "@/lib/formatDateSmart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate, useSearchParams } from "react-router";
+import echo from "@/lib/echo";
 
 const users = [
   { name: "Mary Freund", img: avatar, id: 1 },
@@ -37,7 +38,7 @@ function Messages() {
   const { collectionData, isLoading: collectionLoading } = useGetCollection();
   const { mutate: sendMessage } = useSendMessage();
 
-  console.log("collectionData", messages);
+  // console.log("collectionData", messages);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -68,6 +69,49 @@ function Messages() {
     }
   }, [getUserMessages, selectedUser]);
 
+  // Live Chat Here
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    let channelName = `chat.${user?.id}`;
+    const channel = echo.private(channelName);
+
+    const handler = (e) => {
+      // queryClient.setQueryData("user-collection-data", (oldData) => {
+      //   console.log(oldData);
+
+      //   return oldData;
+      // });
+      setMessages((prev) => [...prev, e?.message]);
+      console.log(e?.message);
+      // setMessages((prev) => {
+      //   const alreadyExists = prev.some(
+      //     (msg) => msg.message === e.message.content // or use e.message.id if available
+      //   );
+      //   if (alreadyExists) return prev;
+
+      //   return [
+      //     ...prev,
+      //     {
+      //       message: e.message.content,
+      //       sender: e.message.sender_id === userId.id ? "user" : "agent",
+      //       direction:
+      //         e.message.sender_id === userId.id ? "outgoing" : "incoming",
+      //     },
+      //   ];
+      // });
+    };
+
+    // Attach listener
+    channel.listen("MessageSent", handler);
+
+    // Cleanup listener on unmount
+    return () => {
+      channel.stopListening("MessageSent");
+      echo.leave(channelName);
+    };
+  }, []);
+
   const handleSendMessage = () => {
     const newMessage = {
       receiver_id: userId,
@@ -76,6 +120,16 @@ function Messages() {
     if (input.trim() !== "") {
       sendMessage(newMessage, {
         onSuccess: (res) => {
+          // console.log(messages, "res", res?.data);
+          setMessages((prev) => {
+            const alreadyExists = prev.some(
+              (msg) => msg.message === res?.data // or use e.message.id if available
+            );
+            if (alreadyExists) return prev;
+
+            return [...prev, res?.data];
+          });
+          // setMessages((prev) => [...prev, res?.data]);
           // You can update message with server ID or timestamp if needed
         },
         onError: (err) => {
@@ -83,7 +137,6 @@ function Messages() {
         },
       });
       setInput("");
-      userDataRefetch();
     }
   };
 
