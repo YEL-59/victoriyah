@@ -50,7 +50,7 @@ function Messages() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages[selectedUser.id]]);
+  }, [messages[selectedUser.id], messages]);
   // Set Default Message User
   useEffect(() => {
     if (collectionData?.data.length > 0 && userId === null) {
@@ -91,6 +91,7 @@ function Messages() {
       //   return oldData;
       // });
       setMessages((prev) => [...prev, e?.message]);
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
       setAttachment([]);
       collectionRefetch();
       console.log(e?.message);
@@ -131,6 +132,7 @@ function Messages() {
     if (input.trim() !== "" || attachment.length > 0) {
       sendMessage(newMessage, {
         onSuccess: (res) => {
+          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
           // console.log(messages, "res", res?.data);
           // setMessages((prev) => {
           //   const alreadyExists = prev.some(
