@@ -1,7 +1,13 @@
+// External Dependencies
 import { useState, useRef, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router";
+
+// Icons and Assets
+import { ImageIcon, LoaderIcon, Paperclip } from "lucide-react";
 import avatar from "../../../assets/person.png";
 import avatar2 from "../../../assets/person2.png";
-import { Image, ImageIcon, LoaderIcon, Paperclip } from "lucide-react";
+
+// Internal Hooks and Utilities
 import {
   useGetCollection,
   useGetMessages,
@@ -9,7 +15,6 @@ import {
 } from "@/hook/message.hook";
 import formatDateSmart from "@/lib/formatDateSmart";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useNavigate, useSearchParams } from "react-router";
 import echo from "@/lib/echo";
 
 const users = [
@@ -25,98 +30,73 @@ function Messages() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [attachment, setAttachment] = useState([]);
+
   const messagesEndRef = useRef(null);
   const imageInputRef = useRef(null);
   const fileInputRef = useRef(null);
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("userId");
 
-  // API Call
+  // API Calls
   const {
     data: getUserMessages,
     isLoading: getUserMessagesLoading,
     refetch: userDataRefetch,
   } = useGetMessages(userId);
+
   const {
     collectionData,
     isLoading: collectionLoading,
     refetch: collectionRefetch,
   } = useGetCollection();
+
   const { mutate: sendMessage, isPending: sendMessageLoading } =
     useSendMessage();
 
-  console.log("messages", messages);
-
+  // Scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages[selectedUser.id], messages]);
-  // Set Default Message User
+
+  // Set default selected user
   useEffect(() => {
     if (collectionData?.data.length > 0 && userId === null) {
       setSelectedUser(collectionData.data[0]);
       navigate(
         `/dashboard/messages?userId=${collectionData.data[0]?.sender?.id}`
       );
-      setSelectedUser(collectionData.data[0]);
     } else if (userId !== null) {
       const user = collectionData?.data?.find(
         (user) => user?.sender?.id === parseInt(userId)
       );
-      // console.log("user", user);
-
-      if (user) {
-        setSelectedUser(user);
-      }
+      if (user) setSelectedUser(user);
     }
   }, [collectionData]);
-  // Sync API data
+
+  // Sync messages from API
   useEffect(() => {
     if (getUserMessages?.data) {
       setMessages(getUserMessages?.data?.slice().reverse());
     }
   }, [getUserMessages, selectedUser]);
 
-  // Live Chat Here
+  // Echo real-time listener
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-
-    let channelName = `chat.${user?.id}`;
+    const channelName = `chat.${user?.id}`;
     const channel = echo.private(channelName);
 
     const handler = (e) => {
-      // queryClient.setQueryData("user-collection-data", (oldData) => {
-      //   console.log(oldData);
-
-      //   return oldData;
-      // });
       setMessages((prev) => [...prev, e?.message]);
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
       setAttachment([]);
       collectionRefetch();
-      console.log(e?.message);
-      // setMessages((prev) => {
-      //   const alreadyExists = prev.some(
-      //     (msg) => msg.message === e.message.content // or use e.message.id if available
-      //   );
-      //   if (alreadyExists) return prev;
-
-      //   return [
-      //     ...prev,
-      //     {
-      //       message: e.message.content,
-      //       sender: e.message.sender_id === userId.id ? "user" : "agent",
-      //       direction:
-      //         e.message.sender_id === userId.id ? "outgoing" : "incoming",
-      //     },
-      //   ];
-      // });
     };
 
-    // Attach listener
     channel.listen("MessageSent", handler);
 
-    // Cleanup listener on unmount
     return () => {
       channel.stopListening("MessageSent");
       echo.leave(channelName);
@@ -129,48 +109,26 @@ function Messages() {
       message: input,
       attachment: attachment,
     };
+
     if (input.trim() !== "" || attachment.length > 0) {
       sendMessage(newMessage, {
-        onSuccess: (res) => {
+        onSuccess: () => {
           messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-          // console.log(messages, "res", res?.data);
-          // setMessages((prev) => {
-          //   const alreadyExists = prev.some(
-          //     (msg) => msg.message === res?.data // or use e.message.id if available
-          //   );
-          //   if (alreadyExists) return prev;
-          //   return [...prev, res?.data];
-          // });
-          // setMessages((prev) => [...prev, res?.data]);
-          // You can update message with server ID or timestamp if needed
         },
-        onError: (err) => {
-          console.error("Send failed", err);
-        },
+        onError: (err) => console.error("Send failed", err),
       });
       setInput("");
     }
   };
 
-  // Function to toggle sidebar visibility
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  const handleImageClick = () => {
-    imageInputRef.current?.click(); // trigger image file input
-  };
-
-  const handleFileClick = () => {
-    fileInputRef.current?.click(); // trigger doc/pdf input
-  };
+  const handleImageClick = () => imageInputRef.current?.click();
+  const handleFileClick = () => fileInputRef.current?.click();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      console.log("Selected file:", file);
-      setAttachment((prev) => [...prev, file]);
-    }
+    if (file) setAttachment((prev) => [...prev, file]);
   };
 
   return (
