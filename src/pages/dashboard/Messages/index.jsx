@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import avatar from "../../../assets/person.png";
 import avatar2 from "../../../assets/person2.png";
-import { Image, Paperclip } from "lucide-react";
+import { Image, ImageIcon, LoaderIcon, Paperclip } from "lucide-react";
 import {
   useGetCollection,
   useGetMessages,
@@ -24,7 +24,10 @@ function Messages() {
   const [selectedUser, setSelectedUser] = useState(users[0]);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [attachment, setAttachment] = useState([]);
   const messagesEndRef = useRef(null);
+  const imageInputRef = useRef(null);
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("userId");
@@ -35,10 +38,15 @@ function Messages() {
     isLoading: getUserMessagesLoading,
     refetch: userDataRefetch,
   } = useGetMessages(userId);
-  const { collectionData, isLoading: collectionLoading } = useGetCollection();
-  const { mutate: sendMessage } = useSendMessage();
+  const {
+    collectionData,
+    isLoading: collectionLoading,
+    refetch: collectionRefetch,
+  } = useGetCollection();
+  const { mutate: sendMessage, isPending: sendMessageLoading } =
+    useSendMessage();
 
-  // console.log("collectionData", messages);
+  console.log("messages", messages);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -83,6 +91,8 @@ function Messages() {
       //   return oldData;
       // });
       setMessages((prev) => [...prev, e?.message]);
+      setAttachment([]);
+      collectionRefetch();
       console.log(e?.message);
       // setMessages((prev) => {
       //   const alreadyExists = prev.some(
@@ -116,8 +126,9 @@ function Messages() {
     const newMessage = {
       receiver_id: userId,
       message: input,
+      attachment: attachment,
     };
-    if (input.trim() !== "") {
+    if (input.trim() !== "" || attachment.length > 0) {
       sendMessage(newMessage, {
         onSuccess: (res) => {
           // console.log(messages, "res", res?.data);
@@ -142,6 +153,22 @@ function Messages() {
   // Function to toggle sidebar visibility
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleImageClick = () => {
+    imageInputRef.current?.click(); // trigger image file input
+  };
+
+  const handleFileClick = () => {
+    fileInputRef.current?.click(); // trigger doc/pdf input
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      console.log("Selected file:", file);
+      setAttachment((prev) => [...prev, file]);
+    }
   };
 
   return (
@@ -290,7 +317,7 @@ function Messages() {
               <div
                 key={index}
                 className={`flex flex-col ${
-                  isReceiver ? "items-end" : "items-start space-x-3"
+                  isReceiver ? "items-end" : "items-start"
                 } ${isSameSenderAsPrev ? "mb-4" : "mb-2"}`}
               >
                 {!isReceiver && !isSameSenderAsPrev && (
@@ -306,22 +333,63 @@ function Messages() {
                     </p>
                   </div>
                 )}
-                <div
-                  className={`px-6 py-2.5 shadow max-w-sm ${
-                    isReceiver
-                      ? "bg-[#314215] text-white rounded-tr-none rounded-tl-lg rounded-br-lg rounded-bl-lg"
-                      : `bg-white rounded-tl-none rounded-tr-lg rounded-br-lg rounded-bl-lg ${
-                          isSameSenderAsPrev
-                            ? "translate-x-12"
-                            : "translate-x-9 mt-4"
-                        }`
-                  }`}
-                >
-                  {msg.text}
-                </div>
+                {msg?.attachments?.length > 0 && (
+                  <div
+                    className={`flex items-center gap-2 mb-2 ${
+                      isReceiver ? "" : "translate-x-12"
+                    }`}
+                  >
+                    {msg.attachments.map((file, index) => (
+                      <div
+                        key={index}
+                        className="w-[122px] h-[122px] overflow-hidden"
+                      >
+                        {/* <img
+                          src={file?.url}
+                          alt={`Attachment ${index}`}
+                          className="object-cover w-full h-full rounded-lg"
+                        /> */}
+                        {file.mime_type.startsWith("image/") ? (
+                          <img
+                            src={file?.url}
+                            alt={`Attachment ${index}`}
+                            className="object-cover w-full h-full rounded-lg"
+                          />
+                        ) : file.mime_type === "application/pdf" ? (
+                          <iframe
+                            src={`https://docs.google.com/gview?url=${file?.url}&embedded=true`}
+                            width="100%"
+                            height="100%"
+                            className="rounded-lg"
+                            title="PDF Viewer"
+                          />
+                        ) : (
+                          <p className="text-xs text-gray-500">
+                            Unsupported file
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {msg.text && (
+                  <div
+                    className={`px-6 py-2.5 shadow max-w-sm ${
+                      isReceiver
+                        ? "bg-[#314215] text-white rounded-tr-none rounded-tl-lg rounded-br-lg rounded-bl-lg"
+                        : `bg-white rounded-tl-none rounded-tr-lg rounded-br-lg rounded-bl-lg !translate-x-12 ${
+                            isSameSenderAsPrev
+                              ? "translate-x-12"
+                              : "translate-x-9 mt-4"
+                          }`
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+                )}
                 <p
                   className={`text-[10px] text-gray-400 text-right font-semibold ${
-                    isReceiver ? "-translate-x-2" : "translate-x-9"
+                    isReceiver ? "-translate-x-2" : "translate-x-12"
                   }`}
                 >
                   {formatDateSmart(msg.created_at, "short")}
@@ -333,49 +401,95 @@ function Messages() {
           <div ref={messagesEndRef}></div>
         </div>
         {/* Message Input */}
-        <div className="p-4 border-t flex gap-7 items-center">
-          <div className="flex-shrink-0 flex items-center gap-2.5">
-            <Paperclip />
-            <Image
-              onClick={() => console.log("Image clicked")}
-              className="cursor-pointer"
+        <div className="p-4 border-t ">
+          {!sendMessageLoading ? (
+            <div className="mb-4 flex gap-4">
+              {attachment?.map((file, index) => (
+                <div key={index} className="w-[70px] h-[70px] overflow-hidden">
+                  {file.type.startsWith("image/") ? (
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`Attachment ${index}`}
+                      className="object-cover w-full h-full rounded-lg"
+                    />
+                  ) : (
+                    <iframe
+                      src={URL.createObjectURL(file)}
+                      width="70px"
+                      height="70px"
+                      title="PDF Preview"
+                    ></iframe>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-7 w-full">
+              <LoaderIcon className="animate-spin mx-auto" />
+            </div>
+          )}
+          <div className="flex gap-7 items-center">
+            <div className="flex-shrink-0 flex items-center gap-2.5">
+              <Paperclip onClick={handleFileClick} className="cursor-pointer" />
+              <ImageIcon
+                onClick={handleImageClick}
+                className="cursor-pointer"
+              />
+
+              {/* Hidden image input */}
+              <input
+                type="file"
+                accept="image/*"
+                ref={imageInputRef}
+                className="hidden"
+                onChange={handleFileChange}
+              />
+
+              {/* Hidden doc/pdf input */}
+              <input
+                type="file"
+                accept=".pdf, .doc, .docx, .txt"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </div>
+            <input
+              type="text"
+              placeholder="Write your message"
+              className="flex-1 py-4 px-6 border rounded-[32px]"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
             />
-          </div>
-          <input
-            type="text"
-            placeholder="Write your message"
-            className="flex-1 py-4 px-6 border rounded-[32px]"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-          />
-          <button
-            className="p-4 bg-[#314215] text-white rounded-full"
-            onClick={handleSendMessage}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
+            <button
+              className="p-4 bg-[#314215] text-white rounded-full"
+              onClick={handleSendMessage}
             >
-              <path
-                d="M11.5 12.5L15 9"
-                stroke="white"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M2.74669 8.40628C1.68668 8.78486 1.77814 10.3132 2.87573 10.5627L11.5 12.5L13.4373 21.1243C13.6868 22.2219 15.2151 22.3133 15.5937 21.2533L21.9322 3.50557C22.2514 2.61167 21.3883 1.74856 20.4944 2.06781L2.74669 8.40628Z"
-                stroke="white"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M11.5 12.5L15 9"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M2.74669 8.40628C1.68668 8.78486 1.77814 10.3132 2.87573 10.5627L11.5 12.5L13.4373 21.1243C13.6868 22.2219 15.2151 22.3133 15.5937 21.2533L21.9322 3.50557C22.2514 2.61167 21.3883 1.74856 20.4944 2.06781L2.74669 8.40628Z"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>

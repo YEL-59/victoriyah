@@ -41,17 +41,32 @@ export const useSendMessage = () => {
     defaultValues: {
       receiver_id: 1,
       message: "",
+      attachment: [],
     },
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async ({ receiver_id, message }) => {
-      const payload = { message };
+    mutationFn: async ({ receiver_id, message, attachment }) => {
+      const formData = new FormData();
+      formData.append("message", message);
+
+      if (Array.isArray(attachment)) {
+        attachment.forEach((file) => {
+          formData.append("attachments[]", file); // "attachments[]" ensures array format
+        });
+      } else if (attachment) {
+        formData.append("attachments[]", attachment);
+      }
+
       const { data } = await axiosPrivate.post(
         `/messages/${receiver_id}`,
-        payload
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-
 
       return data;
     },
