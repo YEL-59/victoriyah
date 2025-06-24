@@ -38,6 +38,7 @@ function Messages() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("userId");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   // API Calls
   const {
@@ -46,11 +47,7 @@ function Messages() {
     refetch: userDataRefetch,
   } = useGetMessages(userId);
 
-  const {
-    collectionData,
-    isLoading: collectionLoading,
-    refetch: collectionRefetch,
-  } = useGetCollection();
+  const { collectionData, isLoading: collectionLoading } = useGetCollection();
 
   const { mutate: sendMessage, isPending: sendMessageLoading } =
     useSendMessage();
@@ -92,7 +89,6 @@ function Messages() {
       setMessages((prev) => [...prev, e?.message]);
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
       setAttachment([]);
-      collectionRefetch();
     };
 
     channel.listen("MessageSent", handler);
