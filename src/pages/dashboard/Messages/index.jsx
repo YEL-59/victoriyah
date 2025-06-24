@@ -121,14 +121,13 @@ function Messages() {
       sendMessage(newMessage, {
         onSuccess: (res) => {
           // console.log(messages, "res", res?.data);
-          setMessages((prev) => {
-            const alreadyExists = prev.some(
-              (msg) => msg.message === res?.data // or use e.message.id if available
-            );
-            if (alreadyExists) return prev;
-
-            return [...prev, res?.data];
-          });
+          // setMessages((prev) => {
+          //   const alreadyExists = prev.some(
+          //     (msg) => msg.message === res?.data // or use e.message.id if available
+          //   );
+          //   if (alreadyExists) return prev;
+          //   return [...prev, res?.data];
+          // });
           // setMessages((prev) => [...prev, res?.data]);
           // You can update message with server ID or timestamp if needed
         },
@@ -282,38 +281,65 @@ function Messages() {
           </button>
         </div>
         <div className="flex-1 p-4 overflow-y-auto">
-          {messages?.map((msg, index) => (
-            <div
-              key={index}
-              className={`flex ${
-                msg.receiver_id === parseInt(userId)
-                  ? "justify-end"
-                  : "items-start space-x-3"
-              } mb-4`}
-            >
-              {msg.receiver_id !== parseInt(userId) && (
-                <div className="w-10 h-10 bg-gray-300 rounded-full overflow-hidden">
-                  <img src={selectedUser?.sender?.avatar} alt="" />
-                </div>
-              )}
+          {messages?.map((msg, index) => {
+            const isReceiver = msg.receiver_id === parseInt(userId);
+            const isSameSenderAsPrev =
+              index > 0 && messages[index - 1].sender_id === msg.sender_id;
+
+            return (
               <div
-                className={`px-6 py-2.5 shadow max-w-sm ${
-                  msg.receiver_id === parseInt(userId)
-                    ? "bg-[#314215] text-white rounded-tr-none rounded-tl-lg rounded-br-lg rounded-bl-lg"
-                    : "bg-white rounded-tl-none rounded-tr-lg rounded-br-lg rounded-bl-lg"
-                }`}
+                key={index}
+                className={`flex flex-col ${
+                  isReceiver ? "items-end" : "items-start space-x-3"
+                } ${isSameSenderAsPrev ? "mb-4" : "mb-2"}`}
               >
-                {msg.text}
+                {!isReceiver && !isSameSenderAsPrev && (
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 bg-gray-300 rounded-full overflow-hidden">
+                      <img src={selectedUser?.sender?.avatar} alt="Avatar" />
+                    </div>
+                    <p className="text-lg">
+                      {selectedUser?.sender?.name || "Unknown User"}
+                    </p>
+                    <p className="text-sm text-gray-400 ml-4">
+                      {formatDateSmart(msg.created_at)}
+                    </p>
+                  </div>
+                )}
+                <div
+                  className={`px-6 py-2.5 shadow max-w-sm ${
+                    isReceiver
+                      ? "bg-[#314215] text-white rounded-tr-none rounded-tl-lg rounded-br-lg rounded-bl-lg"
+                      : `bg-white rounded-tl-none rounded-tr-lg rounded-br-lg rounded-bl-lg ${
+                          isSameSenderAsPrev
+                            ? "translate-x-12"
+                            : "translate-x-9 mt-4"
+                        }`
+                  }`}
+                >
+                  {msg.text}
+                </div>
+                <p
+                  className={`text-[10px] text-gray-400 text-right font-semibold ${
+                    isReceiver ? "-translate-x-2" : "translate-x-9"
+                  }`}
+                >
+                  {formatDateSmart(msg.created_at, "short")}
+                </p>
               </div>
-            </div>
-          ))}
+            );
+          })}
+
           <div ref={messagesEndRef}></div>
         </div>
         {/* Message Input */}
         <div className="p-4 border-t flex gap-7 items-center">
           <div className="flex-shrink-0 flex items-center gap-2.5">
             <Paperclip />
-            <Image />
+            <Image
+              onClick={() => console.log("Image clicked")}
+              className="cursor-pointer"
+            />
           </div>
           <input
             type="text"

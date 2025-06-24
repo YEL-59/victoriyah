@@ -1,4 +1,4 @@
-function formatDateSmart(dateString) {
+function formatDateSmart(dateString, timeString) {
   const inputDate = new Date(dateString);
   const now = new Date();
 
@@ -13,9 +13,9 @@ function formatDateSmart(dateString) {
   const diffTime = input.getTime() - today.getTime();
   const diffDays = diffTime / (1000 * 60 * 60 * 24);
 
-  if (diffDays === 0) {
+  if (diffDays === 0 && !timeString) {
     return "Today";
-  } else if (diffDays === -1) {
+  } else if (diffDays === -1 && !timeString) {
     return "Yesterday";
   } else {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -39,7 +39,18 @@ function formatDateSmart(dateString) {
     const month = months[input.getMonth()];
     const year = input.getFullYear();
 
-    return `${dayName} ${day} ${month} ${year}`;
+    switch (timeString) {
+      case "short":
+        const hours = inputDate.getHours();
+        const minutes = inputDate.getMinutes();
+        const ampm = hours >= 12 ? "PM" : "AM";
+        const formattedHour = hours % 12 || 12;
+        const formattedMinute = minutes.toString().padStart(2, "0");
+
+        return `${formattedHour}:${formattedMinute} ${ampm}`;
+      default:
+        return `${dayName} ${day} ${month}`;
+    }
   }
 }
 export default formatDateSmart;
