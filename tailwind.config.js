@@ -14,9 +14,10 @@ export default {
       fontFamily: {
         noto: ["Noto Sans", "serif"],
         nunito: ["Nunito", "serif"],
+        space: ['"Space Grotesk"', "sans-serif"],
       },
       colors: {
-        'dashboard-background': "var(--dashboard-background)",
+        "dashboard-background": "var(--dashboard-background)",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

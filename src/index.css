@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +8,7 @@
 
 @layer base {
   :root {
-    --dashboard-background: #F5F4F2;
+    --dashboard-background: #f5f4f2;
     --background: 40 13% 95.5%;
     --foreground: 92 59% 20%;
     --card: 0 0% 100%;
@@ -77,8 +78,6 @@
     @apply text-lg leading-[164%] text-[#5A5C5F];
   }
 }
-
-
 
 @layer base {
   * {

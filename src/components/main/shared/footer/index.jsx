@@ -5,8 +5,14 @@ import youtube from "@/assets/icons/youtube-icon.svg";
 import footerUpper from "@/assets/icons/footer-upper.svg";
 import footerLower from "@/assets/icons/footer-lower.svg";
 import Locationicon from "@/assets/icons/location-icon";
+import { Link } from "react-router";
+import { useGetDynamicPages } from "@/hook/dynamic-page.hook";
 
 const Footer = () => {
+  const { data: pages } = useGetDynamicPages();
+  console.log({
+    pages,
+  });
   return (
     <div className=" bg-[#080D1E] pt-16 pb-8 px-4 relative overflow-hidden">
       {/* Pseudo-elements for the shadow */}
@@ -97,6 +103,17 @@ const Footer = () => {
                     </a>
                   </li>
                 ))}
+                {/* {pages?.map((page, idx) => (
+                  <li key={idx}>
+                    <Link
+                      to={`/page/${page.page_slug}`}
+                      className="hover:underline hover:text-white transition"
+                    >
+                      {page.page_title}
+                    </Link>
+                  </li>
+                ))} */}
+                <div></div>
               </ul>
             </div>
           </div>
