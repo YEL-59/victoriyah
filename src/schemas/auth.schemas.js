@@ -6,6 +6,26 @@ export const signUpSchema = z
     name: z.string().min(1, "First name is required"),
 
     email: z.string().min(1, "Email is required").email("Invalid email"),
+    phone_number: z.preprocess((val) => {
+      if (typeof val === "string") {
+        // Remove spaces, hyphens, parentheses
+        let cleaned = val.replace(/[\s\-()]/g, "");
+
+        // If starts with just 10 digits, add +1
+        if (/^\d{10}$/.test(cleaned)) {
+          cleaned = "+1" + cleaned;
+        }
+
+        // If starts with 1, add +
+        if (/^1\d{10}$/.test(cleaned)) {
+          cleaned = "+" + cleaned;
+        }
+
+        return cleaned;
+      }
+      return val;
+    }, z.string().regex(/^\+1\d{10}$/, "Invalid US phone number (must be 10 digits, with optional +1)")),
+    address: z.string().min(1, "Address is required"),
     password: z
       .string()
       .min(1, "Password is required")

@@ -17,6 +17,8 @@ import * as z from "zod";
 import singupImg from "../../assets/signin.png";
 import { Link } from "react-router";
 import { useSignIn } from "@/hook/auth.hook";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 const SignIn = () => {
   const { form, mutate } = useSignIn();
@@ -24,7 +26,8 @@ const SignIn = () => {
     mutate(data);
     console.log(data);
   };
-
+  //state
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="flex items-start justify-between flex-col sm:flex-row min-h-screen bg-gray-100 px-8 sm:px-16 lg:px-24 xl:px-32 py-28">
       {/* Left Section */}
@@ -74,19 +77,34 @@ const SignIn = () => {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="relative">
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter your password"
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter your password"
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          tabIndex={-1}
+                        >
+                          {showPassword ? (
+                            <EyeOff size={20} />
+                          ) : (
+                            <Eye size={20} />
+                          )}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <Link
                 to="/resetpassword"
                 className="hover:underline text-xs text-foreground"

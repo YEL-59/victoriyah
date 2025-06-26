@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { CircleUserRound } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,13 +63,15 @@ const Navbar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar className="ml-4 cursor-pointer">
-                  <AvatarImage src={user?.avatar} alt={user?.name || "user"} />
-                  <AvatarFallback>
-                    {user?.name?.charAt(0) || "U"}
+                  {user?.avatar ? (
+                    <AvatarImage src={user.avatar} alt={user?.name || "user"} />
+                  ) : null}
+                  <AvatarFallback className="flex items-center gap-1">
+                    <CircleUserRound className="w-5 h-5" />
+                    {/* {user?.name?.charAt(0).toUpperCase() || "U"} */}
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-
               <DropdownMenuContent align="end" className="w-64 mt-2">
                 {/* User Info */}
                 <div className="px-4 py-3 border-b">

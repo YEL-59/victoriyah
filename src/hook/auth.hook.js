@@ -23,6 +23,8 @@ export const useSignUp = () => {
       name: "",
       email: "",
       password: "",
+      phone_number: "",
+      address: "",
       password_confirmation: "",
       terms_and_conditions: "",
     },
@@ -50,7 +52,7 @@ export const useSignUp = () => {
         const token = data?.data?.token;
         localStorage.setItem("token", token);
         const user = data?.data;
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("usersignup", JSON.stringify(user));
         navigate("/sign-in");
       } else {
         toast.error(data?.message || "Failed to create user");

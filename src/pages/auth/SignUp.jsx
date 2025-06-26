@@ -16,6 +16,9 @@ import * as z from "zod";
 import singupImg from "../../assets/signup.png";
 import { Link } from "react-router";
 import { useSignUp } from "@/hook/auth.hook";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 
 const SignUp = () => {
   const { form, mutate, isPending } = useSignUp();
@@ -23,7 +26,9 @@ const SignUp = () => {
     mutate(data);
     console.log(data);
   };
-
+  //state
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword1, setShowPassword1] = useState(false);
   return (
     <div className="flex items-start flex-col lg:flex-row gap-8 justify-between min-h-screen bg-gray-100 px-8 sm:px-16 lg:px-24 xl:px-32 py-28">
       {/* Left Section */}
@@ -83,40 +88,106 @@ const SignUp = () => {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="phone_number"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone Number</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="Enter your phone number"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel> Address</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        className="border bg-white"
+                        type="text"
+                        placeholder="Type your address here."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="relative">
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter your password"
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter your password"
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          tabIndex={-1}
+                        >
+                          {showPassword ? (
+                            <EyeOff size={20} />
+                          ) : (
+                            <Eye size={20} />
+                          )}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="password_confirmation"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                  <FormItem className="relative">
+                    <FormLabel>Conform Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter your password again"
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          type={showPassword1 ? "text" : "password"}
+                          placeholder="Enter your password"
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword1((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          tabIndex={-1}
+                        >
+                          {showPassword1 ? (
+                            <EyeOff size={20} />
+                          ) : (
+                            <Eye size={20} />
+                          )}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="terms_and_conditions"

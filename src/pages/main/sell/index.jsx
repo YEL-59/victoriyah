@@ -124,12 +124,12 @@ const Sell = () => {
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger className="bg-transparent">
+                    <SelectTrigger className="bg-transparent py-6">
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {productCategories.map((cat) => (
+                    {productCategories?.map((cat) => (
                       <SelectItem key={cat.id} value={String(cat.id)}>
                         {cat.name}
                       </SelectItem>
@@ -145,11 +145,23 @@ const Sell = () => {
             control={form.control}
             name="condition"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
                 <FormLabel>Condition *</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter condition" {...field} />
-                </FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="bg-transparent py-6">
+                      <SelectValue placeholder="Select condition" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="New">New</SelectItem>
+                    <SelectItem value="LikeNew">Like New</SelectItem>
+                    <SelectItem value="Old">Old</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
