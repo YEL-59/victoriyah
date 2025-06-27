@@ -13,6 +13,11 @@ const Footer = () => {
   console.log({
     pages,
   });
+  const iconMap = {
+    facebook: facebook,
+    linkedin: linkedin,
+    youtube: youtube,
+  };
   return (
     <div className=" bg-[#080D1E] pt-16 pb-8 px-4 relative overflow-hidden">
       {/* Pseudo-elements for the shadow */}
@@ -27,29 +32,24 @@ const Footer = () => {
         <div className="flex flex-col justify-between sm:px-[18px] md:flex-row md:px-10">
           {/* Logo and description */}
           <div className="md:w-[316px]">
-            <img src={logo} alt="" />
+            <img src={pages?.logo} alt="" />
             <p className="mt-[18px] text-[15px] font-normal text-white/80">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos,
-              fugit non...
+              {pages?.description || "text fallback"}
             </p>
             <div className="mt-[18px] flex gap-4">
-              {[
-                { src: facebook, alt: "Facebook", href: "/" },
-                { src: linkedin, alt: "LinkedIn", href: "/" },
-                { src: youtube, alt: "Youtube", href: "/" },
-              ].map((icon, index) => (
+              {pages?.social_media?.map((item) => (
                 <a
-                  key={index}
+                  key={item.id}
                   className="group p-3 rounded-[38px] bg-[#B5F169] flex items-center justify-center"
                   target="_blank"
-                  href={icon.href}
+                  href={item.profile_link}
                   rel="noopener noreferrer"
                 >
                   <img
-                    alt={`${icon.alt} icon`}
+                    alt={`${item.social_media} icon`}
                     loading="lazy"
                     className="color-transparent group-hover:scale-110"
-                    src={`${icon.src}`}
+                    src={iconMap[item.social_media.toLowerCase()]}
                   />
                 </a>
               ))}
@@ -123,14 +123,14 @@ const Footer = () => {
                 Office Location{" "}
               </p>
               <address>
-                Emily Hattson 940 Goldendale Dr, Wasilla, Alaska 99654, USA
+                {pages?.address || "1234 Street Name, City, State, 12345"}
               </address>
-              <div className="mt-4 flex gap-2 items-center">
+              {/* <div className="mt-4 flex gap-2 items-center">
                 <Locationicon />
                 <p className="text-[16px] font-normal text-white/80">
                   See on Map
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@ const Footer = () => {
         {/* Footer bottom */}
         <div className="mt-[38px] border-t border-white/20 py-4 text-center text-white">
           <p className="text-[15px] font-normal">
-            © 2024 YOURLOGO. All Rights Reserved.
+            {pages?.copyright_text || "© 2023 Victoriyah. All rights reserved."}
           </p>
         </div>
       </div>

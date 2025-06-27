@@ -132,9 +132,9 @@ const Productdetails = () => {
             <h2 className="text-xl sm:text-2xl lg:text-3xl leading-[132%] font-semibold tracking-[-0.48px]">
               2010 Nissan, QASHQAI, diesel. DAMAGED REPAIRABLE
             </h2>
-            <h2 className="text-lg sm:text-xl lg:text-2xl leading-[132%] font-semibold tracking-[-0.48px]">
+            {/* <h2 className="text-lg sm:text-xl lg:text-2xl leading-[132%] font-semibold tracking-[-0.48px]">
               $ 299.99
-            </h2>
+            </h2> */}
           </div>
           <div className="xl:grid xl:grid-cols-[70%_30%] flex flex-col justify-between gap-6">
             <div className="bg-[#FFF] border border-[#E8E8E8] rounded-[32px] py-8 sm:py-12 lg:py-12 px-8 sm:px-12 lg:px-16 ">
