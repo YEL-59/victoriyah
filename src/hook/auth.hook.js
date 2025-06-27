@@ -128,7 +128,41 @@ export const useSignIn = () => {
 
   return { form, mutate, isPending };
 };
+//sign-out
+export const useSignout = () => {
+  const navigate = useNavigate();
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      const { data } = await axiosPrivate.post("/auth/logout");
+      if (!data?.status) {
+        throw new Error(data?.message || "Failed to logout ");
+      }
+      return data;
+    },
+    onSuccess: (data) => {
+      if (data?.status) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("usersignup");
+        navigate("/sign-in");
+        toast.success(data?.message || "Logged out successfully");
+      } else {
+        toast.error("error");
+      }
+    },
+
+    onError: (error) => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("usersignup");
+      toast.success(" You've been signed out locally.");
+      navigate("/sign-in");
+    },
+  });
+
+  return { mutate, isPending };
+};
 // send OTP function
 
 export const useSendOtp = () => {

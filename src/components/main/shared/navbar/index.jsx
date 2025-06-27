@@ -10,11 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CircleUserRound } from "lucide-react";
+import { useSignout } from "@/hook/auth.hook";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const { mutate: signout, isPending } = useSignout();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -35,11 +37,12 @@ const Navbar = () => {
   ];
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
-    setToken(null);
-    window.location.href = "/sign-in";
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("user");
+    // setUser(null);
+    // setToken(null);
+    // window.location.href = "/sign-in";
+    signout();
   };
 
   return (
@@ -89,8 +92,8 @@ const Navbar = () => {
                     Dashboard
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleSignOut}>
-                  Sign Out
+                <DropdownMenuItem onClick={handleSignOut} disabled={isPending}>
+                  {isPending ? "Signing out..." : "Sign Out"}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -145,7 +148,9 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li className="py-4 px-6">
-                  <button onClick={handleSignOut}>Sign Out</button>
+                  <button onClick={handleSignOut} disabled={isPending}>
+                    {isPending ? "Signing out..." : "Sign Out"}
+                  </button>
                 </li>
               </>
             )}
