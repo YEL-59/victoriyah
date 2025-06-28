@@ -14,7 +14,15 @@ export const useGetHome = () => {
   const heroData = homeData?.hero_section || {};
   const featuredData = homeData?.featured_items || [];
   const serviceData = homeData?.service_section || {};
-  return { homeData, heroData, featuredData, serviceData, isLoading };
+  const howItWorksData = homeData?.how_it_works || {};
+  return {
+    homeData,
+    heroData,
+    featuredData,
+    serviceData,
+    howItWorksData,
+    isLoading,
+  };
 };
 
 //for pagination data
