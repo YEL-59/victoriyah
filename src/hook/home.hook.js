@@ -13,7 +13,8 @@ export const useGetHome = () => {
   const homeData = data?.data || [];
   const heroData = homeData?.hero_section || {};
   const featuredData = homeData?.featured_items || [];
-  return { homeData, heroData, featuredData, isLoading };
+  const serviceData = homeData?.service_section || {};
+  return { homeData, heroData, featuredData, serviceData, isLoading };
 };
 
 //for pagination data
