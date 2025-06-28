@@ -15,12 +15,14 @@ export const useGetHome = () => {
   const featuredData = homeData?.featured_items || [];
   const serviceData = homeData?.service_section || {};
   const howItWorksData = homeData?.how_it_works || {};
+  const tradingData = homeData?.trading_section || {};
   return {
     homeData,
     heroData,
     featuredData,
     serviceData,
     howItWorksData,
+    tradingData,
     isLoading,
   };
 };
