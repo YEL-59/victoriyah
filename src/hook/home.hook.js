@@ -23,6 +23,7 @@ export const useGetHomeFeatured = (page) => {
     queryKey: ["home", page],
     keepPreviousData: true,
     queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await axiosPublic.get(`/home?page=${page}`);
       return res.data?.data || {};
     },

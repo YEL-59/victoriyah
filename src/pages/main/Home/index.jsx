@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useGetHome, useGetHomeFeatured } from "@/hook/home.hook";
 import Hero from "@/components/main/home/hero";
 import Advantage from "@/components/main/home/advantage";
@@ -7,13 +7,24 @@ import StartTrading from "@/components/main/home/start-trading";
 import ellipse from "@/assets/icons/home-ellipse.svg";
 import Featuredcard from "@/components/main/home/featuredcard";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react"; // Spinner icon
+import FeaturedSkeletonCard from "@/components/main/shared/skeleton/FeaturedSkeletonCard";
 
 const Home = () => {
   const [page, setPage] = useState(1);
-  const { data, isLoading, isError } = useGetHomeFeatured(page);
+  const sectionRef = useRef(null);
+
+  const { data, isLoading, isError, isFetching } = useGetHomeFeatured(page);
 
   const featuredItems = data?.featured_items || [];
   const pagination = data?.featured_items_pagination;
+
+  // Scroll to Featured Items section when page changes
+  useEffect(() => {
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [page]);
 
   const handleNext = () => {
     if (pagination && page < pagination.last_page) {
@@ -30,8 +41,8 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <div className="pt-20 pb-20 px-4">
-        <div className="container mx-auto flex justify-between items-center py-6 ">
+      <div ref={sectionRef} className="pt-20 pb-20 px-4">
+        <div className="container mx-auto flex justify-between items-center py-6">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-foreground">
             Featured Items
           </h1>
@@ -40,12 +51,23 @@ const Home = () => {
           </p>
         </div>
 
-        {isLoading ? (
-          <p className="text-center text-gray-500">Loading...</p>
-        ) : isError ? (
+        {isError ? (
           <p className="text-center text-red-500">Something went wrong!</p>
+        ) : isLoading ? (
+          <div className="flex justify-center items-center h-40">
+            <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+          </div>
         ) : (
           <>
+            {isLoading ||
+              (isFetching && (
+                <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                  {Array.from({ length: 12 }).map((_, index) => (
+                    <FeaturedSkeletonCard key={index} />
+                  ))}
+                </div>
+              ))}
+
             <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {featuredItems.map((item) => (
                 <Featuredcard key={item.id} {...item} />
@@ -56,7 +78,7 @@ const Home = () => {
               <Button
                 variant="outline"
                 onClick={handlePrev}
-                disabled={page === 1}
+                disabled={page === 1 || isFetching}
               >
                 Previous
               </Button>
@@ -66,7 +88,7 @@ const Home = () => {
               <Button
                 variant="outline"
                 onClick={handleNext}
-                disabled={page === pagination?.last_page}
+                disabled={page === pagination?.last_page || isFetching}
               >
                 Next
               </Button>
