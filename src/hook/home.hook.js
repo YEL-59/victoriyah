@@ -1,5 +1,7 @@
-import { axiosPublic } from "@/lib/axios.config";
-import { useQuery } from "@tanstack/react-query";
+import { axiosPrivate, axiosPublic } from "@/lib/axios.config";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 export const useGetHome = () => {
   const { data, isLoading } = useQuery({
@@ -41,4 +43,82 @@ export const useGetHomeFeatured = (page) => {
   });
 
   return { data, isLoading, isError };
+};
+
+export const useGetHomeFeaturedDetails = (id) => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["details", id],
+    keepPreviousData: true,
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/home/product/details/${id}`);
+      return res.data?.data || {};
+    },
+  });
+
+  return { data, isLoading, isError };
+};
+
+export const useToggleFavourite = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (productId) => {
+      const { data } = await axiosPrivate.post(
+        `/product/toggle-favorite/${productId}`
+      );
+      if (!data?.status) {
+        throw new Error(data?.message || "Failed to toggle favourite");
+      }
+      return data;
+    },
+
+    onSuccess: (data) => {
+      toast({
+        title: "Success",
+        description: data?.message || "Favourite status updated.",
+      });
+    },
+
+    onError: (error) => {
+      const message = error?.response?.data?.message || error.message;
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description:
+          message || "Something went wrong while toggling favourite.",
+      });
+    },
+  });
+
+  return { mutate, isPending };
+};
+
+//search product
+// export const useSearchProduct = (query) => {
+//   const { data, isLoading, isError } = useQuery({
+//     queryKey: ["search", query, page],
+//     queryFn: async () => {
+//       if (!query) return [];
+//       const res = await axiosPublic.get(`/home/search?product=${query}`);
+//       return res.data?.data || [];
+//     },
+//     enabled: !!query,
+//   });
+
+//   return { data, isLoading, isError };
+// };
+
+export const useSearchProduct = (query, page = 1) => {
+  return useQuery({
+    queryKey: ["search", query, page],
+    queryFn: async () => {
+      if (!query) return { products: [], pagination: null };
+      const res = await axiosPublic.get(`/home/search`, {
+        params: { product: query, page },
+      });
+      return {
+        products: res.data?.data?.products || [],
+        pagination: res.data?.data?.pagination || null,
+      };
+    },
+    enabled: !!query,
+  });
 };

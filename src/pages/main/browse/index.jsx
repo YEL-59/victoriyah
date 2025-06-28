@@ -31,6 +31,10 @@ import {
 } from "@/components/ui/select";
 import { Menu } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+import { useLocation } from "react-router";
+import { useSearchProduct } from "@/hook/home.hook";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const Browse = () => {
   const categories = [
@@ -49,140 +53,35 @@ const Browse = () => {
     { id: 13, name: "Video Games & Consoles", image: img13 },
     { id: 14, name: "Other Stuff", image: img14 },
   ];
-  const featureddata = [
-    {
-      id: 1,
-      image: img2,
-      condition: "New",
-      name: "Premium Saddle",
-      price: "$399.99",
-      location: "New York, USA",
-      time: "5 minutes ago",
-      badgeText: "For Sale",
-      isFavorited: true,
-    },
-    {
-      id: 2,
-      image: radio,
-      condition: "Used",
-      name: "Leather Bridle",
-      price: "$89.99",
-      location: "New York, USA",
-      time: "1 hour ago",
-      badgeText: "Swap or Sell",
-      isFavorited: false,
-    },
-    {
-      id: 3,
-      image: game,
-      condition: "Like New",
-      name: "Horse Riding Boots",
-      price: "$120.00",
-      location: "New York, USA",
-      time: "2 hours ago",
-      badgeText: "For Trade",
-      isFavorited: true,
-    },
-    {
-      id: 5,
-      image: player,
-      condition: "New",
-      name: "Equestrian Helmet",
-      price: "$150.00",
-      location: "New York, USA",
-      time: "3 hours ago",
-      badgeText: "For Sale",
-      isFavorited: false,
-    },
-    {
-      id: 6,
-      image: img2,
-      condition: "New",
-      name: "Premium Saddle",
-      price: "$399.99",
-      location: "New York, USA",
-      time: "5 minutes ago",
-      badgeText: "For Sale",
-      isFavorited: true,
-    },
-    {
-      id: 7,
-      image: radio,
-      condition: "Used",
-      name: "Leather Bridle",
-      price: "$89.99",
-      location: "New York, USA",
-      time: "1 hour ago",
-      badgeText: "Swap or Sell",
-      isFavorited: false,
-    },
-    {
-      id: 8,
-      image: game,
-      condition: "Like New",
-      name: "Horse Riding Boots",
-      price: "$120.00",
-      location: "New York, USA",
-      time: "2 hours ago",
-      badgeText: "For Trade",
-      isFavorited: true,
-    },
-    {
-      id: 9,
-      image: player,
-      condition: "New",
-      name: "Equestrian Helmet",
-      price: "$150.00",
-      location: "New York, USA",
-      time: "3 hours ago",
-      badgeText: "For Sale",
-      isFavorited: false,
-    },
-    {
-      id: 10,
-      image: img2,
-      condition: "New",
-      name: "Premium Saddle",
-      price: "$399.99",
-      location: "New York, USA",
-      time: "5 minutes ago",
-      badgeText: "For Sale",
-      isFavorited: true,
-    },
-    {
-      id: 11,
-      image: radio,
-      condition: "Used",
-      name: "Leather Bridle",
-      price: "$89.99",
-      location: "New York, USA",
-      time: "1 hour ago",
-      badgeText: "Swap or Sell",
-      isFavorited: false,
-    },
-    {
-      id: 12,
-      image: game,
-      condition: "Like New",
-      name: "Horse Riding Boots",
-      price: "$120.00",
-      location: "New York, USA",
-      time: "2 hours ago",
-      badgeText: "For Trade",
-      isFavorited: true,
-    },
-    {
-      id: 13,
-      image: player,
-      condition: "New",
-      name: "Equestrian Helmet",
-      price: "$150.00",
-      location: "New York, USA",
-      time: "3 hours ago",
-      badgeText: "For Sale",
-      isFavorited: false,
-    },
-  ];
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const productQuery = params.get("product") || "";
+  const pageParam = parseInt(params.get("page") || "1", 10);
+
+  // local page state synced with URL
+  const [page, setPage] = useState(pageParam);
+
+  // Keep page state in sync with URL param on location change
+  useEffect(() => {
+    setPage(pageParam);
+  }, [pageParam]);
+
+  const { data, isLoading, isError } = useSearchProduct(productQuery, page);
+
+  const handlePageChange = (newPage) => {
+    if (
+      newPage < 1 ||
+      (data?.pagination && newPage > data.pagination.last_page)
+    ) {
+      return;
+    }
+    // Update URL with new page number
+    navigate(
+      `/browse?product=${encodeURIComponent(productQuery)}&page=${newPage}`
+    );
+  };
   return (
     <div className="bg-background py-20">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center py-6 gap-4 md:gap-0">
@@ -284,10 +183,48 @@ const Browse = () => {
 
         {/* Featured Section */}
         <div className="rounded col-span-12 md:col-span-9">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featureddata.map((item) => (
+          <div className="gap-6">
+            {/* {searchResults?.map((item) => (
               <FeaturedCard key={item.id} {...item} />
-            ))}
+            ))} */}
+            {!isLoading && !isError && (
+              <>
+                {data?.products?.length === 0 ? (
+                  <p>No results found for "{productQuery}".</p>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {data.products.map((item) => (
+                        <FeaturedCard key={item.id} id={item.id} />
+                      ))}
+                    </div>
+
+                    {/* Pagination controls */}
+                    {data.pagination && (
+                      <div className="flex justify-center gap-4 mt-8">
+                        <button
+                          onClick={() => handlePageChange(page - 1)}
+                          disabled={page <= 1}
+                          className="px-4 py-2 border rounded disabled:opacity-50"
+                        >
+                          Previous
+                        </button>
+                        <span className="px-4 py-2">
+                          Page {page} of {data.pagination.last_page}
+                        </span>
+                        <button
+                          onClick={() => handlePageChange(page + 1)}
+                          disabled={page >= data.pagination.last_page}
+                          className="px-4 py-2 border rounded disabled:opacity-50"
+                        >
+                          Next
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^44.3.0",
+    "@ckeditor/ckeditor5-react": "^9.5.0",
     "@hookform/resolvers": "^4.1.2",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-checkbox": "^1.1.4",
@@ -32,11 +34,12 @@
     "input-otp": "^1.4.2",
     "label": "^0.2.2",
     "lucide-react": "^0.475.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
+    "react-quill": "^2.0.0",
     "react-router": "^7.2.0",
     "shadcn": "^2.4.0-canary.17",
     "tabs": "^0.2.0",

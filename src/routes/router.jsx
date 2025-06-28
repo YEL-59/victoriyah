@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
         element: <Browse />,
       },
       {
-        path: "Productdetails",
+        path: "productdetails/:id",
         element: <Productdetails />,
       },
       {
@@ -65,11 +65,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "exchange-product-details",
-        element: <ExchangeProductDetails/>
+        element: <ExchangeProductDetails />,
       },
       {
         path: "exchange-product-update-details",
-        element: <UpdateDetails/>
+        element: <UpdateDetails />,
       },
       {
         path: "exchange-request",

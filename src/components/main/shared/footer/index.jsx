@@ -34,7 +34,11 @@ const Footer = () => {
           <div className="md:w-[316px]">
             <img src={pages?.logo} alt="" />
             <p className="mt-[18px] text-[15px] font-normal text-white/80">
-              {pages?.description || "text fallback"}
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: pages?.description || "No description available.",
+                }}
+              />
             </p>
             <div className="mt-[18px] flex gap-4">
               {pages?.social_media?.map((item) => (

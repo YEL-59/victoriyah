@@ -19,7 +19,7 @@ const Postcard = ({
   image,
   condition = "New",
   name = "Item Name",
-  price = "$0.00",
+
   location = "Unknown",
   time = "Just now",
   badgeText = "Swap or Sell",
@@ -33,16 +33,16 @@ const Postcard = ({
 
   const handleOpen = () => {
     setIsOpen(true);
-    console.log('click edit icon')
-  }
+    console.log("click edit icon");
+  };
   const handleClose = () => {
     setIsOpen(false);
-    setIsDelete(false)
-  }
-  const handleOpenDeleteModal = () =>{
-    setIsDelete(true)
-    console.log('click delete icon')
-  }
+    setIsDelete(false);
+  };
+  const handleOpenDeleteModal = () => {
+    setIsDelete(true);
+    console.log("click delete icon");
+  };
 
   return (
     <>
@@ -62,11 +62,6 @@ const Postcard = ({
                 {name}
               </p>
             </Link>
-          </CardContent>
-          <CardContent>
-            <p className="text-base sm:text-[20px] font-semibold text-foreground">
-              {price}
-            </p>
           </CardContent>
         </div>
 
@@ -91,14 +86,17 @@ const Postcard = ({
                 className={isFavorited ? "text-red-500" : "text-gray-400"}
               />
             </CardFooter>
-            <CardFooter className="flex gap-2" onClick={(e) => stop.propagation(e)}>
+            <CardFooter
+              className="flex gap-2"
+              onClick={(e) => stop.propagation(e)}
+            >
               <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleOpenDeleteModal();
-              }}>
-              <Deleteicon  
-              className="text-gray-400 cursor-pointer" />
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenDeleteModal();
+                }}
+              >
+                <Deleteicon className="text-gray-400 cursor-pointer" />
               </button>
               <button
                 onClick={(e) => {
@@ -106,21 +104,14 @@ const Postcard = ({
                   handleOpen();
                 }}
               >
-                <Editicon
-                  className="text-gray-400 cursor-pointer"
-                />
+                <Editicon className="text-gray-400 cursor-pointer" />
               </button>
-
             </CardFooter>
           </div>
         )}
       </Card>
-      {
-        isOpen && <UpdateDetails isOpen={isOpen} onClose={handleClose} />
-      }
-      {
-        isDelete && <ProductDelete isOpen={isDelete} onClose={handleClose} />
-      }
+      {isOpen && <UpdateDetails isOpen={isOpen} onClose={handleClose} />}
+      {isDelete && <ProductDelete isOpen={isDelete} onClose={handleClose} />}
     </>
   );
 };
