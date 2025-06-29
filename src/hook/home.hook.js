@@ -50,7 +50,7 @@ export const useGetHomeFeaturedDetails = (id) => {
     queryKey: ["details", id],
     keepPreviousData: true,
     queryFn: async () => {
-      const res = await axiosPublic.get(`/home/product/details/${id}`);
+      const res = await axiosPrivate.get(`/home/product/details/${id}`);
       return res.data?.data || {};
     },
   });
@@ -111,8 +111,43 @@ export const useSearchProduct = (query, page = 1) => {
     queryKey: ["search", query, page],
     queryFn: async () => {
       if (!query) return { products: [], pagination: null };
-      const res = await axiosPublic.get(`/home/search`, {
+      const res = await axiosPrivate.get(`/home/search`, {
         params: { product: query, page },
+      });
+      return {
+        products: res.data?.data?.products || [],
+        pagination: res.data?.data?.pagination || null,
+      };
+    },
+    enabled: !!query,
+  });
+};
+
+//search categories
+// export const useSearchCategories = (query, page = 1) => {
+//   return useQuery({
+//     queryKey: ["search", query, page],
+//     queryFn: async () => {
+//       if (!query) return { categories: [], pagination: null };
+//       const res = await axiosPrivate.get(`/home/products/filter`, {
+//         params: { product_category_id: query, page },
+//       });
+//       return {
+//         categories: res.data?.data?.products || [],
+//         pagination: res.data?.data?.pagination || null,
+//       };
+//     },
+//     enabled: !!query,
+//   });
+// };
+
+export const useSearchCategories = (query, page = 1) => {
+  return useQuery({
+    queryKey: ["search", query, page],
+    queryFn: async () => {
+      if (!query) return { products: [], pagination: null };
+      const res = await axiosPrivate.get(`/home/products/filter`, {
+        params: { product_category_id: query, page },
       });
       return {
         products: res.data?.data?.products || [],

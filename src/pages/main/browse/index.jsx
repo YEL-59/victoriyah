@@ -32,41 +32,46 @@ import {
 import { Menu } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { useLocation } from "react-router";
-import { useSearchProduct } from "@/hook/home.hook";
+import { useSearchCategories, useSearchProduct } from "@/hook/home.hook";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
+import { useGetCategoryid } from "@/hook/postitem.hook";
 
 const Browse = () => {
-  const categories = [
-    { id: 1, name: "Antiques", image: img1 },
-    { id: 2, name: "Art", image: img3 },
-    { id: 3, name: "Baby", image: img4 },
-    { id: 4, name: "Books", image: img5 },
-    { id: 5, name: "Cars, Vehicles & Parts", image: img6 },
-    { id: 6, name: "Cell Phone", image: img7 },
-    { id: 7, name: "Computers & Networking", image: img8 },
-    { id: 8, name: "Jewelry & Watches", image: img9 },
-    { id: 9, name: "Movies & TV Shows", image: img10 },
-    { id: 10, name: "Music & Instruments", image: img11 },
-    { id: 11, name: "Sporting Goods", image: img12 },
-    { id: 12, name: "Toys & Hobbies", image: img13 },
-    { id: 13, name: "Video Games & Consoles", image: img13 },
-    { id: 14, name: "Other Stuff", image: img14 },
-  ];
-
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const productQuery = params.get("product") || "";
   const pageParam = parseInt(params.get("page") || "1", 10);
-
-  // local page state synced with URL
   const [page, setPage] = useState(pageParam);
+  const { categoryid } = useGetCategoryid();
+  console.log("categoryid", categoryid);
+
+  const categories = (categoryid || []).map((category) => ({
+    id: category.id,
+    name: category.name,
+    image: category.image || img2,
+  }));
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
+  const { data: categoryData } = useSearchCategories(selectedCategoryId, page);
+  console.log({ datacategory: categoryData });
+  const handleCategoryClick = (categoryId) => {
+    setSelectedCategoryId(categoryId);
+    setPage(1);
+    navigate(`/browse?category=${categoryId}&page=1`);
+  };
 
   // Keep page state in sync with URL param on location change
   useEffect(() => {
     setPage(pageParam);
   }, [pageParam]);
+  const categoryParam = params.get("category");
+  useEffect(() => {
+    if (categoryParam) {
+      setSelectedCategoryId(Number(categoryParam));
+    }
+  }, [categoryParam]);
 
   const { data, isLoading, isError } = useSearchProduct(productQuery, page);
 
@@ -82,6 +87,28 @@ const Browse = () => {
       `/browse?product=${encodeURIComponent(productQuery)}&page=${newPage}`
     );
   };
+
+  const products = selectedCategoryId ? categoryData?.products : data?.products;
+
+  const pagination = selectedCategoryId
+    ? categoryData?.pagination
+    : data?.pagination;
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  const filteredProducts = (products || [])
+    .filter((item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortBy === "alphabetical_asc") return a.name.localeCompare(b.name);
+      if (sortBy === "alphabetical_desc") return b.name.localeCompare(a.name);
+      if (sortBy === "newest")
+        return new Date(b.created_at) - new Date(a.created_at);
+      if (sortBy === "oldest")
+        return new Date(a.created_at) - new Date(b.created_at);
+      return 0;
+    });
   return (
     <div className="bg-background py-20">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center py-6 gap-4 md:gap-0">
@@ -89,17 +116,18 @@ const Browse = () => {
           <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <Input
             type="text"
-            placeholder="Category Search..."
+            placeholder="Search Products..."
             className="pl-10 pr-4 rounded-full bg-white w-full h-full"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
         <div className="flex flex-col-reverse sm:flex-row gap-5 items-center">
           <p
             className="border-foreground sm:border-r-2 px-3 text-[16px] font-normal leading-normal
 "
           >
-            36 results
+            {filteredProducts?.length || 0} results
           </p>
           <div className="flex gap-5 items-center">
             <p
@@ -108,14 +136,23 @@ const Browse = () => {
             >
               Sort By:{" "}
             </p>
-            <Select className="w-[180px] bg-white rounded-full">
+            <Select
+              value={sortBy}
+              onValueChange={setSortBy}
+              className="w-[180px] bg-white rounded-full"
+            >
               <SelectTrigger className="w-[180px] bg-white rounded-full">
                 <SelectValue placeholder="Alphabetically, A-Z" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">Light</SelectItem>
-                <SelectItem value="dark">Dark</SelectItem>
-                <SelectItem value="system">System</SelectItem>
+                <SelectItem value="alphabetical_asc">
+                  Alphabetically, A-Z
+                </SelectItem>
+                <SelectItem value="alphabetical_desc">
+                  Alphabetically, Z-A
+                </SelectItem>
+                <SelectItem value="newest">Newest First</SelectItem>
+                <SelectItem value="oldest">Oldest First</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -131,6 +168,7 @@ const Browse = () => {
               <div
                 key={category.id}
                 className="flex justify-between items-center gap-5 border-b border-foreground/25 p-3 cursor-pointer hover:bg-gray-100 transition"
+                onClick={() => handleCategoryClick(category.id)}
               >
                 <div className="flex gap-2 items-center">
                   <img
@@ -162,6 +200,7 @@ const Browse = () => {
                   <div
                     key={category.id}
                     className="flex justify-between items-center gap-5 border-b border-foreground/25 p-3 cursor-pointer hover:bg-gray-100 transition"
+                    onClick={() => handleCategoryClick(category.id)}
                   >
                     <div className="flex gap-2 items-center">
                       <img
@@ -189,18 +228,26 @@ const Browse = () => {
             ))} */}
             {!isLoading && !isError && (
               <>
-                {data?.products?.length === 0 ? (
-                  <p>No results found for "{productQuery}".</p>
+                {filteredProducts?.length === 0 ? (
+                  <p>No results found.</p>
                 ) : (
                   <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {data.products.map((item) => (
-                        <FeaturedCard key={item.id} id={item.id} />
+                      {filteredProducts?.map((item) => (
+                        <FeaturedCard
+                          key={item.id}
+                          id={item.id}
+                          name={item.name}
+                          image={item.image}
+                          condition={item.condition}
+                          location={item.address}
+                          time={item.created_at}
+                          isFavorited={item.is_favorite}
+                        />
                       ))}
                     </div>
 
-                    {/* Pagination controls */}
-                    {data.pagination && (
+                    {pagination && (
                       <div className="flex justify-center gap-4 mt-8">
                         <button
                           onClick={() => handlePageChange(page - 1)}
@@ -210,11 +257,11 @@ const Browse = () => {
                           Previous
                         </button>
                         <span className="px-4 py-2">
-                          Page {page} of {data.pagination.last_page}
+                          Page {page} of {pagination.last_page}
                         </span>
                         <button
                           onClick={() => handlePageChange(page + 1)}
-                          disabled={page >= data.pagination.last_page}
+                          disabled={page >= pagination.last_page}
                           className="px-4 py-2 border rounded disabled:opacity-50"
                         >
                           Next
