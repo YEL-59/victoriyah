@@ -18,7 +18,7 @@ const Home = () => {
 
   const featuredItems = data?.featured_items || [];
   const pagination = data?.featured_items_pagination;
-
+  console.log({ featuredItems, pagination });
   // Scroll to Featured Items section when page changes
   useEffect(() => {
     if (sectionRef.current) {
@@ -69,8 +69,12 @@ const Home = () => {
               ))}
 
             <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {featuredItems.map((item) => (
-                <Featuredcard key={item.id} {...item} />
+              {featuredItems?.map((item) => (
+                <Featuredcard
+                  key={item.id}
+                  isFavorited={item.is_favorite}
+                  {...item}
+                />
               ))}
             </div>
 

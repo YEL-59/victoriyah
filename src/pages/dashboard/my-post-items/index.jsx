@@ -1,44 +1,28 @@
-import radio from "../../../assets/radio.png";
-import game from "../../../assets/game.png";
-import player from "../../../assets/player.png";
-import img1 from "@/assets/featuredimg1.png";
-import Postcard from "@/components/dashboard/my-post-items/postcard";
 import { useState } from "react";
-import { Link } from "react-router";
+
+import Postcard from "@/components/dashboard/my-post-items/postcard";
 import ExchangeProductDetails from "@/components/dashboard/shared/exchange-product-details";
 import UpdateDetails from "@/components/dashboard/shared/update-details";
+import {
+  useGetDashboardFavourites,
+  useGetHomeFeaturedDetails,
+} from "@/hook/home.hook";
 import { useGetFeaturedList } from "@/hook/my-featuredlist.hook";
 
-function MyPostItems() {
-  // const myPostItems = [
-  //   {
-  //     id: 1,
-  //     image: img1,
-  //     condition: "New",
-  //     name: "Premium Saddle",
-  //     price: "$399.99",
-  //     location: "New York, USA",
-  //     time: "5 minutes ago",
-  //     badgeText: "For Sale",
-  //     isFavorited: true,
-  //   },
-  //   {
-  //     id: 2,
-  //     image: radio,
-  //     condition: "Used",
-  //     name: "Leather Bridle",
-  //     price: "$89.99",
-  //     location: "New York, USA",
-  //     time: "1 hour ago",
-  //     badgeText: "Swap or Sell",
-  //     isFavorited: false,
-  //   },
+const MyPostItems = () => {
+  const [postPage, setPostPage] = useState(1);
+  const [favPage, setFavPage] = useState(1);
 
-  // ];
+  const { data: postData, isLoading: isPostLoading } =
+    useGetFeaturedList(postPage);
 
-  const [page, setPage] = useState(1);
-  const { data, isLoading } = useGetFeaturedList(page);
-  const { products = [], pagination = {} } = data || {};
+  const { data: favData, isLoading: isFavLoading } =
+    useGetDashboardFavourites(favPage);
+
+  const { products: postItems = [], pagination: postPagination = {} } =
+    postData || {};
+  const { products: favItems = [], pagination: favPagination = {} } =
+    favData || {};
 
   const [isExchangeModalOpen, setIsExchangeModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -52,76 +36,137 @@ function MyPostItems() {
   const handleEditClick = (item) => {
     setSelectedItem(item);
     setIsUpdateModalOpen(true);
-    console.log("edit button click");
   };
+  const lengthfav = favItems.length;
+  console.log(lengthfav);
+  console.log({ setSelectedItem });
+  const { data, isLoading, isError } = useGetHomeFeaturedDetails(
+    selectedItem?.id,
+    { enabled: !!selectedItem?.id } // only fetch when ID exists
+  );
 
-  const handleCloseExchangeModal = () => {
-    setIsExchangeModalOpen(false);
-    setSelectedItem(null);
-  };
-
-  const handleCloseUpdateModal = () => {
-    setIsUpdateModalOpen(false);
-    setSelectedItem(null);
-  };
-
+  console.log("the details data", data);
   return (
     <>
-      <div>
-        <h3 className="text-3xl leading-[132%] font-semibold tracking-[-0.48px] text-[#315215]">
-          My Post Items
+      {/* 🔷 My Post Items Section */}
+      <section className="mb-12">
+        <h3 className="text-3xl font-semibold text-[#315215]">My Post Items</h3>
+
+        {isPostLoading ? (
+          <p className="mt-4">Loading...</p>
+        ) : (
+          <>
+            {postItems.length === 0 ? (
+              <p className="text-center col-span-full">
+                You haven't posted any items yet.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-6">
+                {postItems.map((item) => (
+                  <Postcard
+                    key={item.id}
+                    favourited={item.is_favorite}
+                    {...item}
+                    onCardClick={() => handleCardClick(item)}
+                    onEditClick={() => handleEditClick(item)}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Pagination */}
+            <div className="flex justify-center gap-2 mt-6">
+              <button
+                onClick={() => setPostPage((p) => Math.max(p - 1, 1))}
+                disabled={postPage === 1}
+                className="px-4 py-2 border rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+              <span className="px-4 py-2">Page {postPage}</span>
+              <button
+                onClick={() =>
+                  setPostPage((p) =>
+                    Math.min(p + 1, postPagination?.last_page || 1)
+                  )
+                }
+                disabled={postPage === postPagination?.last_page}
+                className="px-4 py-2 border rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          </>
+        )}
+      </section>
+
+      {/* ❤️ Favorite Items Section */}
+      <section>
+        <h3 className="text-3xl font-semibold text-[#315215]">
+          My Favorite Items
         </h3>
 
-        <div className=" mt-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
-            {products?.map((item) => (
-              <Postcard
-                key={item.id}
-                {...item}
-                onCardClick={() => handleCardClick(item)}
-                onEditClick={() => handleEditClick(item)}
-              />
-            ))}
-          </div>
-          {/* Pagination Buttons */}
-          <div className="flex justify-center mt-6 gap-2">
-            <button
-              onClick={() => setPage((p) => Math.max(p - 1, 1))}
-              disabled={page === 1}
-              className="px-4 py-2 border rounded disabled:opacity-50"
-            >
-              Prev
-            </button>
-            <span className="px-4 py-2">{`Page ${page} of ${
-              pagination.last_page || 1
-            }`}</span>
-            <button
-              onClick={() =>
-                setPage((p) => Math.min(p + 1, pagination.last_page))
-              }
-              disabled={page === pagination.last_page}
-              className="px-4 py-2 border rounded disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      </div>
+        {isFavLoading ? (
+          <p className="mt-4">Loading...</p>
+        ) : (
+          <>
+            {favItems.length === 0 ? (
+              <p className="text-center col-span-full">
+                You haven't favorited any items yet.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-6">
+                {favItems.map((item) => (
+                  <Postcard
+                    key={item.id}
+                    favourited={item.is_favorite}
+                    {...item}
+                    onCardClick={() => handleCardClick(item)}
+                    onEditClick={() => handleEditClick(item)}
+                  />
+                ))}
+              </div>
+            )}
 
-      {/* Exchange modal */}
+            {/* Pagination */}
+            <div className="flex justify-center gap-2 mt-6">
+              <button
+                onClick={() => setFavPage((p) => Math.max(p - 1, 1))}
+                disabled={favPage === 1}
+                className="px-4 py-2 border rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+              <span className="px-4 py-2">Page {favPage}</span>
+              <button
+                onClick={() =>
+                  setFavPage((p) =>
+                    Math.min(p + 1, favPagination?.last_page || 1)
+                  )
+                }
+                disabled={favPage === favPagination?.last_page}
+                className="px-4 py-2 border rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          </>
+        )}
+      </section>
+
+      {/* 🔁 Modals */}
       <ExchangeProductDetails
         isOpen={isExchangeModalOpen}
-        onClose={handleCloseExchangeModal}
+        onClose={() => setIsExchangeModalOpen(false)}
         item={selectedItem}
       />
-
-      {/* UpdateDetails modal */}
-      {/* <UpdateDetails
-          isOpen={isUpdateModalOpen}
-          onClose={handleCloseUpdateModal}
-        /> */}
+      <UpdateDetails
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+        item={selectedItem}
+      />
     </>
   );
-}
+};
 
 export default MyPostItems;

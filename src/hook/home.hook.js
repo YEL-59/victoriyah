@@ -1,5 +1,5 @@
 import { axiosPrivate, axiosPublic } from "@/lib/axios.config";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 
@@ -33,7 +33,7 @@ export const useGetHome = () => {
 
 export const useGetHomeFeatured = (page) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["home", page],
+    queryKey: ["home_featured", page],
     keepPreviousData: true,
     queryFn: async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -60,6 +60,7 @@ export const useGetHomeFeaturedDetails = (id) => {
 
 // Toggle favourite product
 export const useToggleFavourite = () => {
+  const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: async (productId) => {
       const { data } = await axiosPrivate.post(
@@ -73,6 +74,12 @@ export const useToggleFavourite = () => {
 
     onSuccess: (data) => {
       toast.success(data?.message || "Favourite toggled successfully");
+      // Invalidate related queries to refetch fresh data and update UI:
+      queryClient.invalidateQueries(["dashboard_favourites"]);
+      queryClient.invalidateQueries({
+        queryKey: ["home_featured"],
+        exact: false,
+      });
     },
     onError: (error) => {
       toast.error(
@@ -82,6 +89,20 @@ export const useToggleFavourite = () => {
   });
 
   return { mutate, isPending };
+};
+export const useGetDashboardFavourites = (page = 1) => {
+  return useQuery({
+    queryKey: ["dashboard_favourites", page],
+    queryFn: async () => {
+      const res = await axiosPrivate.get(
+        `/dashboard/favorites/list?page=${page}`
+      );
+      return {
+        products: res.data?.data?.products || [],
+        pagination: res.data?.data?.pagination || {},
+      };
+    },
+  });
 };
 
 //search product

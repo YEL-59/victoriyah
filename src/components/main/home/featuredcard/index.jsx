@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToggleFavourite } from "@/hook/home.hook";
 import { Link } from "react-router";
+import { useEffect } from "react";
 
 const FeaturedCard = ({
   id,
@@ -22,7 +23,7 @@ const FeaturedCard = ({
   location = "Unknown",
   time = "Just now",
   badgeText = "Swap or Sell",
-  isFavorited = false,
+  isFavorited,
 }) => {
   const { mutate } = useToggleFavourite();
   const [favourited, setFavourited] = useState(isFavorited);
@@ -35,6 +36,9 @@ const FeaturedCard = ({
       onError: () => setFavourited((prev) => !prev),
     });
   };
+  useEffect(() => {
+    setFavourited(isFavorited);
+  }, [isFavorited]);
 
   return (
     <Card className="max-w-lg mx-auto relative">
