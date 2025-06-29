@@ -14,7 +14,7 @@ const Favouritecard = ({
   image,
   condition = "New",
   name = "Item Name",
-  price = "$0.00",
+
   location = "Unknown",
   time = "Just now",
   badgeText = "Swap or Sell",
@@ -42,9 +42,9 @@ const Favouritecard = ({
           </div>
           <div>
             <CardContent>
-              <p className="text-base sm:text-[20px] font-semibold leading-[132%] tracking-[-0.4px] text-foreground">
+              {/* <p className="text-base sm:text-[20px] font-semibold leading-[132%] tracking-[-0.4px] text-foreground">
                 {price}
-              </p>
+              </p> */}
             </CardContent>
             <CardContent>
               <p className="text-sm sm:text-base font-normal text-secondary-foreground">
