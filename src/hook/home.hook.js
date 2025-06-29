@@ -58,6 +58,25 @@ export const useGetHomeFeaturedDetails = (id) => {
   return { data, isLoading, isError };
 };
 
+//delete product
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id) => {
+      const { data } = await axiosPrivate.delete(`/products/delete/${id}`);
+      return data;
+    },
+    onSuccess: (data) => {
+      toast.success("Product deleted successfully");
+      queryClient.invalidateQueries(["featuredList"]); // update cache
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || "Delete failed");
+    },
+  });
+};
+
 // Toggle favourite product
 export const useToggleFavourite = () => {
   const queryClient = useQueryClient();

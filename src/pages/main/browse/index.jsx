@@ -1,24 +1,9 @@
 import { useState } from "react";
 import Arrowlefticon from "@/assets/icons/arrowleft-icon";
-import img1 from "../../../assets/antic.png";
-import img3 from "../../../assets/art.png";
-import img4 from "../../../assets/baby.png";
-import img5 from "../../../assets/book.png";
-import img6 from "../../../assets/car.png";
-import img7 from "../../../assets/phone.png";
-import img8 from "../../../assets/computer.png";
-import img9 from "../../../assets/jewelry.png";
-import img10 from "../../../assets/movie.png";
-import img11 from "../../../assets/music.png";
-import img12 from "../../../assets/sprot.png";
-import img13 from "../../../assets/toy.png";
-import img14 from "../../../assets/stuff.png";
+
 import FeaturedCard from "@/components/main/home/featuredcard";
 import img2 from "@/assets/featuredimg1.png";
-import radio from "../../../assets/radio.png";
-import game from "../../../assets/game.png";
-import camera2 from "../../../assets/camera2.png";
-import player from "../../../assets/player.png";
+
 import { FiSearch } from "react-icons/fi";
 
 import { Input } from "@/components/ui/input";

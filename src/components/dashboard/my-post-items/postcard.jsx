@@ -14,13 +14,14 @@ import Editicon from "@/assets/icons/edit-icon";
 import UpdateDetails from "../shared/update-details";
 import { useState } from "react";
 import ProductDelete from "../shared/product-delete";
+import { useDeleteProduct } from "@/hook/home.hook";
 
 const Postcard = ({
   id,
   image,
   condition = "New",
   name = "Item Name",
-  location = "Unknown",
+  address,
   time = "Just now",
   badgeText = "Swap or Sell",
   favourited = false,
@@ -31,6 +32,13 @@ const Postcard = ({
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const { mutate: deleteProduct, isLoading: isDeleting } = useDeleteProduct();
+
+  const handleDelete = (id) => {
+    if (confirm("Are you sure you want to delete this product?")) {
+      deleteProduct(id);
+    }
+  };
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -70,7 +78,7 @@ const Postcard = ({
           <CardContent className="flex gap-2 items-center">
             <Locationicon />
             <p className="text-sm sm:text-base font-normal text-secondary-foreground">
-              {location}
+              {address}
             </p>
           </CardContent>
           <CardContent>
@@ -123,7 +131,7 @@ const Postcard = ({
             </CardFooter>
             <CardFooter
               className="flex gap-2"
-              onClick={(e) => stop.propagation(e)}
+              onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={(e) => {
@@ -146,7 +154,16 @@ const Postcard = ({
         )}
       </Card>
       {isOpen && <UpdateDetails isOpen={isOpen} onClose={handleClose} />}
-      {isDelete && <ProductDelete isOpen={isDelete} onClose={handleClose} />}
+      {isDelete && (
+        <ProductDelete
+          isOpen={isDelete}
+          onClose={handleClose}
+          onConfirm={() => {
+            deleteProduct(id);
+            handleClose();
+          }}
+        />
+      )}
     </>
   );
 };

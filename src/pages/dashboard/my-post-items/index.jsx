@@ -120,6 +120,7 @@ const MyPostItems = () => {
                   <Postcard
                     key={item.id}
                     favourited={item.is_favorite}
+                    address={item.address}
                     {...item}
                     onCardClick={() => handleCardClick(item)}
                     onEditClick={() => handleEditClick(item)}

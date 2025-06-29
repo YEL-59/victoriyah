@@ -20,7 +20,7 @@ const FeaturedCard = ({
   image,
   condition = "New",
   name = "Item Name",
-  location = "Unknown",
+  address,
   time = "Just now",
   badgeText = "Swap or Sell",
   isFavorited,
@@ -67,7 +67,7 @@ const FeaturedCard = ({
           <CardContent className="flex gap-2 items-center">
             <Locationicon />
             <p className="text-sm sm:text-base font-normal text-secondary-foreground">
-              {location}
+              {address}
             </p>
           </CardContent>
           <CardContent>

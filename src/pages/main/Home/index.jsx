@@ -73,6 +73,7 @@ const Home = () => {
                 <Featuredcard
                   key={item.id}
                   isFavorited={item.is_favorite}
+                  address={item.address}
                   {...item}
                 />
               ))}

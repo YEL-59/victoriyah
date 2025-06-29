@@ -5,16 +5,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSignout } from "@/hook/auth.hook";
+import { useGetUser, useSignout } from "@/hook/auth.hook";
 import { useNavigate } from "react-router";
 
+import { User } from "lucide-react";
 function Navbar({ sidebarOpen, setSidebarOpen }) {
   const { mutate: signout, isPending } = useSignout();
+  const { user } = useGetUser();
   const navigate = useNavigate();
 
-  const getuser = JSON.parse(localStorage.getItem("user"));
-  const userName = getuser?.name || "Ivay Jack";
-  const userEmail = getuser?.email || "Ivayjack@outlook.com";
+  const userName = user?.name || "Ivay Jack";
+  const userEmail = user?.email || "Ivayjack@outlook.com";
+
+  const avatar = user?.avatar && user.avatar !== "" ? user.avatar : adminImage;
 
   const handleSignOut = () => {
     signout();
@@ -90,11 +93,16 @@ function Navbar({ sidebarOpen, setSidebarOpen }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-4 cursor-pointer">
-            <img
-              src={adminImage}
-              alt="user"
-              className="w-10 h-10 rounded-full"
-            />
+            {user?.avatar ? (
+              <img
+                src={user.avatar}
+                alt="user"
+                className="w-10 h-10 rounded-full object-cover"
+              />
+            ) : (
+              <User className="w-10 h-10 rounded-full text-gray-400" />
+            )}
+
             <div className="flex flex-col gap-2 text-left">
               <h3 className="text-lg font-semibold leading-[132%] tracking-[-0.32px]">
                 {userName}

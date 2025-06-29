@@ -5,14 +5,16 @@ import {
   sendOtpSchema,
   signInSchema,
   signUpSchema,
+  updatePasswordSchema,
 } from "@/schemas/auth.schemas";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate, useSearchParams } from "react-router";
+import { z } from "zod";
 
 export const useSignUp = () => {
   const navigate = useNavigate();
@@ -328,4 +330,119 @@ export const useResetPassword = () => {
     mutate,
     isResetting: isPending,
   };
+};
+//update password
+export const useUpdatePassword = () => {
+  const navigate = useNavigate();
+
+  const form = useForm({
+    resolver: zodResolver(updatePasswordSchema),
+    defaultValues: {
+      current_password: "",
+      new_password: "",
+      new_password_confirmation: "",
+    },
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (formData) => {
+      const payload = {
+        current_password: formData.current_password,
+        new_password: formData.new_password,
+        new_password_confirmation: formData.new_password_confirmation,
+      };
+
+      const { data } = await axiosPrivate.post(
+        "/dashboard/password/update",
+        payload
+      );
+
+      if (!data?.status) {
+        throw new Error(data?.message || "Reset failed");
+      }
+
+      return data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Password update successful");
+      navigate("/sign-in");
+    },
+    onError: (error) => {
+      const message = error?.response?.data?.message || error.message;
+      toast.error(message || "Password update failed");
+    },
+  });
+
+  return {
+    form,
+    updatePassword: mutate,
+    isUpdating: isPending,
+  };
+};
+
+export const useUpdateUser = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      phone_number: "",
+      avatar: "", // this will become a File object
+      address: "",
+    },
+  });
+
+  const { mutate: updateUser, isLoading } = useMutation({
+    mutationFn: async (data) => {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("phone_number", data.phone_number);
+      formData.append("address", data.address);
+
+      if (data.avatar instanceof File) {
+        formData.append("avatar", data.avatar); // ✅ send image as File
+      }
+
+      const res = await axiosPrivate.post(
+        "/dashboard/profile/update",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message);
+      // ✅ Update localStorage with the new user data
+      // const updatedUser = data?.data?.user;
+      // if (updatedUser) {
+      //   localStorage.setItem("user", JSON.stringify(updatedUser));
+      // }
+      queryClient.invalidateQueries({ queryKey: ["userprofile"] });
+      navigate("/dashboard");
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    },
+  });
+
+  return { form, updateUser, isLoading };
+};
+//get user profile
+export const useGetUser = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["userprofile"],
+    queryFn: async () => {
+      const res = await axiosPrivate.get("/profile");
+      return res.data;
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  return { user: data?.data, isLoading };
 };
