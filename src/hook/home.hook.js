@@ -58,6 +58,7 @@ export const useGetHomeFeaturedDetails = (id) => {
   return { data, isLoading, isError };
 };
 
+// Toggle favourite product
 export const useToggleFavourite = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: async (productId) => {
@@ -71,20 +72,12 @@ export const useToggleFavourite = () => {
     },
 
     onSuccess: (data) => {
-      toast({
-        title: "Success",
-        description: data?.message || "Favourite status updated.",
-      });
+      toast.success(data?.message || "Favourite toggled successfully");
     },
-
     onError: (error) => {
-      const message = error?.response?.data?.message || error.message;
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description:
-          message || "Something went wrong while toggling favourite.",
-      });
+      toast.error(
+        error?.response?.data?.message || "Failed to toggle favourite"
+      );
     },
   });
 
