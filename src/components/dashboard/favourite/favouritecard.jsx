@@ -15,7 +15,7 @@ const Favouritecard = ({
   condition = "New",
   name = "Item Name",
 
-  location = "Unknown",
+  address,
   time = "Just now",
   badgeText = "Swap or Sell",
   isFavorited = false,
@@ -36,7 +36,7 @@ const Favouritecard = ({
             <CardContent className="flex gap-2 items-center">
               <Locationicon />
               <p className="text-sm sm:text-base font-normal text-secondary-foreground">
-                {location}
+                {address}
               </p>
             </CardContent>
           </div>

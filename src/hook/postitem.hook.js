@@ -1,7 +1,7 @@
 import { axiosPrivate, axiosPublic } from "@/lib/axios.config";
 import { sellSchema } from "@/schemas/sell.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
@@ -73,4 +73,74 @@ export const useGetCategoryid = () => {
     },
   });
   return { categoryid: data?.data, isLoading };
+};
+
+//exchanges request
+
+// export const useExchangeProductList = () => {
+//   const { data, isLoading } = useQuery({
+//     queryKey: ["exchange_productLists"],
+//     queryFn: async () => {
+//       const res = await axiosPrivate.get(
+//         "/exchange-request/list?status=pending"
+//       );
+//       return res.data;
+//     },
+//   });
+//   return { exchange_productLists: data?.data, isLoading };
+// };
+
+export const useExchangeProductList = (status = "pending") => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["exchange_productLists", status],
+    queryFn: async () => {
+      const res = await axiosPrivate.get(
+        `/exchange-request/list?status=${status}`
+      );
+      return res.data;
+    },
+  });
+
+  return { exchange_productLists: data?.data, isLoading };
+};
+export const useAcceptExchangeRequest = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosPrivate.post(`/exchange-request/${id}/accept`);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Request accepted successfully");
+      queryClient.invalidateQueries({ queryKey: ["exchange_productLists"] });
+    },
+    onError: (error) => {
+      const message = error?.response?.data?.message || error.message;
+      toast.error(message || "Failed to accept the request");
+    },
+  });
+
+  return mutation;
+};
+
+export const useCancelExchangeRequest = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosPrivate.post(`/exchange-request/${id}/decline`);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Request canceled successfully");
+      queryClient.invalidateQueries({ queryKey: ["exchange_productLists"] });
+    },
+    onError: (error) => {
+      const message = error?.response?.data?.message || error.message;
+      toast.error(message || "Failed to cancel the request");
+    },
+  });
+
+  return mutation;
 };

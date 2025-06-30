@@ -1,5 +1,6 @@
 import { axiosPrivate, axiosPublic } from "@/lib/axios.config";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 
@@ -56,6 +57,19 @@ export const useGetHomeFeaturedDetails = (id) => {
   });
 
   return { data, isLoading, isError };
+};
+
+export const useGetExchangeRequestDetails = (id) => {
+  return useQuery({
+    queryKey: ["exchange_request_details", id],
+    enabled: !!id,
+    queryFn: async () => {
+      const res = await axiosPrivate.get(
+        `/exchange-request/${id}/offered-product`
+      );
+      return res.data?.data;
+    },
+  });
 };
 
 //delete product
@@ -189,4 +203,98 @@ export const useSearchCategories = (query, page = 1) => {
     },
     enabled: !!query,
   });
+};
+
+//update product
+
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: updateProduct,
+    isPending: isUpdating,
+    error,
+  } = useMutation({
+    mutationFn: async ({ id, payload }) => {
+      const { data } = await axiosPrivate.post(
+        `/product/update/${id}`,
+        payload
+      );
+      if (!data.status) {
+        throw new Error(data.message || "Update failed");
+      }
+      return data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Product updated successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["home_featured"],
+        exact: false,
+      });
+    },
+    onError: (error) => {
+      toast.error(error?.message || "Failed to update product");
+    },
+  });
+
+  return { updateProduct, isUpdating, error };
+};
+
+//exchange product
+export const useExchangeProduct = () => {
+  const navigate = useNavigate();
+
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      description: "",
+      message: "",
+      condition: "",
+      product_category_id: "",
+      requested_product_id: "",
+      images: [],
+    },
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (values) => {
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("description", values.description);
+      formData.append("condition", values.condition);
+      formData.append("message", values.message);
+      formData.append("product_category_id", values.product_category_id);
+      formData.append("requested_product_id", values.requested_product_id);
+
+      values.images.forEach((img) => formData.append("images[]", img));
+
+      const { data } = await axiosPrivate.post("/exchange-request", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (!data?.status) {
+        throw new Error(data?.message || "Failed to create exchange request");
+      }
+
+      return data;
+    },
+
+    onSuccess: (data) => {
+      toast.success(data.message || "Exchange request created successfully");
+      navigate("/");
+    },
+
+    onError: (error) => {
+      const message = error?.response?.data?.message || error.message;
+      toast.error(message || "Failed to create exchange request");
+    },
+  });
+
+  return {
+    form,
+    mutate,
+    isPending,
+  };
 };

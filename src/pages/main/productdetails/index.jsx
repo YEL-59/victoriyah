@@ -1,12 +1,10 @@
-import productImage from "@/assets/product-image.png";
 import profile from "@/assets/profile.png";
 import phone from "@/assets/icons/phone.svg";
 import mail from "@/assets/icons/mail.svg";
 import facebook from "@/assets/icons/facebook-icon.svg";
 import linkedin from "@/assets/icons/linkedin-icon.svg";
 import youtube from "@/assets/icons/youtube-icon.svg";
-import twitch from "@/assets/icons/twitch-icon.svg";
-import copy from "@/assets/icons/copy-icon.svg";
+
 import {
   Carousel,
   CarouselContent,
@@ -16,9 +14,9 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import FeaturedCard from "@/components/main/home/featuredcard";
-import img1 from "@/assets/featuredimg1.png";
+
 import { Link } from "react-router";
-import { useNavigate } from "react-router";
+
 import Exchange from "@/components/main/exchange";
 import { useState } from "react";
 import { useParams } from "react-router";
@@ -281,7 +279,11 @@ const Productdetails = () => {
           </div>
         </div>
         {/* exchange modal open */}
-        <Exchange isOpen={isOpenModal} onClose={handleCloseModal} />
+        <Exchange
+          isOpen={isOpenModal}
+          onClose={handleCloseModal}
+          id={data?.product?.id}
+        />
       </div>
     </>
   );

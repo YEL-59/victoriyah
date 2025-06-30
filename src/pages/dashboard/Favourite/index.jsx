@@ -39,6 +39,7 @@ function Favourite() {
                 <Favouritecard
                   key={item.id}
                   isFavorited={item.is_favorite}
+                  address={item.address}
                   {...item}
                   onCardClick={() => handleCardClick(item)}
                   // onEditClick={() => handleEditClick(item)}
