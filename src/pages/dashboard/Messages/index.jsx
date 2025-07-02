@@ -136,7 +136,7 @@ function Messages() {
         }`}
       >
         <h2 className="text-lg md:text-xl lg:text-2xl font-semibold mb-4 md:mb-6 lg:mb-8">
-          Messages (04)
+          Messages ({collectionData?.data?.length || "0"})
         </h2>
         <input
           type="text"
