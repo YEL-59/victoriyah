@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { useGetHomeFeaturedDetails } from "@/hook/home.hook";
 import { useGetDynamicPages } from "@/hook/dynamic-page.hook";
+import { LucideSquareArrowOutDownRight } from "lucide-react";
 
 const Productdetails = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -45,6 +46,8 @@ const Productdetails = () => {
   const { data, isLoading, isError } = useGetHomeFeaturedDetails(id);
   const featureddata = data?.suggested;
   console.log("data:*", { featureddata });
+  const ownerid = data?.product?.owner?.id;
+  console.log("ownerid:", ownerid);
   //social icon
   const { data: pages } = useGetDynamicPages();
   console.log({
@@ -177,7 +180,7 @@ const Productdetails = () => {
                   <p>{data?.product?.message || "No message available."}</p>
                 </div>
                 <div className="w-full flex flex-col gap-4">
-                  <Link to={`/dashboard/messages`}>
+                  <Link to={`/dashboard/messages?userId=${ownerid}`}>
                     <Button className="bg-[#96E437] text-foreground text-lg px-6 sm:px-8 py-5 rounded-[24px] w-full">
                       Send message
                     </Button>

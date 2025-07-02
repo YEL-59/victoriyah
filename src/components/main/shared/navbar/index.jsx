@@ -31,7 +31,7 @@ const Navbar = () => {
     { title: "Home", url: "/" },
     { title: "Browse", url: "/browse" },
     { title: "My Trades", url: "/payment" },
-    { title: "Messages", url: "#" },
+    { title: "Messages", url: "/dashboard/messages" },
     { title: "Upload Item", url: "/uploaditem" },
     { title: "Sign In", url: "/sign-in" },
   ];
