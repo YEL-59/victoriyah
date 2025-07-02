@@ -31,6 +31,8 @@ function UpdateDetails({ isOpen, onClose, item }) {
   const { categoryid: productCategories = [] } = useGetCategoryid();
 
   const [images, setImages] = useState([]);
+  const [existingImages, setExistingImages] = useState([]); // strings (URLs)
+  const [newImages, setNewImages] = useState([]); // files
 
   useEffect(() => {
     if (item) {
@@ -44,9 +46,11 @@ function UpdateDetails({ isOpen, onClose, item }) {
         trade: item.trade_preferences,
       });
 
-      setImages(item.images || []);
+      setExistingImages(item.images || []); // ✅ images from API
+      setNewImages([]); // clear any previously added files
     }
   }, [item, reset]);
+
   useEffect(() => {
     console.log("Form errors:", formState.errors);
   }, [formState.errors]);
@@ -59,30 +63,39 @@ function UpdateDetails({ isOpen, onClose, item }) {
   };
 
   const onSubmit = (data) => {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("description", data.description);
-    formData.append("condition", data.condition);
-    formData.append("phone", data.phone);
-    formData.append("address", data.location);
-    formData.append("product_category_id", data.category);
-    formData.append("trade_preferences", data.trade);
+    console.log("✅ Form Data to Submit", data);
 
-    images.forEach((img) => {
-      if (img instanceof File) {
-        formData.append("images[]", img);
-      }
+    const formData = new FormData();
+    for (let key in data) {
+      formData.append(key, data[key]);
+    }
+    newImages.forEach((img) => {
+      formData.append("images[]", img);
     });
 
-    updateProduct({ id: item.id, payload: formData });
-    onClose();
+    for (const [key, val] of formData.entries()) {
+      console.log(`${key}:`, val);
+    }
+
+    updateProduct(
+      { id: item.id, images, payload: formData },
+      {
+        onSuccess: (res) => {
+          console.log("✅ API Success:", res);
+          onClose();
+        },
+        onError: (err) => {
+          console.log("❌ API Error:", err);
+        },
+      }
+    );
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-[600px] h-[600px] overflow-y-scroll">
+      <DialogContent className="w-full max-w-4xl h-[600px] overflow-y-scroll">
         <DialogHeader>
-          <DialogTitle className="text-3xl font-semibold">
+          <DialogTitle className="text-3xl font-semibold text-green-400">
             Update Item
           </DialogTitle>
           <DialogDescription>
@@ -93,7 +106,7 @@ function UpdateDetails({ isOpen, onClose, item }) {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Name */}
           <div>
-            <Label>Item Name *</Label>
+            <Label className="text-green-400">Item Name *</Label>
             <Input
               {...register("name", { required: true })}
               placeholder="Enter item name"
@@ -102,7 +115,7 @@ function UpdateDetails({ isOpen, onClose, item }) {
 
           {/* Description */}
           <div>
-            <Label>Description *</Label>
+            <Label className="text-green-400">Description *</Label>
             <Textarea
               {...register("description", { required: true })}
               rows={4}
@@ -111,7 +124,7 @@ function UpdateDetails({ isOpen, onClose, item }) {
 
           {/* Category */}
           <div>
-            <Label>Category *</Label>
+            <Label className="text-green-400">Category *</Label>
             <Controller
               name="category"
               control={control}
@@ -135,7 +148,7 @@ function UpdateDetails({ isOpen, onClose, item }) {
 
           {/* Condition */}
           <div>
-            <Label>Condition *</Label>
+            <Label className="text-green-400">Condition *</Label>
             <Controller
               name="condition"
               control={control}
@@ -157,39 +170,36 @@ function UpdateDetails({ isOpen, onClose, item }) {
 
           {/* Phone */}
           <div>
-            <Label>Phone *</Label>
+            <Label className="text-green-400">Phone *</Label>
             <Input {...register("phone")} placeholder="Enter phone number" />
           </div>
 
           {/* Location */}
           <div>
-            <Label>Location *</Label>
+            <Label className="text-green-400">Location *</Label>
             <Input {...register("location")} placeholder="Enter location" />
           </div>
 
           {/* Images */}
           <div>
-            <Label>Product Images *</Label>
-            <div className="flex flex-wrap items-center gap-4">
+            <Label className="text-green-400">Product Images *</Label>
+            <div className="flex gap-4 flex-wrap mt-2">
               {images.map((img, idx) => (
-                <div key={idx} className="w-24 h-24">
-                  <img
-                    src={img instanceof File ? URL.createObjectURL(img) : img}
-                    alt="preview"
-                    className="w-full h-full object-cover rounded"
-                  />
-                </div>
+                <img
+                  key={idx}
+                  src={URL.createObjectURL(img)}
+                  alt="Preview"
+                  className="w-24 h-24 object-cover rounded"
+                />
               ))}
-              {images.length < 5 && (
-                <label className="w-24 h-24 border-2 border-dashed border-gray-300 flex items-center justify-center rounded cursor-pointer">
-                  <img src={addImage} alt="Add" />
-                  <input
-                    type="file"
-                    className="hidden"
-                    onChange={handleImageUpload}
-                  />
-                </label>
-              )}
+              <label className="w-24 h-24 border-2 border-dashed border-gray-300 flex items-center justify-center rounded cursor-pointer">
+                <img src={addImage} alt="Add" />
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
+              </label>
             </div>
           </div>
 

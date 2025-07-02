@@ -62,7 +62,7 @@ const Payment = () => {
                 </CardDescription>
               </CardHeader>
               <CardFooter>
-                <Link to="/paymentdetails" className="w-full">
+                <Link to="#" className="w-full">
                   <Button className="w-full text-foreground">Select</Button>
                 </Link>
               </CardFooter>

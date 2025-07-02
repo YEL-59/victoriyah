@@ -16,35 +16,38 @@ function ExchangeProductDetails({ isOpen, onClose, item }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-[1390px] p-4 sm:p-6 lg:p-8 flex flex-col lg:flex-row justify-between gap-8 border border-[#E8E8E8] bg-[#fff] overflow-auto">
+      <DialogContent className="w-full max-w-[1390px] p-10 sm:p-6 lg:p-8 flex flex-col lg:flex-row justify-between gap-8 border border-[#E8E8E8] bg-[#fff] overflow-auto">
         {/* Left Panel */}
         <div className="basis-[60%] flex flex-col gap-6">
+          <h1 className="text-green-400 text-xl font-bold border-b">
+            View Details
+          </h1>
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <p className="text-[#8C8C8C] text-lg">Item Offered</p>
+              <p className="text-green-400 text-lg">Item Offered</p>
               <p className="text-[#2F2F2F]">{product.name}</p>
             </div>
             <div>
-              <p className="text-[#8C8C8C] text-lg">Email</p>
+              <p className="text-green-400 text-lg">Email</p>
               <p className="text-[#2F2F2F]">{product.owner.email}</p>
             </div>
             <div>
-              <p className="text-[#8C8C8C] text-lg">Phone</p>
+              <p className="text-green-400 text-lg">Phone</p>
               <p className="text-[#2F2F2F]">{product.owner.phone}</p>
             </div>
             <div>
-              <p className="text-[#8C8C8C] text-lg">Phone</p>
+              <p className="text-green-400 text-lg">Phone</p>
               <p className="text-[#2F2F2F]">{product.owner.address}</p>
             </div>
 
             <div>
-              <p className="text-[#8C8C8C] text-lg">Created at</p>
+              <p className="text-green-400 text-lg">Created at</p>
               <p className="text-[#2F2F2F]">{product.created_at}</p>
             </div>
           </div>
 
           <div className="bg-[#F2F2F2] p-6 rounded-3xl h-full">
-            <p className="text-[#8C8C8C] text-lg">Item Description</p>
+            <p className="text-green-400 text-lg">Item Description</p>
             <p className="text-[#2F2F2F]">{product.description}</p>
           </div>
         </div>
@@ -52,7 +55,9 @@ function ExchangeProductDetails({ isOpen, onClose, item }) {
         {/* Right Panel */}
         <div className="basis-[40%] flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <p className="text-[#A3A3A3] text-lg">Product Images</p>
+            <p className="text-green-400 text-lg font-bold border-b w-full">
+              Product Images
+            </p>
             {/* <div className="flex items-center gap-3">
               <Deleteicon className="text-gray-400 cursor-pointer" />
               <Editicon className="text-gray-400 cursor-pointer" />

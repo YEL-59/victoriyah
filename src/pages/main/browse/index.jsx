@@ -35,7 +35,7 @@ const Browse = () => {
   const categories = (categoryid || []).map((category) => ({
     id: category.id,
     name: category.name,
-    image: category.image || img2,
+    // image: category.image || img2,
   }));
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
@@ -52,11 +52,21 @@ const Browse = () => {
     setPage(pageParam);
   }, [pageParam]);
   const categoryParam = params.get("category");
+
+  // useEffect(() => {
+  //   if (categoryParam) {
+  //     setSelectedCategoryId(Number(categoryParam));
+  //   }
+  // }, [categoryParam]);
   useEffect(() => {
-    if (categoryParam) {
+    if (!categoryParam && categoryid && categoryid.length > 0) {
+      const firstCategoryId = categoryid[0].id;
+      setSelectedCategoryId(firstCategoryId);
+      navigate(`/browse?category=${firstCategoryId}&page=1`, { replace: true });
+    } else if (categoryParam) {
       setSelectedCategoryId(Number(categoryParam));
     }
-  }, [categoryParam]);
+  }, [categoryParam, categoryid, navigate]);
 
   const { data, isLoading, isError } = useSearchProduct(productQuery, page);
 
@@ -152,15 +162,19 @@ const Browse = () => {
             {categories.map((category) => (
               <div
                 key={category.id}
-                className="flex justify-between items-center gap-5 border-b border-foreground/25 p-3 cursor-pointer hover:bg-gray-100 transition"
+                className={`flex justify-between items-center gap-5 border-b border-foreground/25 p-3 cursor-pointer transition ${
+                  selectedCategoryId === category.id
+                    ? "bg-gray-200"
+                    : "hover:bg-gray-100"
+                }`}
                 onClick={() => handleCategoryClick(category.id)}
               >
                 <div className="flex gap-2 items-center">
-                  <img
+                  {/* <img
                     src={category.image}
                     alt={category.name}
                     className="w-6 h-6"
-                  />
+                  /> */}
                   <h3 className="text-foreground text-[18px] font-normal leading-[164%]">
                     {category.name}
                   </h3>
@@ -184,7 +198,11 @@ const Browse = () => {
                 {categories.map((category) => (
                   <div
                     key={category.id}
-                    className="flex justify-between items-center gap-5 border-b border-foreground/25 p-3 cursor-pointer hover:bg-gray-100 transition"
+                    className={`flex justify-between items-center gap-5 border-b border-foreground/25 p-3 cursor-pointer transition ${
+                      selectedCategoryId === category.id
+                        ? "bg-gray-200"
+                        : "hover:bg-gray-100"
+                    }`}
                     onClick={() => handleCategoryClick(category.id)}
                   >
                     <div className="flex gap-2 items-center">

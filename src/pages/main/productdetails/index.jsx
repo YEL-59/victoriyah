@@ -83,7 +83,7 @@ const Productdetails = () => {
                   {!isLast ? (
                     <a
                       href={path}
-                      className="text-blue-600 hover:underline capitalize"
+                      className="text-green-600 hover:underline capitalize"
                     >
                       {segment}
                     </a>
@@ -173,12 +173,9 @@ const Productdetails = () => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="bg-[#FFF] border-[#E8E8E8] border p-4 sm:p-6 rounded-[24px]">
-                  <p>
-                    Hey Iva, I came across your listing and I'm interested! Is
-                    it still available? Looking forward to your reply. Thanks!
-                  </p>
-                </div> */}
+                <div className="bg-[#FFF] border-[#E8E8E8] border p-4 sm:p-6 rounded-[24px]">
+                  <p>{data?.product?.message || "No message available."}</p>
+                </div>
                 <div className="w-full flex flex-col gap-4">
                   <Link to={`/dashboard/messages`}>
                     <Button className="bg-[#96E437] text-foreground text-lg px-6 sm:px-8 py-5 rounded-[24px] w-full">

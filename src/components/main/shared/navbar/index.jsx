@@ -30,9 +30,9 @@ const Navbar = () => {
   const navitems = [
     { title: "Home", url: "/" },
     { title: "Browse", url: "/browse" },
-    { title: "My Trades", url: "#" },
+    { title: "My Trades", url: "/payment" },
     { title: "Messages", url: "#" },
-    { title: "Sell", url: "/sell" },
+    { title: "Upload Item", url: "/uploaditem" },
     { title: "Sign In", url: "/sign-in" },
   ];
 

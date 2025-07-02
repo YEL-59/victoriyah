@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useToggleFavourite } from "@/hook/home.hook";
 import { Link } from "react-router";
 import { useEffect } from "react";
+import Exchange from "../../exchange";
 
 const FeaturedCard = ({
   id,
@@ -22,7 +23,7 @@ const FeaturedCard = ({
   name = "Item Name",
   address,
   time = "Just now",
-  badgeText = "Swap or Sell",
+  badgeText = "Swap ",
   isFavorited,
 }) => {
   const { mutate } = useToggleFavourite();
@@ -40,6 +41,17 @@ const FeaturedCard = ({
     setFavourited(isFavorited);
   }, [isFavorited]);
 
+  //swap
+  // const [isOpenModal, setIsOpenModal] = useState(false);
+  // const handleOpenModal = (e) => {
+  //   e.preventDefault(); // Prevent link navigation
+  //   e.stopPropagation(); // Prevent bubbling
+  //   setIsOpenModal(true);
+  // };
+
+  // const handleCloseModal = () => {
+  //   setIsOpenModal(false);
+  // };
   return (
     <Card className="max-w-lg mx-auto relative">
       {/* ✅ Wrap only the navigable part */}
@@ -79,11 +91,15 @@ const FeaturedCard = ({
       </Link>
 
       {/* ✅ This section stays outside of the link */}
-      <div className="flex justify-between items-center mt-5 px-4 pb-4">
+      <div className="flex justify-between items-start mt-5  pb-4">
         <CardFooter>
-          <Badge className="bg-primary text-foreground px-5 rounded-full text-sm font-[600px] sm:text-md">
-            {badgeText}
-          </Badge>
+          <Link to={`/productdetails/${id}`} className="block">
+            <button>
+              <Badge className="bg-primary text-foreground px-5 rounded text-sm font-[600px] sm:text-md">
+                {badgeText}
+              </Badge>
+            </button>
+          </Link>
         </CardFooter>
 
         {/* <CardFooter>
@@ -136,6 +152,9 @@ const FeaturedCard = ({
             )}
           </button>
         </CardFooter>
+
+        {/* exchange modal open */}
+        {/* <Exchange isOpen={isOpenModal} onClose={handleCloseModal} id={id} /> */}
       </div>
     </Card>
   );

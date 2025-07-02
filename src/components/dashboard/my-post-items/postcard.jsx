@@ -144,7 +144,7 @@ const Postcard = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleOpen();
+                  onEditClick?.(); // Call the prop from parent
                 }}
               >
                 <Editicon className="text-gray-400 cursor-pointer" />
@@ -153,7 +153,13 @@ const Postcard = ({
           </div>
         )}
       </Card>
-      {isOpen && <UpdateDetails isOpen={isOpen} onClose={handleClose} />}
+      {isOpen && (
+        <UpdateDetails
+          isOpen={isOpen}
+          onClose={handleClose}
+          // item={{ id, image, condition, name, address, time, badgeText }}
+        />
+      )}
       {isDelete && (
         <ProductDelete
           isOpen={isDelete}

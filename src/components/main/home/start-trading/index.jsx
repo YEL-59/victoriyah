@@ -1,4 +1,6 @@
+import { Button } from "@/components/ui/button";
 import { useGetHome } from "@/hook/home.hook";
+import { Link } from "react-router";
 
 const StartTrading = () => {
   const { tradingData, isLoading } = useGetHome();
@@ -21,11 +23,13 @@ const StartTrading = () => {
         </div>
 
         {/* Uncomment and style this if needed */}
-        {/* <div className='flex items-center justify-center z-[5]'>
-          <Button className='cursor-pointer text-sm sm:text-base lg:text-lg font-semibold leading-[164%] bg-[#355817] hover:text-[#355817] hover:border-[#355817] hover:border text-[#FFF] rounded-[99px] w-max'>
-            Post Your First Trade
-          </Button>
-        </div> */}
+        <div className="flex items-center justify-center z-[5]">
+          <Link to="/payment">
+            <Button className="cursor-pointer text-sm sm:text-base lg:text-lg font-semibold leading-[164%] bg-[#355817] hover:text-[#355817] hover:border-[#355817] hover:border text-[#FFF] rounded-[99px] w-max">
+              Post Your First Trade
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
