@@ -41,11 +41,17 @@ const Sell = () => {
   useEffect(() => {
     localStorage.setItem("youtubeLinks", JSON.stringify(links));
   }, [links]);
-
+  //for single images
+  // const handleImageUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setImages((prev) => [...prev, file]);
+  //   }
+  // };
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImages((prev) => [...prev, file]);
+    const files = Array.from(e.target.files);
+    if (files.length) {
+      setImages((prev) => [...prev, ...files]);
     }
   };
 
@@ -184,6 +190,7 @@ const Sell = () => {
                   type="file"
                   className="hidden"
                   onChange={handleImageUpload}
+                  multiple
                 />
               </label>
             </div>

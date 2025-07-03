@@ -95,8 +95,8 @@ const Footer = () => {
                 {[
                   { name: "Pricing", href: "/" },
                   { name: "FAQs", href: "/" },
-                  { name: "How it works", href: "/" },
-                  { name: "Blog", href: "/" },
+                  // { name: "How it works", href: "/" },
+                  // { name: "Blog", href: "/" },
                 ].map((link, index) => (
                   <li key={index} className="mt-[15px]">
                     <a
@@ -107,16 +107,17 @@ const Footer = () => {
                     </a>
                   </li>
                 ))}
-                {/* {pages?.map((page, idx) => (
-                  <li key={idx}>
+                {/* 🔥 Dynamic Links */}
+                {pages?.dynamic_pages?.map((page) => (
+                  <li key={page.id} className="mt-[15px]">
                     <Link
-                      to={`/page/${page.page_slug}`}
-                      className="hover:underline hover:text-white transition"
+                      to={`/page/${page.slug}`}
+                      className="text-[15px] font-normal hover:font-semibold hover:text-white/80"
                     >
-                      {page.page_title}
+                      {page.title}
                     </Link>
                   </li>
-                ))} */}
+                ))}
                 <div></div>
               </ul>
             </div>

@@ -1,5 +1,6 @@
 import ExchangeProductDetails from "@/components/dashboard/shared/exchange-product-details";
 import UpdateDetails from "@/components/dashboard/shared/update-details";
+import DynamicPage from "@/components/main/shared/dynamicpage";
 import DashboardLayout from "@/layout/dashlayout/DashboardLayout";
 import Mainlayout from "@/layout/mainlayout";
 import Createnewpassword from "@/pages/auth/createnewpassword";
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
     element: <Mainlayout />,
     children: [
       { index: true, element: <Home /> },
+      { path: "/page/:slug", element: <DynamicPage /> },
       {
         path: "browse",
         element: <Browse />,

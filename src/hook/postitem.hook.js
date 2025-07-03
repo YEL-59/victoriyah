@@ -50,8 +50,15 @@ export const useCreateProduct = () => {
       navigate("/"); // Adjust the path if needed
     },
     onError: (error) => {
-      const message = error?.response?.data?.message || error.message;
-      toast.error(message || "Failed to create product");
+      const status = error?.response?.status;
+      const message =
+        status === 401
+          ? "Login first"
+          : error?.response?.data?.message ||
+            error.message ||
+            "Failed to create product";
+
+      toast.error(message);
     },
   });
 
