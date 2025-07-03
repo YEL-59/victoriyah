@@ -32,7 +32,7 @@ const Footer = () => {
         <div className="flex flex-col justify-between sm:px-[18px] md:flex-row md:px-10">
           {/* Logo and description */}
           <div className="md:w-[316px]">
-            <img src={pages?.logo} alt="" />
+            <img src={pages?.logo} alt="" className="h-12" />
             <p className="mt-[18px] text-[15px] font-normal text-white/80">
               <span
                 dangerouslySetInnerHTML={{
