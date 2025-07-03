@@ -100,7 +100,7 @@ const Productdetails = () => {
 
           <div className="flex justify-between mb-6">
             <h2 className="text-xl sm:text-2xl lg:text-3xl leading-[132%] font-semibold tracking-[-0.48px]">
-              {data?.product?.description || "Product Title"}
+              {data?.product?.name || "Product Title"}
             </h2>
             {/* <h2 className="text-lg sm:text-xl lg:text-2xl leading-[132%] font-semibold tracking-[-0.48px]">
               $ 299.99
@@ -116,7 +116,7 @@ const Productdetails = () => {
                         <img
                           src={image}
                           alt="product"
-                          className="w-full object-cover h-[400px] shrink-0"
+                          className="w-full object-cover h-full rounded-xl shrink-0"
                         />
                       </div>
                     </CarouselItem>
@@ -237,7 +237,7 @@ const Productdetails = () => {
                   }}
                 />
                 <p className="text-lg font-semibold leading-[132%] tracking-[-0.36px] mt-3">
-                  Ad ID: {data?.product?.id || "123456"}
+                  Product ID: {data?.product?.id || "123456"}
                 </p>
               </div>
             </div>
