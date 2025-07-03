@@ -1,6 +1,8 @@
 import ExchangeProductDetails from "@/components/dashboard/shared/exchange-product-details";
 import UpdateDetails from "@/components/dashboard/shared/update-details";
+import CancelPage from "@/components/main/shared/canclepage";
 import DynamicPage from "@/components/main/shared/dynamicpage";
+import SuccessPage from "@/components/main/shared/paymentsuccess";
 import DashboardLayout from "@/layout/dashlayout/DashboardLayout";
 import Mainlayout from "@/layout/mainlayout";
 import Createnewpassword from "@/pages/auth/createnewpassword";
@@ -140,5 +142,13 @@ export const router = createBrowserRouter([
   {
     path: "/createnewpassword",
     element: <Createnewpassword />,
+  },
+  {
+    path: "payment-success",
+    element: <SuccessPage />,
+  },
+  {
+    path: "payment-canceled",
+    element: <CancelPage />,
   },
 ]);
