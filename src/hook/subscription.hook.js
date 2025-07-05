@@ -1,6 +1,7 @@
 import { axiosPrivate } from "@/lib/axios.config";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 export const useGetSubscriptionPlan = () => {
   const { data, isLoading } = useQuery({
@@ -14,6 +15,7 @@ export const useGetSubscriptionPlan = () => {
 };
 
 export const useCheckoutSubscription = () => {
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: async (id) => {
       console.log("Checking out plan:", id);
@@ -32,18 +34,22 @@ export const useCheckoutSubscription = () => {
         window.location.href = data.data.url;
       } else {
         // Free plan, show toast
-        toast({
-          title: "Success",
-          description: data.message || "Free plan activated.",
-        });
+        // toast({
+        //   title: "Success",
+        //   description: data.message || "Free plan activated.",
+        // });
+        toast.success(data?.message || "Free plan activated.");
+        navigate("/uploaditem");
       }
     },
     onError: (err) => {
-      toast({
-        title: "Error",
-        description: err.response?.data?.message || "Something went wrong.",
-        variant: "destructive",
-      });
+      // toast({
+      //   title: "Error",
+      //   description: err.response?.data?.message || "Something went wrong.",
+      //   variant: "destructive",
+      // });
+      const message = err.response?.data?.message;
+      toast.error(message || "Something went wrong.");
     },
   });
 };

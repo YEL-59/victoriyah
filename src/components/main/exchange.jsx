@@ -136,9 +136,9 @@ function Exchange({ isOpen, onClose, id: requestedProductId }) {
                         <SelectContent>
                           <SelectItem value="new">New</SelectItem>
                           <SelectItem value="used">Used</SelectItem>
-                          <SelectItem value="refurbished">
+                          {/* <SelectItem value="refurbished">
                             Refurbished
-                          </SelectItem>
+                          </SelectItem> */}
                         </SelectContent>
                       </Select>
                     )}

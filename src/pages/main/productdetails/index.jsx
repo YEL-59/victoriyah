@@ -21,8 +21,12 @@ import Exchange from "@/components/main/exchange";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useGetHomeFeaturedDetails } from "@/hook/home.hook";
-import { useGetDynamicPages } from "@/hook/dynamic-page.hook";
+import {
+  useGetDynamicPages,
+  useShareProductLink,
+} from "@/hook/dynamic-page.hook";
 import { LucideSquareArrowOutDownRight } from "lucide-react";
+import toast from "react-hot-toast";
 
 const Productdetails = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -44,6 +48,7 @@ const Productdetails = () => {
 
   console.log({ id, fullUrl });
   const { data, isLoading, isError } = useGetHomeFeaturedDetails(id);
+  const { mutate: shareProductLink, isPending } = useShareProductLink();
   const featureddata = data?.suggested;
   console.log("data:*", { featureddata });
   const ownerid = data?.product?.owner?.id;
@@ -69,6 +74,42 @@ const Productdetails = () => {
     facebook: facebook,
     linkedin: linkedin,
     youtube: youtube,
+  };
+
+  const socialShareLinks = {
+    facebook: (url) =>
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    twitter: (url) =>
+      `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`,
+    linkedin: (url) =>
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+        url
+      )}`,
+    whatsapp: (url) =>
+      `https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`,
+    telegram: (url) => `https://t.me/share/url?url=${encodeURIComponent(url)}`,
+    pinterest: (url) =>
+      `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}`,
+  };
+
+  const handleShareClick = (platform) => {
+    const productId = data?.product?.id;
+    shareProductLink(
+      { productId, platform },
+      {
+        onSuccess: ({ platform, shareUrl }) => {
+          const fullUrl = socialShareLinks[platform]?.(shareUrl);
+          if (fullUrl) {
+            window.open(fullUrl, "_blank", "noopener,noreferrer");
+          } else {
+            toast.error("Unsupported platform");
+          }
+        },
+        onError: (err) => {
+          toast.error(err?.message || "Something went wrong");
+        },
+      }
+    );
   };
   return (
     <>
@@ -248,12 +289,13 @@ const Productdetails = () => {
                 </h2>
                 <div className="flex gap-5 items-center">
                   {pages?.social_media?.map((item) => (
-                    <a
+                    <button
                       key={item.id}
                       className="group p-3 rounded-[38px] bg-[#B5F169] flex items-center justify-center"
-                      target="_blank"
-                      href={item.profile_link}
-                      rel="noopener noreferrer"
+                      onClick={() =>
+                        handleShareClick(item.social_media.toLowerCase())
+                      }
+                      disabled={isPending}
                     >
                       <img
                         alt={`${item.social_media} icon`}
@@ -261,22 +303,28 @@ const Productdetails = () => {
                         className="color-transparent group-hover:scale-110"
                         src={iconMap[item.social_media.toLowerCase()]}
                       />
-                    </a>
+                    </button>
                   ))}
                 </div>
               </div>
             </div>
           </div>
-          <div className="mt-4 lg:mt-6 xl:mt-8 mb-4 w-full">
-            <h1 className="text-2xl sm:text-3xl lg:text-[28px] xl:text-[32px] leading-[164%] tracking-[-0.32px] font-semibold mb-6">
-              You may also like...
-            </h1>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-              {featureddata?.slice(0, 8)?.map((item) => (
-                <FeaturedCard key={item.id} {...item} />
-              ))}
+          {featureddata?.length > 0 ? (
+            <div className="mt-4 lg:mt-6 xl:mt-8 mb-4 w-full">
+              <h1 className="text-2xl sm:text-3xl lg:text-[28px] xl:text-[32px] leading-[164%] tracking-[-0.32px] font-semibold mb-6">
+                You may also like...
+              </h1>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                {featureddata.slice(0, 8).map((item) => (
+                  <FeaturedCard key={item.id} {...item} />
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="text-gray-500 text-center py-8">
+              No matched data available.
+            </div>
+          )}
         </div>
         {/* exchange modal open */}
         <Exchange

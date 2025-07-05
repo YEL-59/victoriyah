@@ -57,7 +57,13 @@ const Postcard = ({
     <>
       <Card className="max-w-lg mx-auto pb-2" onClick={onCardClick}>
         <CardHeader className="p-2">
-          <img src={image} alt={name} className="w-full h-auto rounded-t-lg" />
+          <div className="w-full h-[320px] overflow-hidden rounded-t-lg">
+            <img
+              src={image}
+              alt={name}
+              className="w-full h-full object-cover"
+            />
+          </div>
           <Button className="bg-white text-[#457B10] border border-primary rounded-md w-[150px] font-normal relative -top-[25px] mx-auto">
             Condition: {condition}
           </Button>
@@ -65,7 +71,7 @@ const Postcard = ({
 
         <div className="flex justify-between flex-wrap gap-2 items-center px-4">
           <CardContent>
-            <Link to="/item-details">
+            <Link to="#">
               {" "}
               <p className="text-base sm:text-[20px] font-semibold text-foreground">
                 {name}

@@ -41,7 +41,7 @@ const SuccessPage = () => {
         <div className="flex flex-col sm:flex-row justify-center gap-6">
           <Button
             className="w-full sm:w-auto bg-[#B5F169] text-black font-semibold transition hover:bg-[#A1E65C] focus:ring-4 focus:ring-green-300"
-            onClick={() => navigate("/browse")}
+            onClick={() => navigate("/uploaditem")}
           >
             Browse Products
           </Button>

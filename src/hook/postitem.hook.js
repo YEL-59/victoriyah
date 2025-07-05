@@ -47,7 +47,7 @@ export const useCreateProduct = () => {
 
     onSuccess: (data) => {
       toast.success(data.message || "Product created successfully");
-      navigate("/"); // Adjust the path if needed
+      navigate("/");
     },
     onError: (error) => {
       const status = error?.response?.status;
@@ -59,6 +59,9 @@ export const useCreateProduct = () => {
             "Failed to create product";
 
       toast.error(message);
+      if (status === 403) {
+        navigate("/payment");
+      }
     },
   });
 

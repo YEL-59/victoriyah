@@ -8,7 +8,7 @@ export const useGetHome = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["home"],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/home`);
+      const res = await axiosPrivate.get(`/home`);
       return res.data;
     },
   });
@@ -38,7 +38,7 @@ export const useGetHomeFeatured = (page) => {
     keepPreviousData: true,
     queryFn: async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const res = await axiosPublic.get(`/home?page=${page}`);
+      const res = await axiosPrivate.get(`/home?page=${page}`);
       return res.data?.data || {};
     },
   });
@@ -110,6 +110,10 @@ export const useToggleFavourite = () => {
       // Invalidate related queries to refetch fresh data and update UI:
       queryClient.invalidateQueries(["dashboard_favourites"]);
       queryClient.invalidateQueries({
+        queryKey: ["featured_list"],
+        exact: false,
+      });
+      queryClient.invalidateQueries({
         queryKey: ["home_featured"],
         exact: false,
       });
@@ -124,6 +128,7 @@ export const useToggleFavourite = () => {
   return { mutate, isPending };
 };
 export const useGetDashboardFavourites = (page = 1) => {
+  //const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["dashboard_favourites", page],
     queryFn: async () => {
@@ -135,6 +140,12 @@ export const useGetDashboardFavourites = (page = 1) => {
         pagination: res.data?.data?.pagination || {},
       };
     },
+    // onSuccess: (data) => {
+    //   toast.success(data.message || "Removed from favorites");
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["featured_list"],
+    //   });
+    // },
   });
 };
 
@@ -228,7 +239,7 @@ export const useUpdateProduct = () => {
     onSuccess: (data) => {
       toast.success(data.message || "Product updated successfully");
       queryClient.invalidateQueries({
-        queryKey: ["home_featured"],
+        queryKey: ["featured_list"],
         exact: false,
       });
     },
