@@ -16,7 +16,7 @@ export const useGetHome = () => {
   const homeData = data?.data || [];
   const heroData = homeData?.hero_section || {};
   const featuredData = homeData?.featured_items || [];
-  const serviceData = homeData?.service_section || {};
+  const serviceData = homeData?.service_section || [];
   const howItWorksData = homeData?.how_it_works || {};
   const tradingData = homeData?.trading_section || {};
   return {
@@ -178,6 +178,19 @@ export const useSearchProduct = (query, page = 1) => {
       };
     },
     enabled: !!query,
+  });
+};
+
+export const useSearchCategorieswise = (categoryId, page, sortBy) => {
+  return useQuery({
+    queryKey: ["products", categoryId, page, sortBy],
+    queryFn: async () => {
+      const res = await axiosPublic.get(
+        `/home/products/filter?product_category_id=${categoryId}&page=${page}&sort_by=${sortBy}`
+      );
+      return res.data;
+    },
+    enabled: !!categoryId,
   });
 };
 

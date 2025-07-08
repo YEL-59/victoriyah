@@ -57,7 +57,7 @@ const Postcard = ({
     <>
       <Card className="max-w-lg mx-auto pb-2" onClick={onCardClick}>
         <CardHeader className="p-2">
-          <div className="w-full h-[320px] overflow-hidden rounded-t-lg">
+          <div className="w-[270px] h-[320px] overflow-hidden rounded-t-lg">
             <img
               src={image}
               alt={name}

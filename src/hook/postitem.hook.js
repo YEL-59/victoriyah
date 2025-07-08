@@ -60,7 +60,10 @@ export const useCreateProduct = () => {
 
       toast.error(message);
       if (status === 403) {
-        navigate("/payment");
+        toast.error(message || "Post limit reached. Please upgrade your plan.");
+        setTimeout(() => {
+          navigate("/payment");
+        }, 1000);
       }
     },
   });

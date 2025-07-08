@@ -122,9 +122,9 @@ const SignIn = () => {
           </Form>
           <p className="text-foreground text-lg text-center mt-8 font-normal">
             Don’t have account?
-            <a href="/sign-up" className="underline">
+            <Link to="/sign-up" className="underline">
               Sign Up
-            </a>
+            </Link>
           </p>
         </CardContent>
       </Card>
