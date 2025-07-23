@@ -48,8 +48,8 @@ importers:
         specifier: ^2.0.6
         version: 2.0.6
       axios:
-        specifier: ^1.9.0
-        version: 1.9.0
+        specifier: ^1.11.0
+        version: 1.11.0
       card:
         specifier: ^2.5.4
         version: 2.5.4
@@ -1761,8 +1761,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios@1.9.0:
-    resolution: {integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==}
+  axios@1.11.0:
+    resolution: {integrity: sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==}
 
   babel-runtime@6.26.0:
     resolution: {integrity: sha512-ITKNuq2wKlW1fJg9sSW52eepoYgZBggvOAHC0u/CYu/qxQ9EVzThCgR69BnSXLHjy2f7SY5zaQ4yt7H9ZVxY2g==}
@@ -2325,8 +2325,8 @@ packages:
     resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
     engines: {node: '>=14'}
 
-  form-data@4.0.3:
-    resolution: {integrity: sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==}
+  form-data@4.0.4:
+    resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
     engines: {node: '>= 6'}
 
   form@0.2.5:
@@ -2380,6 +2380,10 @@ packages:
 
   get-intrinsic@1.2.7:
     resolution: {integrity: sha512-VW6Pxhsrk0KAOqs3WEd0klDiF/+V7gQOpAvY1jVU/LHmaD/kQO4523aiJuikX/QAKYiW6x8Jh+RJej1almdtCA==}
+    engines: {node: '>= 0.4'}
+
+  get-intrinsic@1.3.0:
+    resolution: {integrity: sha512-9fSjSaos/fRIVIp+xSJlE6lfwhES7LNtKaCBIamHsjr2na1BiABJPo0mOjjz8GJDURarmCPGqaiVg5mfjb98CQ==}
     engines: {node: '>= 0.4'}
 
   get-nonce@1.0.1:
@@ -5737,10 +5741,10 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  axios@1.9.0:
+  axios@1.11.0:
     dependencies:
       follow-redirects: 1.15.9
-      form-data: 4.0.3
+      form-data: 4.0.4
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
@@ -6224,7 +6228,7 @@ snapshots:
   es-set-tostringtag@2.1.0:
     dependencies:
       es-errors: 1.3.0
-      get-intrinsic: 1.2.7
+      get-intrinsic: 1.3.0
       has-tostringtag: 1.0.2
       hasown: 2.0.2
 
@@ -6508,7 +6512,7 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  form-data@4.0.3:
+  form-data@4.0.4:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
@@ -6560,6 +6564,19 @@ snapshots:
   get-caller-file@2.0.5: {}
 
   get-intrinsic@1.2.7:
+    dependencies:
+      call-bind-apply-helpers: 1.0.2
+      es-define-property: 1.0.1
+      es-errors: 1.3.0
+      es-object-atoms: 1.1.1
+      function-bind: 1.1.2
+      get-proto: 1.0.1
+      gopd: 1.2.0
+      has-symbols: 1.1.0
+      hasown: 2.0.2
+      math-intrinsics: 1.1.0
+
+  get-intrinsic@1.3.0:
     dependencies:
       call-bind-apply-helpers: 1.0.2
       es-define-property: 1.0.1
