@@ -105,7 +105,7 @@ const Browse = () => {
       return 0;
     });
   return (
-    <div className="bg-background py-20">
+    <div className="bg-background py-20 px-5">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center py-6 gap-4 md:gap-0">
         <div className="relative w-[350px] h-[40px]">
           <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -146,8 +146,8 @@ const Browse = () => {
                 <SelectItem value="alphabetical_desc">
                   Alphabetically, Z-A
                 </SelectItem>
-                <SelectItem value="newest">Newest First</SelectItem>
-                <SelectItem value="oldest">Oldest First</SelectItem>
+                {/* <SelectItem value="newest">Newest First</SelectItem>
+                <SelectItem value="oldest">Oldest First</SelectItem> */}
               </SelectContent>
             </Select>
           </div>
@@ -206,11 +206,11 @@ const Browse = () => {
                     onClick={() => handleCategoryClick(category.id)}
                   >
                     <div className="flex gap-2 items-center">
-                      <img
+                      {/* <img
                         src={category.image}
                         alt={category.name}
                         className="w-6 h-6"
-                      />
+                      /> */}
                       <h3 className="text-foreground text-[18px] font-normal leading-[164%]">
                         {category.name}
                       </h3>
@@ -243,8 +243,8 @@ const Browse = () => {
                           name={item.name}
                           image={item.image}
                           condition={item.condition}
-                          location={item.address}
-                          time={item.created_at}
+                          address={item.address}
+                          created_time={item.created_at}
                           isFavorited={item.is_favorite}
                         />
                       ))}

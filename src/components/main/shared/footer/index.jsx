@@ -1,50 +1,48 @@
-import logo from "@/assets/Logo.png";
 import facebook from "@/assets/icons/facebook-icon.svg";
 import linkedin from "@/assets/icons/linkedin-icon.svg";
 import youtube from "@/assets/icons/youtube-icon.svg";
 import footerUpper from "@/assets/icons/footer-upper.svg";
 import footerLower from "@/assets/icons/footer-lower.svg";
-import Locationicon from "@/assets/icons/location-icon";
+
 import { Link } from "react-router";
 import { useGetDynamicPages } from "@/hook/dynamic-page.hook";
 
 const Footer = () => {
   const { data: pages } = useGetDynamicPages();
-  console.log({
-    pages,
-  });
+
   const iconMap = {
-    facebook: facebook,
-    linkedin: linkedin,
-    youtube: youtube,
+    facebook,
+    linkedin,
+    youtube,
   };
+
   return (
-    <div className=" bg-[#080D1E] pt-16 pb-8 px-4 relative overflow-hidden">
-      {/* Pseudo-elements for the shadow */}
+    <div className="bg-[#080D1E] pt-16 pb-8 px-4 relative overflow-hidden">
+      {/* Background decorative SVGs */}
       <div className="absolute top-0 left-0 z-[4]">
-        <img src={footerUpper} />
+        <img src={footerUpper} alt="footer upper" />
       </div>
       <div className="absolute bottom-0 right-0 z-[4] rotate-180">
-        <img src={footerLower} />
+        <img src={footerLower} alt="footer lower" />
       </div>
 
-      <div className="mx-auto container relative z-10">
-        <div className="flex flex-col justify-between sm:px-[18px] md:flex-row md:px-10">
+      <div className="relative z-10 max-w-[1300px] mx-auto">
+        <div className="flex flex-wrap gap-y-10 justify-between sm:px-4 md:px-10">
           {/* Logo and description */}
-          <div className="md:w-[316px]">
-            <img src={pages?.logo} alt="" className="h-12" />
-            <p className="mt-[18px] text-[15px] font-normal text-white/80">
+          <div className="w-full sm:w-1/2 lg:w-[316px]">
+            <img src={pages?.logo} alt="logo" className="h-12" />
+            <p className="mt-4 text-[15px] text-white/80 leading-relaxed">
               <span
                 dangerouslySetInnerHTML={{
                   __html: pages?.description || "No description available.",
                 }}
               />
             </p>
-            <div className="mt-[18px] flex gap-4">
+            <div className="mt-4 flex gap-3">
               {pages?.social_media?.map((item) => (
                 <a
                   key={item.id}
-                  className="group p-3 rounded-[38px] bg-[#B5F169] flex items-center justify-center"
+                  className="group p-3 rounded-full bg-[#B5F169] flex items-center justify-center transition-transform hover:scale-105"
                   target="_blank"
                   href={item.profile_link}
                   rel="noopener noreferrer"
@@ -52,97 +50,81 @@ const Footer = () => {
                   <img
                     alt={`${item.social_media} icon`}
                     loading="lazy"
-                    className="color-transparent group-hover:scale-110"
                     src={iconMap[item.social_media.toLowerCase()]}
+                    className="w-5 h-5"
                   />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Other sections */}
-          <div className="mt-6 flex w-full flex-col justify-between text-white sm:flex-row md:mt-0 md:max-w-[341px]">
-            <div>
-              <p className="text-[18px] font-medium text-primary leading-normal">
-                Navigation
-              </p>
-              <ul>
-                {[
-                  { name: "Home", href: "/" },
-                  { name: "Browser", href: "" },
-                  { name: "Sell", href: "" },
-                  { name: "About", href: "/" },
-                  { name: "Contact Us", href: "" },
-                ].map((link, index) => (
-                  <li key={index} className="mt-[15px]">
-                    <a
-                      className="text-[15px] font-normal hover:font-semibold hover:text-white/80"
-                      href={link.href}
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* Navigation */}
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-[200px]">
+            <p className="text-[18px] font-medium text-primary">Navigation</p>
+            <ul>
+              {[
+                { name: "Home", href: "/" },
+                { name: "Browser", href: "" },
+                { name: "Sell", href: "" },
+                { name: "About", href: "/" },
+                { name: "Contact Us", href: "" },
+              ].map((link, index) => (
+                <li key={index} className="mt-4">
+                  <a
+                    className="text-[15px] text-white/80 hover:text-white"
+                    href={link.href}
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="mt-6 flex w-full flex-col justify-between text-white sm:flex-row md:mt-0 md:max-w-[341px]">
-            <div>
-              <p className="text-[18px] font-medium text-primary leading-normal">
-                Resources
-              </p>
-              <ul>
-                {[
-                  { name: "Pricing", href: "/" },
-                  { name: "FAQs", href: "/" },
-                  // { name: "How it works", href: "/" },
-                  // { name: "Blog", href: "/" },
-                ].map((link, index) => (
-                  <li key={index} className="mt-[15px]">
-                    <a
-                      className="text-[15px] font-normal hover:font-semibold hover:text-white/80"
-                      href={link.href}
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-                {/* 🔥 Dynamic Links */}
-                {pages?.dynamic_pages?.map((page) => (
-                  <li key={page.id} className="mt-[15px]">
-                    <Link
-                      to={`/page/${page.slug}`}
-                      className="text-[15px] font-normal hover:font-semibold hover:text-white/80"
-                    >
-                      {page.title}
-                    </Link>
-                  </li>
-                ))}
-                <div></div>
-              </ul>
-            </div>
+
+          {/* Resources */}
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-[200px]">
+            <p className="text-[18px] font-medium text-primary">Resources</p>
+            <ul>
+              {[
+                { name: "Pricing", href: "/" },
+                { name: "FAQs", href: "/" },
+              ].map((link, index) => (
+                <li key={index} className="mt-4">
+                  <a
+                    className="text-[15px] text-white/80 hover:text-white"
+                    href={link.href}
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+              {pages?.dynamic_pages?.map((page) => (
+                <li key={page.id} className="mt-4">
+                  <Link
+                    to={`/page/${page.slug}`}
+                    className="text-[15px] text-white/80 hover:text-white"
+                  >
+                    {page.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="mt-6 flex w-full flex-col justify-between text-white sm:flex-row md:mt-0 md:max-w-[341px]">
-            <div>
-              <p className="text-[18px] font-medium text-primary leading-normal">
-                Office Location{" "}
-              </p>
-              <address>
-                {pages?.address || "1234 Street Name, City, State, 12345"}
-              </address>
-              {/* <div className="mt-4 flex gap-2 items-center">
-                <Locationicon />
-                <p className="text-[16px] font-normal text-white/80">
-                  See on Map
-                </p>
-              </div> */}
-            </div>
+
+          {/* Location */}
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-[200px]">
+            <p className="text-[18px] font-medium text-primary">
+              Office Location
+            </p>
+            <address className="text-[15px] mt-4 text-white/80 not-italic leading-relaxed">
+              {pages?.address || "1234 Street Name, City, State, 12345"}
+            </address>
           </div>
         </div>
 
-        {/* Footer bottom */}
-        <div className="mt-[38px] border-t border-white/20 py-4 text-center text-white">
-          <p className="text-[15px] font-normal">
+        {/* Bottom copyright */}
+        <div className="mt-10 border-t border-white/20 pt-4 text-center text-white text-[15px]">
+          <p>
             {pages?.copyright_text || "© 2023 Victoriyah. All rights reserved."}
           </p>
         </div>

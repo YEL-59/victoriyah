@@ -25,6 +25,7 @@ const FeaturedCard = ({
   time = "Just now",
   badgeText = "Swap ",
   isFavorited,
+  created_time,
 }) => {
   const { mutate } = useToggleFavourite();
   const [favourited, setFavourited] = useState(isFavorited);
@@ -84,7 +85,7 @@ const FeaturedCard = ({
           </CardContent>
           <CardContent>
             <p className="text-sm sm:text-base font-normal text-secondary-foreground">
-              {time}
+              {created_time}
             </p>
           </CardContent>
         </div>

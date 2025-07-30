@@ -74,6 +74,7 @@ const Home = () => {
                   key={item.id}
                   isFavorited={item.is_favorite}
                   address={item.address}
+                  created_time={item.created_at}
                   {...item}
                 />
               ))}

@@ -1,6 +1,5 @@
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -9,7 +8,6 @@ import {
 import Righticon from "@/assets/icons/right-icon";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router";
 import {
   useCheckoutSubscription,
   useGetSubscriptionPlan,
