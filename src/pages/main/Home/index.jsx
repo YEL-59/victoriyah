@@ -46,9 +46,9 @@ const Home = () => {
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-foreground">
             Featured Items
           </h1>
-          <p className="bg-transparent border-b-2 text-foreground py-2 px-4 sm:px-6 text-sm sm:text-base lg:text-lg font-normal">
+          {/* <p className="bg-transparent border-b-2 text-foreground py-2 px-4 sm:px-6 text-sm sm:text-base lg:text-lg font-normal">
             Browse all items
-          </p>
+          </p> */}
         </div>
 
         {isError ? (
@@ -74,6 +74,7 @@ const Home = () => {
                   key={item.id}
                   isFavorited={item.is_favorite}
                   address={item.address}
+                  created_time={item.created_at}
                   {...item}
                 />
               ))}

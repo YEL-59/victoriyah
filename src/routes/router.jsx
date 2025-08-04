@@ -1,5 +1,8 @@
 import ExchangeProductDetails from "@/components/dashboard/shared/exchange-product-details";
 import UpdateDetails from "@/components/dashboard/shared/update-details";
+import CancelPage from "@/components/main/shared/canclepage";
+import DynamicPage from "@/components/main/shared/dynamicpage";
+import SuccessPage from "@/components/main/shared/paymentsuccess";
 import DashboardLayout from "@/layout/dashlayout/DashboardLayout";
 import Mainlayout from "@/layout/mainlayout";
 import Createnewpassword from "@/pages/auth/createnewpassword";
@@ -26,6 +29,7 @@ import PaymentDetails from "@/pages/main/paymentDetails";
 import Productdetails from "@/pages/main/productdetails/index.jsx";
 import Sell from "@/pages/main/sell";
 import { createBrowserRouter } from "react-router";
+import ProtectedRoute from "./protectedroute";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +37,7 @@ export const router = createBrowserRouter([
     element: <Mainlayout />,
     children: [
       { index: true, element: <Home /> },
+      { path: "/page/:slug", element: <DynamicPage /> },
       {
         path: "browse",
         element: <Browse />,
@@ -55,53 +60,86 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  // {
+  //   path: "/dashboard",
+  //   element: <DashboardLayout />,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <MyPostItems />,
+  //     },
+  //     {
+  //       path: "exchange-product-details",
+  //       element: <ExchangeProductDetails />,
+  //     },
+  //     {
+  //       path: "exchange-product-update-details",
+  //       element: <UpdateDetails />,
+  //     },
+  //     {
+  //       path: "exchange-request",
+  //       element: <ExchangeRequest />,
+  //     },
+  //     {
+  //       path: "favourite",
+  //       element: <Favourite />,
+  //     },
+  //     {
+  //       path: "messages",
+  //       element: <Messages />,
+  //     },
+  //     {
+  //       path: "notification",
+  //       element: <Notification />,
+  //     },
+  //     {
+  //       path: "setting",
+  //       element: <Setting />,
+  //       children: [
+  //         {
+  //           index: true,
+  //           element: <General />,
+  //         },
+  //         {
+  //           path: "general",
+  //           element: <General />,
+  //         },
+  //         {
+  //           path: "privacy",
+  //           element: <Privacy />,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
   {
-    path: "/dashboard",
-    element: <DashboardLayout />,
+    element: <ProtectedRoute />,
     children: [
       {
-        index: true,
-        element: <MyPostItems />,
-      },
-      {
-        path: "exchange-product-details",
-        element: <ExchangeProductDetails />,
-      },
-      {
-        path: "exchange-product-update-details",
-        element: <UpdateDetails />,
-      },
-      {
-        path: "exchange-request",
-        element: <ExchangeRequest />,
-      },
-      {
-        path: "favourite",
-        element: <Favourite />,
-      },
-      {
-        path: "messages",
-        element: <Messages />,
-      },
-      {
-        path: "notification",
-        element: <Notification />,
-      },
-      {
-        path: "setting",
-        element: <Setting />,
+        path: "/dashboard",
+        element: <DashboardLayout />,
         children: [
+          { index: true, element: <MyPostItems /> },
           {
-            index: true,
-            element: <General />,
+            path: "exchange-product-details",
+            element: <ExchangeProductDetails />,
           },
           {
-            path: "general",
-            element: <General />,
+            path: "exchange-product-update-details",
+            element: <UpdateDetails />,
           },
+          { path: "exchange-request", element: <ExchangeRequest /> },
+          { path: "favourite", element: <Favourite /> },
+          { path: "messages", element: <Messages /> },
+          { path: "notification", element: <Notification /> },
           {
-            path: "privacy",
-            element: <Privacy />,
+            path: "setting",
+            element: <Setting />,
+            children: [
+              { index: true, element: <General /> },
+              { path: "general", element: <General /> },
+              { path: "privacy", element: <Privacy /> },
+            ],
           },
         ],
       },
@@ -138,5 +176,13 @@ export const router = createBrowserRouter([
   {
     path: "/createnewpassword",
     element: <Createnewpassword />,
+  },
+  {
+    path: "payment-success",
+    element: <SuccessPage />,
+  },
+  {
+    path: "payment-canceled",
+    element: <CancelPage />,
   },
 ]);

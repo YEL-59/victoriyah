@@ -1,5 +1,5 @@
 import { axiosPrivate, axiosPublic } from "@/lib/axios.config";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetDynamicPages = () => {
   const result = useQuery({
@@ -26,4 +26,22 @@ export const useGetSinglePage = (slug) => {
 
   const data = result?.data?.data || {};
   return { ...result, data };
+};
+
+export const useShareProductLink = () => {
+  return useMutation({
+    mutationFn: async ({ productId, platform }) => {
+      const { data } = await axiosPrivate.get(
+        `/home/product/share/${productId}`
+      );
+      if (!data?.status || !data?.data?.share_url) {
+        throw new Error(data.message || "Failed to generate share link");
+      }
+
+      return {
+        platform,
+        shareUrl: data.data.share_url,
+      };
+    },
+  });
 };
