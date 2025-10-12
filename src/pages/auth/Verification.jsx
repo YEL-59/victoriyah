@@ -17,9 +17,19 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useMatchOtp } from "@/hook/auth.hook";
+import { useLocation } from "react-router";
 
 const Verification = () => {
   const { form, matchOtp } = useMatchOtp();
+  const location = useLocation();
+  const email = location?.state?.email || "";
+
+  console.log("Email from previous page:", email);
+  function maskEmail(email) {
+    const [name, domain] = email.split("@");
+    if (!name || !domain) return email;
+    return `${name.slice(0, 2)}${"*".repeat(name.length - 2)}@${domain}`;
+  }
 
   const onSubmit = (data) => {
     matchOtp(data);
@@ -33,7 +43,8 @@ const Verification = () => {
           <div className="text-start mb-6">
             <h1 className="text-4xl font-bold">Enter the verification code</h1>
             <p className="text-sm text-gray-600">
-              We sent a code to ha**********@gmail.com
+              {" "}
+              We sent a code to {email ? maskEmail(email) : "your email"}.
             </p>
           </div>
           <Form {...form}>

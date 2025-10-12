@@ -245,9 +245,9 @@ const SignUp = () => {
           </Form>
           <p className="text-foreground text-lg text-center mt-8 font-normal">
             Already have an account?{" "}
-            <a href="/sign-in" className="underline">
+            <Link to="/sign-in" className="underline">
               Sign In
-            </a>
+            </Link>
           </p>
         </CardContent>
       </Card>
