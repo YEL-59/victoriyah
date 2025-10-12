@@ -26,9 +26,10 @@ export const useSignUp = () => {
       email: "",
       password: "",
       phone_number: "",
-      address: "",
       password_confirmation: "",
       terms_and_conditions: "",
+      state: "",
+      city: "",
     },
   });
 

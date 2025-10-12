@@ -1,40 +1,69 @@
 import { z } from "zod";
 
 //const ukMobileRegex = /^(?:\+44|0)7\d{9}$/;
+// export const signUpSchema = z
+//   .object({
+//     name: z.string().min(1, "First name is required"),
+
+//     email: z.string().min(1, "Email is required").email("Invalid email"),
+//     phone_number: z.preprocess((val) => {
+//       if (typeof val === "string") {
+//         // Remove spaces, hyphens, parentheses
+//         let cleaned = val.replace(/[\s\-()]/g, "");
+
+//         // If starts with just 10 digits, add +1
+//         if (/^\d{10}$/.test(cleaned)) {
+//           cleaned = "+1" + cleaned;
+//         }
+
+//         // If starts with 1, add +
+//         if (/^1\d{10}$/.test(cleaned)) {
+//           cleaned = "+" + cleaned;
+//         }
+
+//         return cleaned;
+//       }
+//       return val;
+//     }, z.string().regex(/^\+1\d{10}$/, "Invalid US phone number (must be 10 digits, with optional +1)")),
+//     address: z.string().min(1, "Address is required"),
+//     password: z
+//       .string()
+//       .min(1, "Password is required")
+//       .min(8, "Password must be at least 8 characters long"),
+//     password_confirmation: z.string().min(1, "Confirm Password is required"),
+
+//     terms_and_conditions: z
+//       .boolean()
+//       .refine((val) => val === true, "agree to the Terms & Conditions"),
+//   })
+//   .refine((data) => data.password === data.password_confirmation, {
+//     path: ["password_confirmation"],
+//     message: "Passwords do not match",
+//   });
 export const signUpSchema = z
   .object({
-    name: z.string().min(1, "First name is required"),
-
+    name: z.string().min(1, "Full name is required"),
     email: z.string().min(1, "Email is required").email("Invalid email"),
     phone_number: z.preprocess((val) => {
       if (typeof val === "string") {
-        // Remove spaces, hyphens, parentheses
         let cleaned = val.replace(/[\s\-()]/g, "");
-
-        // If starts with just 10 digits, add +1
-        if (/^\d{10}$/.test(cleaned)) {
-          cleaned = "+1" + cleaned;
-        }
-
-        // If starts with 1, add +
-        if (/^1\d{10}$/.test(cleaned)) {
-          cleaned = "+" + cleaned;
-        }
-
+        if (/^\d{10}$/.test(cleaned)) cleaned = "+1" + cleaned;
+        if (/^1\d{10}$/.test(cleaned)) cleaned = "+" + cleaned;
         return cleaned;
       }
       return val;
     }, z.string().regex(/^\+1\d{10}$/, "Invalid US phone number (must be 10 digits, with optional +1)")),
-    address: z.string().min(1, "Address is required"),
-    password: z
-      .string()
-      .min(1, "Password is required")
-      .min(8, "Password must be at least 8 characters long"),
+    //address: z.string().optional().min(1, "Address is required"), // or .optional()
+    state: z.string().optional(),
+    city: z.string().optional(),
+    password: z.string().min(8, "Password must be at least 8 characters long"),
     password_confirmation: z.string().min(1, "Confirm Password is required"),
-
     terms_and_conditions: z
       .boolean()
-      .refine((val) => val === true, "agree to the Terms & Conditions"),
+      .refine(
+        (val) => val === true,
+        "You must agree to the Terms & Conditions"
+      ),
   })
   .refine((data) => data.password === data.password_confirmation, {
     path: ["password_confirmation"],

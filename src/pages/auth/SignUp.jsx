@@ -12,7 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import * as z from "zod";
 import singupImg from "../../assets/signup.png";
 import { Link } from "react-router";
 import { useSignUp } from "@/hook/auth.hook";
@@ -22,8 +21,8 @@ import { useState } from "react";
 const SignUp = () => {
   const { form, mutate } = useSignUp();
   const onSubmit = (data) => {
-    mutate(data);
     console.log(data);
+    mutate(data);
   };
   //state
   const [showPassword, setShowPassword] = useState(false);
@@ -105,24 +104,7 @@ const SignUp = () => {
                   </FormItem>
                 )}
               />
-              {/* <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>General Address <span className="text-red-500 text-xs">* trading location (we need to know where you are located to be able to trade with you)</span></FormLabel>
-                    <FormControl>
-                      <Textarea
-                        className="border bg-white"
-                        type="text"
-                        placeholder="Type your address here."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
+
               <div className="flex justify-between items-center">
                 <div>
                   <FormField
