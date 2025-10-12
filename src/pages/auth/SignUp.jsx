@@ -18,10 +18,9 @@ import { Link } from "react-router";
 import { useSignUp } from "@/hook/auth.hook";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
 
 const SignUp = () => {
-  const { form, mutate, isPending } = useSignUp();
+  const { form, mutate } = useSignUp();
   const onSubmit = (data) => {
     mutate(data);
     console.log(data);
@@ -106,12 +105,12 @@ const SignUp = () => {
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel> Address</FormLabel>
+                    <FormLabel>General Address <span className="text-red-500 text-xs">* trading location (we need to know where you are located to be able to trade with you)</span></FormLabel>
                     <FormControl>
                       <Textarea
                         className="border bg-white"
@@ -123,7 +122,47 @@ const SignUp = () => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
+              <div className="flex justify-between items-center">
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>City</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter your city"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="state"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>State</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter your state"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
               <FormField
                 control={form.control}
                 name="password"
@@ -200,7 +239,15 @@ const SignUp = () => {
                       />
                     </FormControl>
                     <FormLabel className="text-[12px]!important">
-                      I agree to the Terms & Conditions
+                      I agree to the{" "}
+                      <Link
+                        to="/page/terms-and-conditions"
+                        className="text-blue-600 hover:text-blue-800 underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Terms & Conditions
+                      </Link>
                     </FormLabel>
                     <FormMessage />
                   </FormItem>
