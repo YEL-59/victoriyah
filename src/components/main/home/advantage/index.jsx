@@ -5,7 +5,7 @@ function Advantage() {
   console.log({ serviceData, isLoading, isError });
   return (
     <div className="bg-primary text-foreground py-28">
-      <div className="w-[90%] sm:w-[80%] lg:w-[60%] mx-auto flex items-center justify-center flex-col sm:flex-row gap-8">
+      <div className="container  mx-auto flex items-center justify-center flex-col sm:flex-row gap-8">
         {isLoading ? (
           <p className="text-center text-red-500">Loading...</p>
         ) : isError ? (

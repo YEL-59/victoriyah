@@ -29,4 +29,15 @@ axiosPrivate.interceptors.request.use(
   }
 );
 
+// axiosPrivate.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response?.status === 401 || error.response?.status === 403) {
+//       localStorage.removeItem("token");
+//       window.location.href = "/sign-in"; // force redirect
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+
 export { axiosPrivate, axiosPublic };

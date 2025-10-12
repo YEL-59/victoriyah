@@ -3,13 +3,13 @@ import { useGetHome } from "@/hook/home.hook";
 import { Link } from "react-router";
 
 const StartTrading = () => {
-  const { tradingData, isLoading } = useGetHome();
+  const { tradingData } = useGetHome();
 
   return (
-    <div className="bg-primary text-foreground py-28">
+    <div className="bg-primary text-foreground py-10 2xl:py-28">
       <div className="w-[90%] sm:w-[80%] lg:w-[60%] mx-auto flex flex-col gap-8">
         <div className="w-full sm:w-1/2 mx-auto text-center gap-4">
-          <h1 className="text-center text-[32px] sm:text-[40px] lg:text-[48px] font-bold leading-[132%] tracking-[-0.48px] text-foreground">
+          <h1 className="text-center text-[32px] sm:text-[40px] 2xl:text-[48px] font-bold leading-[132%] tracking-[-0.48px] text-foreground">
             {tradingData?.title || "Start Trading Now!"}
           </h1>
           <p

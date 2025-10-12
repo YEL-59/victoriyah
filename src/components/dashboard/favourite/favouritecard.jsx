@@ -59,11 +59,11 @@ const Favouritecard = ({
               {badgeText}
             </Badge>
           </CardContent>
-          <CardContent>
+          {/* <CardContent>
             <Badge className="bg-primary text-foreground  px-5 rounded-full text-sm font-[600px] sm:text-md">
               {badgeText}
             </Badge>
-          </CardContent>
+          </CardContent> */}
         </div>
         <div className="flex justify-between items-center mt-5 ">
           <CardFooter>

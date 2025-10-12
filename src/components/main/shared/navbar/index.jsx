@@ -11,12 +11,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CircleUserRound } from "lucide-react";
 import { useSignout } from "@/hook/auth.hook";
+import { useGetDynamicPages } from "@/hook/dynamic-page.hook";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const { mutate: signout, isPending } = useSignout();
+
+  const { data: pages } = useGetDynamicPages();
+  console.log({
+    pages,
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -50,7 +56,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center px-4 md:px-8">
         {/* Logo */}
         <Link to="/">
-          <img src={logo} alt="Logo" className="h-12" />
+          <img src={pages?.logo} alt="" className="h-12" />
         </Link>
 
         {/* Desktop Menu */}

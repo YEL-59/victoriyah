@@ -36,7 +36,7 @@ function ExchangeProductDetails({ isOpen, onClose, item }) {
               <p className="text-[#2F2F2F]">{product.owner.phone}</p>
             </div>
             <div>
-              <p className="text-green-400 text-lg">Phone</p>
+              <p className="text-green-400 text-lg">Address</p>
               <p className="text-[#2F2F2F]">{product.owner.address}</p>
             </div>
 

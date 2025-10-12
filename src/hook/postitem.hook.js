@@ -47,11 +47,24 @@ export const useCreateProduct = () => {
 
     onSuccess: (data) => {
       toast.success(data.message || "Product created successfully");
-      navigate("/"); // Adjust the path if needed
+      navigate("/");
     },
     onError: (error) => {
-      const message = error?.response?.data?.message || error.message;
-      toast.error(message || "Failed to create product");
+      const status = error?.response?.status;
+      const message =
+        status === 401
+          ? "Login first"
+          : error?.response?.data?.message ||
+            error.message ||
+            "Failed to create product";
+
+      toast.error(message);
+      if (status === 403) {
+        toast.error(message || "Post limit reached. Please upgrade your plan.");
+        setTimeout(() => {
+          navigate("/payment");
+        }, 1000);
+      }
     },
   });
 
